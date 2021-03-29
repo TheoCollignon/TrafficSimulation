@@ -1,8 +1,8 @@
 package sample;
 
 public class TrafficLight extends Thread {
-    public boolean isRed;
-    public int duration;
+    private boolean isRed;
+    private int duration;
 
     public TrafficLight() {
         this.isRed = true;

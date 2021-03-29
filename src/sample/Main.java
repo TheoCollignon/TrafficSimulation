@@ -13,6 +13,8 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setScene(new Scene(root, 600, 600));
         primaryStage.show();
+        TrafficLight light = new TrafficLight();
+        light.start();
     }
 
     public static void main(String[] args) {

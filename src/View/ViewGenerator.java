@@ -33,7 +33,7 @@ public class ViewGenerator extends Application {
         Parent rootLayout = loader.load();
         mainPane = (Pane) loader.getNamespace().get("mainPane");
         this.controller = Controller.getInstance();
-        controller.setViewStart(this);
+        controller.loadConfiguration(this);
         stage.setScene(new Scene(rootLayout, 600, 600));
         stage.show();
     }

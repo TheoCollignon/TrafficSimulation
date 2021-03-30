@@ -19,10 +19,7 @@ public class TrafficLight extends Thread {
     public void run() {
         while (true) {
             try {
-                isRed = true;
-                viewGenerator.updateTrafficLight(this);
-                Thread.sleep(duration);
-                isRed = false;
+                changeColor();
                 viewGenerator.updateTrafficLight(this);
                 Thread.sleep(duration);
             } catch (InterruptedException e) {

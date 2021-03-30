@@ -15,6 +15,6 @@
       <RowConstraints />
    </rowConstraints>
    <children>
-      <Pane id="MainPane" fx:id="mainPane" prefHeight="600.0" prefWidth="600.0" />
+      <Pane id="MainPane" fx:id="mainPane" prefHeight="1000.0" prefWidth="1000.0" />
    </children>
 </GridPane>

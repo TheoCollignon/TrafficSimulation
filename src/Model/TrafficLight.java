@@ -1,4 +1,4 @@
-package sample;
+package Model;
 
 public class TrafficLight extends Thread {
     private boolean isRed;

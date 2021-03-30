@@ -1,5 +1,8 @@
-package sample;
+package View;
 
+import Model.City;
+import Controller.Controller;
+import Model.Road;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,7 +12,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -28,14 +30,12 @@ public class ViewGenerator extends Application {
         Parent rootLayout = loader.load();
         mainPane = (Pane) loader.getNamespace().get("mainPane");
         this.controller = Controller.getInstance();
-        controller.init();
         controller.setViewStart(this);
         stage.setScene(new Scene(rootLayout, 600, 600));
         stage.show();
     }
 
     public void drawElements(ArrayList<City> cities, ArrayList<Road> roads) {
-        System.out.println(cities);
         // Draw Roads
         for (Road road : roads) {
             ArrayList<int[]> roadCoords = road.getCoordsList();

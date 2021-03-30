@@ -1,14 +1,20 @@
 package Model;
 
+import View.ViewGenerator;
+
 import java.util.ArrayList;
 
 public class Configuration {
     private ArrayList<City> cities;
     private ArrayList<Road> roads;
+    private ArrayList<TrafficLight> trafficLights;
+    private ViewGenerator viewGenerator;
 
-    public Configuration() {
+    public Configuration(ViewGenerator viewGenerator) {
+        this.viewGenerator = viewGenerator;
         cities = new ArrayList<>();
         roads = new ArrayList<>();
+        trafficLights = new ArrayList<>();
     }
 
     public void addCity(City city) {
@@ -25,11 +31,19 @@ public class Configuration {
         roads.add(road);
     }
 
+    public void addTrafficLight() {
+        trafficLights.add(new TrafficLight(viewGenerator));
+    }
+
     public ArrayList<City> getCities() {
         return cities;
     }
 
     public ArrayList<Road> getRoads() {
         return roads;
+    }
+
+    public ArrayList<TrafficLight> getTrafficLights() {
+        return trafficLights;
     }
 }

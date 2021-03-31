@@ -21,34 +21,43 @@ public class Configuration {
 
     public void addRandomElements(int nbCities) {
         for (int i = 0; i < nbCities; i++) {
-            int x = random.nextInt(600) + 1;
-            int y = random.nextInt(600) + 1;
+            int x = random.nextInt(500) + 50;
+            int y = random.nextInt(500) + 50;
             int size = random.nextInt(25) + 15;
             String name = String.valueOf(i+1);
-            cities.add(new City(new int[]{x,y}, size, name));
+            while (!addCity(new int[]{x,y}, size, name)) {
+                x = random.nextInt(500) + 50;
+                y = random.nextInt(500) + 50;
+            }
         }
         for (int i = 0; i < nbCities; i++) {
             for (int j = i+1; j < nbCities; j++) {
                 boolean isRoad = random.nextBoolean();
-                if (isRoad) {
-                    //int width = random.nextInt(5) + 10;
-                    roads.add(new Road(cities.get(i), cities.get(j)));
-                }
+                if (isRoad) addRoad(cities.get(i), cities.get(j));
+            }
+            int nbConnectedCities = cities.get(i).getConnectedCities().size();
+            if (nbConnectedCities == 0) {
+                int connectedCity = i;
+                while (connectedCity == i) connectedCity = random.nextInt(cities.size());
+                addRoad(cities.get(i), cities.get(connectedCity));
             }
         }
     }
 
-    public void addCity(City city) {
-        cities.add(city);
-    }
-
-    public void addCity(int[] position, int size, String name) {
-        City city = new City(position, size, name);
-        cities.add(city);
+    public boolean addCity(int[] position, int size, String name) {
+        for (City city: cities) {
+            if (Math.abs(city.getPosition()[0] - position[0]) < 50) return false;
+            if (Math.abs(city.getPosition()[1] - position[1]) < 50) return false;
+        }
+        City newCity = new City(position, size, name);
+        cities.add(newCity);
+        return true;
     }
 
     public void addRoad(City A, City B) {
         Road road = new Road(A,B);
+        A.addConnectedCity(B);
+        B.addConnectedCity(A);
         roads.add(road);
     }
 

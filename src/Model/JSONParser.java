@@ -19,9 +19,9 @@ public class JSONParser {
                 JSONObject x = new JSONObject();
                 JSONObject y = new JSONObject();
                 JSONObject size = new JSONObject();
-                x.put("X",city.getPosition()[0]);
-                y.put("Y",city.getPosition()[0]);
-                size.put("Size",city.getPosition()[0]);
+                x.put("X",city.getPosition().getX());
+                y.put("Y",city.getPosition().getX());
+                size.put("Size",city.getPosition().getX());
                 cityArray.put(x);
                 cityArray.put(y);
                 cityArray.put(size);

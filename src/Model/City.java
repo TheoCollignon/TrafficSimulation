@@ -3,12 +3,12 @@ package Model;
 import java.util.ArrayList;
 
 public class City {
-    private int[] position;
+    private Coordinate position;
     private int size;
     private String name;
     private ArrayList<City> connectedCities;
 
-    public City(int[] position, int size, String name) {
+    public City(Coordinate position, int size, String name) {
         this.position = position;
         this.size = size;
         this.name = name;
@@ -19,7 +19,7 @@ public class City {
         connectedCities.add(city);
     }
 
-    public int[] getPosition() {
+    public Coordinate getPosition() {
         return position;
     }
 

@@ -28,7 +28,7 @@ public class Configuration {
             int y = random.nextInt(500) + 50;
             int size = random.nextInt(25) + 15;
             String name = String.valueOf(i+1);
-            while (!addCity(new int[]{x,y}, size, name)) {
+            while (!addCity(new Coordinate(x,y,null), size, name)) {
                 x = random.nextInt(500) + 50;
                 y = random.nextInt(500) + 50;
             }
@@ -51,10 +51,10 @@ public class Configuration {
         }
     }
 
-    public boolean addCity(int[] position, int size, String name) {
+    public boolean addCity(Coordinate position, int size, String name) {
         for (City city: cities) {
-            if (Math.abs(city.getPosition()[0] - position[0]) < 50) return false;
-            if (Math.abs(city.getPosition()[1] - position[1]) < 50) return false;
+            if (Math.abs(city.getPosition().getX() - position.getX()) < 50) return false;
+            if (Math.abs(city.getPosition().getY() - position.getY()) < 50) return false;
         }
         City newCity = new City(position, size, name);
         cities.add(newCity);
@@ -72,12 +72,13 @@ public class Configuration {
         // init the cars
         for (int j = 0; j < numberCars; j++ ) {
             // coord at city for the moment
-            int[] coord = cities.get(j).getPosition();
+            Coordinate coord = cities.get(j).getPosition();
             // create the car
-            Car c = new Car( coord, 100);
+            Car c = new Car( coord, 100, viewGenerator);
             // put it in the list
             cars.add(c);
         }
+
 
 
     }

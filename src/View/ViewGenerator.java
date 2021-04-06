@@ -1,11 +1,7 @@
 package View;
 
-import Model.City;
-import Model.Car;
+import Model.*;
 import Controller.Controller;
-import Model.Configuration;
-import Model.Road;
-import Model.TrafficLight;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,14 +38,14 @@ public class ViewGenerator extends Application {
     public void drawConfiguration(Configuration configuration) {
         // Draw Roads
         for (Road road : configuration.getRoads()) {
-            ArrayList<float[]> roadCoords = road.getCoordsList();
+            ArrayList<Coordinate> roadCoords = road.getCoordsList();
             for (int i = 0; i < 2; i++) {
-                Line line = new Line(roadCoords.get(i)[0], roadCoords.get(i)[1], roadCoords.get(i+1)[0], roadCoords.get(i+1)[1]);
+                Line line = new Line(roadCoords.get(i).getX(), roadCoords.get(i).getY(), roadCoords.get(i+1).getX(), roadCoords.get(i+1).getY());
                 line.setStrokeWidth(road.getWidth());
                 mainPane.getChildren().add(line);
             }
             for (int i = 0; i < roadCoords.size() - 1; i++) {
-                Circle circle = new Circle(roadCoords.get(i)[0], roadCoords.get(i)[1], 2);
+                Circle circle = new Circle(roadCoords.get(i).getX(), roadCoords.get(i).getY(), 2);
                 circle.setFill(Color.GREEN);
                 circle.setStrokeWidth(road.getWidth());
                 mainPane.getChildren().add(circle);
@@ -59,8 +55,8 @@ public class ViewGenerator extends Application {
         }
         // Draw Cities
         for (City city : configuration.getCities()) {
-            Circle whole = new Circle(city.getPosition()[0], city.getPosition()[1], city.getSize());
-            Text t = new Text(city.getPosition()[0] - 5, city.getPosition()[1] + 5, city.getName());
+            Circle whole = new Circle(city.getPosition().getX(), city.getPosition().getY(), city.getSize());
+            Text t = new Text(city.getPosition().getX() - 5, city.getPosition().getY() + 5, city.getName());
             whole.setFill(Color.LIGHTGRAY);
             mainPane.getChildren().add(whole);
             mainPane.getChildren().add(t);
@@ -75,7 +71,8 @@ public class ViewGenerator extends Application {
         }
         // Draw cars comme le film
         for (Car cars : configuration.getCars()) {
-            Circle car = new Circle(cars.getPosition()[0], cars.getPosition()[1], 5);
+            Circle car = new Circle(cars.getPosition().getX(), cars.getPosition().getY(), 5);
+            car.setId(String.valueOf(cars.getId()));
             car.setFill(Color.DARKRED);
             mainPane.getChildren().add(car);
         }
@@ -84,19 +81,8 @@ public class ViewGenerator extends Application {
         mainPane.getChildren().add(line);*/
     }
 
-    public void runConfiguration() {
-        while (true) {
-            int duration = 100;
-            try {
-                System.out.println("cc");
-                Thread.sleep(duration);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                break;
-            }
-        }
 
-    }
+
 
     public void updateTrafficLight(TrafficLight trafficLight) {
         for (Node node: mainPane.getChildren()) {
@@ -106,5 +92,15 @@ public class ViewGenerator extends Application {
                 else circle.setFill(Color.GREEN);
             }
         }
+    }
+
+    public void updateCarPositionDraw(Car car) {
+        for (Node node: mainPane.getChildren()) {
+            if (String.valueOf(car.getId()).equals(node.getId())) {
+                Circle circle = (Circle) node;
+                circle.setFill(Color.YELLOW);
+            }
+        }
+
     }
 }

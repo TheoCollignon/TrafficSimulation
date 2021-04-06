@@ -45,6 +45,10 @@ public class Configuration {
                 addRoad(cities.get(i), cities.get(connectedCity));
             }
         }
+        // when the cities are linked, we setup all the point between the road
+        for (int i = 0; i < roads.size(); i++) {
+            roads.get(i).calculateCoordinates(roads.get(i).getCoordsList().get(0), roads.get(i).getCoordsList().get(1),100);
+        }
     }
 
     public boolean addCity(int[] position, int size, String name) {

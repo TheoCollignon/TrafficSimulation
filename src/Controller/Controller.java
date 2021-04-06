@@ -35,5 +35,7 @@ public class Controller {
         this.viewGenerator = viewGenerator;
         createConfiguration();
         viewGenerator.drawConfiguration(configuration);
+        // viewGenerator.runConfiguration();
+
     }
 }

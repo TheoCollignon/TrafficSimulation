@@ -42,12 +42,20 @@ public class ViewGenerator extends Application {
     public void drawConfiguration(Configuration configuration) {
         // Draw Roads
         for (Road road : configuration.getRoads()) {
-            ArrayList<int[]> roadCoords = road.getCoordsList();
-            for (int i = 0; i < roadCoords.size() - 1; i++) {
+            ArrayList<float[]> roadCoords = road.getCoordsList();
+            for (int i = 0; i < 2; i++) {
                 Line line = new Line(roadCoords.get(i)[0], roadCoords.get(i)[1], roadCoords.get(i+1)[0], roadCoords.get(i+1)[1]);
                 line.setStrokeWidth(road.getWidth());
                 mainPane.getChildren().add(line);
             }
+            for (int i = 0; i < roadCoords.size() - 1; i++) {
+                Circle circle = new Circle(roadCoords.get(i)[0], roadCoords.get(i)[1], 2);
+                circle.setFill(Color.GREEN);
+                circle.setStrokeWidth(road.getWidth());
+                mainPane.getChildren().add(circle);
+            }
+
+
         }
         // Draw Cities
         for (City city : configuration.getCities()) {
@@ -74,6 +82,20 @@ public class ViewGenerator extends Application {
         /*Line line = new Line(100, 10, 10, 110);
         System.out.println(mainPane);
         mainPane.getChildren().add(line);*/
+    }
+
+    public void runConfiguration() {
+        while (true) {
+            int duration = 100;
+            try {
+                System.out.println("cc");
+                Thread.sleep(duration);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                break;
+            }
+        }
+
     }
 
     public void updateTrafficLight(TrafficLight trafficLight) {

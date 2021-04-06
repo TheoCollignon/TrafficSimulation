@@ -31,6 +31,7 @@ public class Controller {
         configuration = new Configuration(viewGenerator);
         jsonParser = new JSONParser();
         configuration.addRandomElements(5);
+        configuration.setupCars(5);
         jsonParser.saveJSONFile(configuration, "test");
     }
 

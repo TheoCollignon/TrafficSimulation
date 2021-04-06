@@ -1,12 +1,14 @@
 package Controller;
 
 import Model.Configuration;
+import Model.JSONParser;
 import View.ViewGenerator;
 
 public class Controller {
     private static Controller instance = null;
     private Configuration configuration = null;
     private ViewGenerator viewGenerator = null;
+    private JSONParser jsonParser = null;
 
     public static Controller getInstance() {
         if (null == instance) {
@@ -27,8 +29,10 @@ public class Controller {
         configuration.addRoad(B,C);
         configuration.addTrafficLight();*/
         configuration = new Configuration(viewGenerator);
+        jsonParser = new JSONParser();
         configuration.addRandomElements(5);
         configuration.setupCars(5);
+        jsonParser.saveJSONFile(configuration, "test");
     }
 
     public void loadConfiguration(ViewGenerator viewGenerator) {

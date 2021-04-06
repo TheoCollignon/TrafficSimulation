@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Configuration {
+
     private ArrayList<City> cities;
     private ArrayList<Road> roads;
+    private ArrayList<Car> cars;
     private ArrayList<TrafficLight> trafficLights;
     private ViewGenerator viewGenerator;
     private Random random = new Random();
@@ -16,6 +18,7 @@ public class Configuration {
         this.viewGenerator = viewGenerator;
         cities = new ArrayList<>();
         roads = new ArrayList<>();
+        cars = new ArrayList<>();
         trafficLights = new ArrayList<>();
     }
 
@@ -61,6 +64,22 @@ public class Configuration {
         roads.add(road);
     }
 
+    public void setupCars(int numberCars) {
+        // init the cars
+        for (int j = 0; j < numberCars; j++ ) {
+            // coord at city for the moment
+            int[] coord = cities.get(j).getPosition();
+            // create the car
+            Car c = new Car( coord, 100);
+            // put it in the list
+            cars.add(c);
+        }
+
+
+    }
+
+
+
     public void addTrafficLight() {
         trafficLights.add(new TrafficLight(viewGenerator));
     }
@@ -75,5 +94,9 @@ public class Configuration {
 
     public ArrayList<TrafficLight> getTrafficLights() {
         return trafficLights;
+    }
+
+    public ArrayList<Car> getCars() {
+        return cars;
     }
 }

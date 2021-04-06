@@ -28,6 +28,7 @@ public class Controller {
         configuration.addTrafficLight();*/
         configuration = new Configuration(viewGenerator);
         configuration.addRandomElements(5);
+        configuration.setupCars(5);
     }
 
     public void loadConfiguration(ViewGenerator viewGenerator) {

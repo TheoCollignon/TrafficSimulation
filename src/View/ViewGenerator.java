@@ -1,6 +1,7 @@
 package View;
 
 import Model.City;
+import Model.Car;
 import Controller.Controller;
 import Model.Configuration;
 import Model.Road;
@@ -63,6 +64,12 @@ public class ViewGenerator extends Application {
             if (trafficLight.isRed()) tLight.setFill(Color.RED);
             else tLight.setFill(Color.GREEN);
             mainPane.getChildren().add(tLight);
+        }
+        // Draw cars comme le film
+        for (Car cars : configuration.getCars()) {
+            Circle car = new Circle(cars.getPosition()[0], cars.getPosition()[1], 5);
+            car.setFill(Color.DARKRED);
+            mainPane.getChildren().add(car);
         }
         /*Line line = new Line(100, 10, 10, 110);
         System.out.println(mainPane);

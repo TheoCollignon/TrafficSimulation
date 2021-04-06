@@ -13,11 +13,6 @@ public class Road {
         coordsList.add(new float[]{B.getPosition()[0], B.getPosition()[1]});
     }
 
-    public void addCoordinates(float[] point) {
-        // TO EDIT
-        coordsList.add(1,point);
-    }
-
     public void calculateCoordinates(float[] pointA, float[] pointB, int pointNum) {
 
         float diff_X = pointB[0] - pointA[0];
@@ -30,7 +25,7 @@ public class Road {
         for (int i = 1; i <= pointNum; i++)
         {
             float[] newPoint = {pointA[0] + interval_X * i, pointA[1] + interval_Y*i};
-            System.out.println("liste corrd point : " + newPoint[0] + "," + newPoint[1]);
+            // System.out.println("liste corrd point : " + newPoint[0] + "," + newPoint[1]);
             coordsList.add(newPoint);
         }
         System.out.println("-------");

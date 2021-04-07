@@ -98,18 +98,18 @@ public class ViewGenerator extends Application {
         for (Node node: mainPane.getChildren()) {
             if (String.valueOf(car.getId()).equals(node.getId())) {
                 Circle circle = (Circle) node;
-                System.out.println("--------");
 //                if ( circle.getCenterX() == car.getPosition().getX() ) System.out.println("avant x correct " + circle.getCenterX());
 //                if ( circle.getCenterY() == car.getPosition().getY() ) System.out.println("avant y correct " + circle.getCenterY());
 
                 circle.setCenterX(car.getPosition().getX());
                 circle.setCenterY(car.getPosition().getY());
+
 //                if ( circle.getCenterX() == car.getPosition().getX() ) System.out.println("apres x correct " + circle.getCenterX());
 //                if ( circle.getCenterY() == car.getPosition().getY() ) System.out.println("apres y correct " + circle.getCenterY());
 //                System.out.println("--------");
 //                System.out.println("affichage x apres : " + circle.getCenterX());
 //                System.out.println("affichage y apres : " + circle.getCenterY());
-                circle.setFill(Color.YELLOW);
+                circle.setFill(Color.color(Math.random(), Math.random(), Math.random()));
             }
         }
 

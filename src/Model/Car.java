@@ -38,7 +38,7 @@ public class Car extends Thread{
     public void changeCarPosition(Coordinate position) {
         this.position.setCar(null);
         this.position = position;
-        position.setCar(this);
+        this.position.setCar(this);
 
     }
 
@@ -56,5 +56,15 @@ public class Car extends Thread{
 
     public void setPosition(Coordinate position) {
         this.position = position;
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "position=" + position +
+                ", energy=" + energy +
+                ", viewGenerator=" + viewGenerator +
+                ", roadOn=" + roadOn +
+                '}';
     }
 }

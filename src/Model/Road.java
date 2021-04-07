@@ -37,13 +37,16 @@ public class Road {
 
     public void moveCarPosition(Car car){
         for(Coordinate coord : coordsList) {
-            if(coord.getCar() != null) System.out.println("tro for");
-            if (coord.getCar() != null && coord.getCar().equals(car)) {
+//            if(coord.getCar() != null) System.out.println("tro for");
+//            if(coord.getCar() != (car)) System.out.println("tro foooooooooooooooor");
+
+            if (coord.getCar() == (car)) {
                 // verify if there is a next coordinate
-                if (coordsList.indexOf(coordsList.get(coordsList.indexOf(coord)  )) > coordsList.size()-1) {
-                    System.out.println("coordsList : " + coordsList.toString());
+                if (coordsList.indexOf(coordsList.get(coordsList.indexOf(coord)  )) < coordsList.size()-1) {
                     coord.getCar().changeCarPosition(coordsList.get(coordsList.indexOf(coord) + 1));
+                    System.out.println("moving car : " + coord.getCar());
                 } else {
+                    // re-route later
                     System.out.println("Not working, probably nahtan's fault");
                 }
             }

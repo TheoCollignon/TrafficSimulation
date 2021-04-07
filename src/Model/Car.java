@@ -21,7 +21,7 @@ public class Car extends Thread{
 
     public void run() {
         while (true) {
-            int duration = 1000;
+            int duration = 3000;
             try {
                 // here the action of the cars
                 roadOn.moveCarPosition(this);
@@ -35,18 +35,11 @@ public class Car extends Thread{
 
     }
 
-    public void updateCarPosition(Car car) {
-        // change the position of the car
-        City startingCity;
-        City endCity;
-
-
-
-        System.out.println("they see me rolling");
-    }
-
     public void changeCarPosition(Coordinate position) {
+        this.position.setCar(null);
         this.position = position;
+        position.setCar(this);
+
     }
 
     public int getEnegy() {

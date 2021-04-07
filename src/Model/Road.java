@@ -1,6 +1,5 @@
 package Model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Road {
@@ -36,11 +35,54 @@ public class Road {
 
     }
 
+    public void moveCarPosition(Car car){
+        for(Coordinate coord : coordsList) {
+            if(coord.getCar() != null) System.out.println("tro for");
+            if (coord.getCar() != null && coord.getCar().equals(car)) {
+                // verify if there is a next coordinate
+                if (coordsList.indexOf(coordsList.get(coordsList.indexOf(coord)  )) > coordsList.size()-1) {
+                    System.out.println("coordsList : " + coordsList.toString());
+                    coord.getCar().changeCarPosition(coordsList.get(coordsList.indexOf(coord) + 1));
+                } else {
+                    System.out.println("Not working, probably nahtan's fault");
+                }
+            }
+        }
+    }
+
     public ArrayList<Coordinate> getCoordsList() {
         return coordsList;
     }
 
     public int getWidth() {
         return roadWidth;
+    }
+
+    public void setCoordsList(ArrayList<Coordinate> coordsList) {
+        this.coordsList = coordsList;
+    }
+
+    public int getRoadWidth() {
+        return roadWidth;
+    }
+
+    public void setRoadWidth(int roadWidth) {
+        this.roadWidth = roadWidth;
+    }
+
+    public City getStart() {
+        return start;
+    }
+
+    public void setStart(City start) {
+        this.start = start;
+    }
+
+    public City getEnd() {
+        return end;
+    }
+
+    public void setEnd(City end) {
+        this.end = end;
     }
 }

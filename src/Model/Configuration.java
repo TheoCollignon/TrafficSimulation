@@ -71,16 +71,33 @@ public class Configuration {
     public void setupCars(int numberCars) {
         // init the cars
         for (int j = 0; j < numberCars; j++ ) {
-            // coord at city for the moment
-            Coordinate coord = cities.get(j).getPosition();
+            // find a random connected city
+            int randomCityConnected = random.nextInt(cities.get(j).getConnectedCities().size());
             // create the car
-            Car c = new Car( coord, 100, viewGenerator);
+            Road road = findRoad(cities.get(j),cities.get(j).getConnectedCities().get(randomCityConnected));
+            Car c = null;
             // put it in the list
+            if (road.getCoordsList().get(0).getCar() != null) {
+                c = new Car( road.getCoordsList().get(road.getCoordsList().size()-1),100, viewGenerator, road);
+                road.getCoordsList().get(road.getCoordsList().size()-1).setCar(c);
+            }
+            else {
+                c = new Car( road.getCoordsList().get(0),100, viewGenerator, road);
+                road.getCoordsList().get(0).setCar(c);
+            }
+
+
             cars.add(c);
         }
+    }
 
-
-
+    public Road findRoad(City A, City B) {
+        for (Road road : roads){
+            if ((road.getStart() == A && road.getEnd() == B) ||(road.getStart() == B && road.getEnd() == A) ) {
+                return road;
+            }
+        }
+        return null;
     }
 
 

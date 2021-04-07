@@ -6,14 +6,16 @@ import javafx.scene.shape.Circle;
 
 public class Car extends Thread{
     private Coordinate position;
-    private int enegy;
+    private int energy;
     private ViewGenerator viewGenerator;
+    private Road roadOn;
 
 
-    public Car(Coordinate position, int enegy, ViewGenerator viewGenerator) {
+    public Car(Coordinate position, int energy, ViewGenerator viewGenerator, Road roadOn) {
         this.position = position;
-        this.enegy = enegy;
+        this.energy = energy;
         this.viewGenerator = viewGenerator;
+        this.roadOn = roadOn;
         this.start();
     }
 
@@ -21,9 +23,8 @@ public class Car extends Thread{
         while (true) {
             int duration = 1000;
             try {
-                System.out.println("cc");
                 // here the action of the cars
-                updateCarPosition(this);
+                roadOn.moveCarPosition(this);
                 viewGenerator.updateCarPositionDraw(this);
                 Thread.sleep(duration);
             } catch (InterruptedException e) {
@@ -40,15 +41,20 @@ public class Car extends Thread{
         City endCity;
 
 
+
         System.out.println("they see me rolling");
     }
 
+    public void changeCarPosition(Coordinate position) {
+        this.position = position;
+    }
+
     public int getEnegy() {
-        return enegy;
+        return energy;
     }
 
     public void setEnegy(int enegy) {
-        this.enegy = enegy;
+        this.energy = enegy;
     }
 
     public Coordinate getPosition() {

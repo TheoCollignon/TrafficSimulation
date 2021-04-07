@@ -33,4 +33,8 @@ public class Coordinate {
     }
 
     public boolean isCar() { return car != null; }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
 }

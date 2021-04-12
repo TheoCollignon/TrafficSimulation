@@ -29,7 +29,6 @@ public class ViewGenerator extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
         Parent rootLayout = loader.load();
         mainPane = (Pane) loader.getNamespace().get("mainPane");
-        this.controller = Controller.getInstance();
         controller.loadConfiguration(this);
         stage.setScene(new Scene(rootLayout, 600, 600));
         stage.show();
@@ -50,7 +49,6 @@ public class ViewGenerator extends Application {
                 circle.setStrokeWidth(road.getWidth());
                 mainPane.getChildren().add(circle);
             }
-
 
         }
         // Draw Cities

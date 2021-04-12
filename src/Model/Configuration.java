@@ -1,9 +1,11 @@
 package Model;
 
 import View.ViewGenerator;
+import com.ibm.dtfj.image.CorruptData;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Arrays;
 
 public class Configuration {
 
@@ -13,6 +15,8 @@ public class Configuration {
     private ArrayList<TrafficLight> trafficLights;
     private ViewGenerator viewGenerator;
     private Random random = new Random();
+    boolean isHippodamien;
+    float[][][] coordPlanHippodamien;
 
     public Configuration(ViewGenerator viewGenerator) {
         this.viewGenerator = viewGenerator;
@@ -20,21 +24,56 @@ public class Configuration {
         roads = new ArrayList<>();
         cars = new ArrayList<>();
         trafficLights = new ArrayList<>();
+        isHippodamien = true;
     }
 
     public void addRandomElements(int nbCities) {
+
+        //creating cities
         for (int i = 0; i < nbCities; i++) {
             int x = random.nextInt(500) + 50;
             int y = random.nextInt(500) + 50;
             int size = random.nextInt(25) + 15;
-            String name = String.valueOf(i+1);
-            while (!addCity(new Coordinate(x,y,null), size, name)) {
+            String name = String.valueOf(i + 1);
+            while (!addCity(new Coordinate(x, y), size, name)) {
                 x = random.nextInt(500) + 50;
                 y = random.nextInt(500) + 50;
             }
         }
+        //generating the hippodamian grid in case the configuration is hoppodamian
+        if(isHippodamien){
+            //creating the coord lists and filling them
+            coordPlanHippodamien = new float[nbCities][nbCities][2];
+            float[] listCityCoordsX = new float[nbCities];
+            float[] listCityCoordsY = new float[nbCities];
+            for(int i = 0; i < nbCities; i++) {
+                listCityCoordsX[i] = cities.get(i).getPosition().getX();
+                listCityCoordsY[i] = cities.get(i).getPosition().getY();
+            }
+            //sorting the city coordinates list so it ranges correctly
+            Arrays.sort(listCityCoordsY);
+            Arrays.sort(listCityCoordsX);
+            //giving coordinates to every point in the plan
+            for(int i = 0; i < nbCities; i++) {
+                for(int j = 0; j < nbCities; j++){
+                    float[] coords = {listCityCoordsX[i], listCityCoordsY[j]};
+                    coordPlanHippodamien[i][j] = coords;
+                }
+            }
+            //adding the roads
+            for(int i = 0; i < nbCities - 1; i++) {
+                for (int j = 0; j < nbCities - 1; j++) {
+                    Coordinate startCoord = new Coordinate(coordPlanHippodamien[i][j][0],coordPlanHippodamien[i][j][1]);
+                    Coordinate endCoordEast = new Coordinate(coordPlanHippodamien[i+1][j][0],coordPlanHippodamien[i+1][j][1]);
+                    Coordinate endCoordSouth = new Coordinate(coordPlanHippodamien[i][j+1][0],coordPlanHippodamien[i][j+1][1]);
+                    addRoad(startCoord,endCoordEast);
+                    addRoad(startCoord,endCoordSouth);
+                }
+            }
+        }
+        //creating roads
         for (int i = 0; i < nbCities; i++) {
-            for (int j = i+1; j < nbCities; j++) {
+            for (int j = i + 1; j < nbCities; j++) {
                 boolean isRoad = random.nextBoolean();
                 if (isRoad) addRoad(cities.get(i), cities.get(j));
             }
@@ -53,8 +92,8 @@ public class Configuration {
 
     public boolean addCity(Coordinate position, int size, String name) {
         for (City city: cities) {
-            if (Math.abs(city.getPosition().getX() - position.getX()) < 50) return false;
-            if (Math.abs(city.getPosition().getY() - position.getY()) < 50) return false;
+            if (Math.abs(city.getPosition().getX() - position.getX()) < (size + city.getSize()) ) return false;
+            if (Math.abs(city.getPosition().getY() - position.getY()) < (size + city.getSize()) ) return false;
         }
         City newCity = new City(position, size, name);
         cities.add(newCity);
@@ -62,10 +101,33 @@ public class Configuration {
     }
 
     public void addRoad(City A, City B) {
-        Road road = new Road(A,B);
-        A.addConnectedCity(B);
-        B.addConnectedCity(A);
-        roads.add(road);
+        if(!isHippodamien){
+            float[] coordRoad = getHippodamianRoad(A,B);
+        } else {
+            Road road = new Road(A,B);
+            A.addConnectedCity(B);
+            B.addConnectedCity(A);
+            roads.add(road);
+        }
+    }
+
+    //This method is meant to be used in the future instead of the top one
+    public void addRoad(Coordinate coordA, Coordinate coordB){
+        if(isHippodamien){
+
+        }else{
+            Road road = new Road(coordA,coordB);
+            for(City city : cities){
+                if(city.getPosition().equals(coordA)){
+
+                }
+            }
+            //TODO : adapt the rest of the method
+            //A.addConnectedCity(B);
+            //B.addConnectedCity(A);
+            roads.add(road);
+
+        }
     }
 
     public void setupCars(int numberCars) {
@@ -85,7 +147,6 @@ public class Configuration {
                 c = new Car( road.getCoordsList().get(0),100, viewGenerator, road);
                 road.getCoordsList().get(0).setCar(c);
             }
-
 
             cars.add(c);
         }
@@ -120,5 +181,10 @@ public class Configuration {
 
     public ArrayList<Car> getCars() {
         return cars;
+    }
+
+    float[] getHippodamianRoad(City A, City B){
+        float[] coordsRoad = null;
+        return coordsRoad;
     }
 }

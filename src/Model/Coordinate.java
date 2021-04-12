@@ -4,13 +4,21 @@ public class Coordinate {
     private float x;
     private float y;
     private Car car;
+    private City city;
 
-    public Coordinate(float x, float y, Car car) {
+    public Coordinate(float x, float y) {
         this.x = x;
         this.y = y;
-        this.car = car;
+        this.car = null;
     }
 
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
 
     public float getX() {
         return x;
@@ -36,5 +44,10 @@ public class Coordinate {
 
     public void setCar(Car car) {
         this.car = car;
+    }
+
+    //Compares ONLY the coordinates
+    public boolean equals(Coordinate coordToCompare){
+        return (this.x == coordToCompare.getX() && this.y == coordToCompare.getY());
     }
 }

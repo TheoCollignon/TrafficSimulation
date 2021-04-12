@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public class Road {
     private ArrayList<Coordinate> coordsList = new ArrayList<>();
     private int roadWidth;
+    private Coordinate coordA;
+    private Coordinate coordB;
     private City start;
     private City end;
 
@@ -12,8 +14,21 @@ public class Road {
         this.start = A;
         this.end = B;
         this.roadWidth = 10;
-        coordsList.add(new Coordinate(A.getPosition().getX(), A.getPosition().getY(), null));
-        coordsList.add(new Coordinate(B.getPosition().getX(), B.getPosition().getY(), null));
+        coordsList.add(new Coordinate(A.getPosition().getX(), A.getPosition().getY()));
+        coordsList.add(new Coordinate(B.getPosition().getX(), B.getPosition().getY()));
+    }
+
+    //creating a road that doesn't necessarily join two cities (meant to replace the first constructor in the future)
+    public Road(Coordinate A, Coordinate B){
+        this.roadWidth = 10;
+        this.coordA = A;
+        this.coordB = B;
+        if(coordA.getCity() != null){
+            start = coordA.getCity();
+        }
+        if(coordB.getCity() != null){
+            end = coordB.getCity();
+        }
     }
 
     public void calculateCoordinates(Coordinate pointA, Coordinate pointB, int pointNum) {
@@ -24,12 +39,11 @@ public class Road {
         float interval_X = diff_X / (pointNum + 1);
         float interval_Y = diff_Y / (pointNum + 1);
 
-
         for (int i = 1; i <= pointNum; i++)
         {
             float[] newPoint = {pointA.getX() + interval_X * i, pointA.getY() + interval_Y*i};
-            // System.out.println("liste corrd point : " + newPoint[0] + "," + newPoint[1]);
-            coordsList.add(new Coordinate(newPoint[0], newPoint[1], null));
+            // System.out.println("liste coord point : " + newPoint[0] + "," + newPoint[1]);
+            coordsList.add(new Coordinate(newPoint[0], newPoint[1]));
         }
         System.out.println("-------");
 
@@ -41,7 +55,7 @@ public class Road {
 //            if(coord.getCar() != (car)) System.out.println("tro foooooooooooooooor");
             if (coord.getCar() == (car)) {
                 // verify if there is a next coordinate
-                if (coordsList.indexOf(coordsList.get(coordsList.indexOf(coord)  )) < coordsList.size() - 1) {
+                if (coordsList.indexOf(coord) < coordsList.size() - 1) {
                     // get the next element
                     car.changeCarPosition(coordsList.get(coordsList.indexOf(coord) + 1));
                     // System.out.println("moving car : " + coord.getCar());

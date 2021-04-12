@@ -42,10 +42,12 @@ public class Configuration {
         }
         //generating the hippodamian grid in case the configuration is hoppodamian
         if(isHippodamien){
-            //creating the coord lists and filling them
+
+            //creating the coord lists...
             coordPlanHippodamien = new float[nbCities][nbCities][2];
             float[] listCityCoordsX = new float[nbCities];
             float[] listCityCoordsY = new float[nbCities];
+            //... and filling them
             for(int i = 0; i < nbCities; i++) {
                 listCityCoordsX[i] = cities.get(i).getPosition().getX();
                 listCityCoordsY[i] = cities.get(i).getPosition().getY();
@@ -63,11 +65,14 @@ public class Configuration {
             //adding the roads
             for(int i = 0; i < nbCities ; i++) {
                 for (int j = 0; j < nbCities ; j++) {
+                    //getting the coords of the current point
                     Coordinate startCoord = new Coordinate(coordPlanHippodamien[i][j][0],coordPlanHippodamien[i][j][1]);
+                    //If we're at the last point, don't try to draw an additional horizontal road
                     if(i < nbCities - 1){
                         Coordinate endCoordEast = new Coordinate(coordPlanHippodamien[i+1][j][0],coordPlanHippodamien[i+1][j][1]);
                         addRoad(startCoord,endCoordEast);
                     }
+                    //same as above for vertical roads
                     if(j < nbCities - 1){
                         Coordinate endCoordSouth = new Coordinate(coordPlanHippodamien[i][j+1][0],coordPlanHippodamien[i][j+1][1]);
                         addRoad(startCoord,endCoordSouth);

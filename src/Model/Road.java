@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class Road {
     private ArrayList<Coordinate> coordsList = new ArrayList<>();
     private int roadWidth;
-    private Coordinate coordA;
-    private Coordinate coordB;
+    private Coordinate coordStart;
+    private Coordinate coordEnd;
     private City start;
     private City end;
 
@@ -21,14 +21,10 @@ public class Road {
     //creating a road that doesn't necessarily join two cities (meant to replace the first constructor in the future)
     public Road(Coordinate A, Coordinate B){
         this.roadWidth = 10;
-        this.coordA = A;
-        this.coordB = B;
-        if(coordA.getCity() != null){
-            start = coordA.getCity();
-        }
-        if(coordB.getCity() != null){
-            end = coordB.getCity();
-        }
+        this.coordStart = A;
+        this.coordEnd = B;
+        coordsList.add(A);
+        coordsList.add(B);
     }
 
     public void calculateCoordinates(Coordinate pointA, Coordinate pointB, int pointNum) {
@@ -45,7 +41,7 @@ public class Road {
             // System.out.println("liste coord point : " + newPoint[0] + "," + newPoint[1]);
             coordsList.add(new Coordinate(newPoint[0], newPoint[1]));
         }
-        System.out.println("-------");
+        //System.out.println("-------");
 
     }
 

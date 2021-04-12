@@ -24,7 +24,7 @@ public class Configuration {
         roads = new ArrayList<>();
         cars = new ArrayList<>();
         trafficLights = new ArrayList<>();
-        isHippodamien = true;
+        isHippodamien = false;
     }
 
     public void addRandomElements(int nbCities) {
@@ -61,13 +61,17 @@ public class Configuration {
                 }
             }
             //adding the roads
-            for(int i = 0; i < nbCities - 1; i++) {
-                for (int j = 0; j < nbCities - 1; j++) {
+            for(int i = 0; i < nbCities ; i++) {
+                for (int j = 0; j < nbCities ; j++) {
                     Coordinate startCoord = new Coordinate(coordPlanHippodamien[i][j][0],coordPlanHippodamien[i][j][1]);
-                    Coordinate endCoordEast = new Coordinate(coordPlanHippodamien[i+1][j][0],coordPlanHippodamien[i+1][j][1]);
-                    Coordinate endCoordSouth = new Coordinate(coordPlanHippodamien[i][j+1][0],coordPlanHippodamien[i][j+1][1]);
-                    addRoad(startCoord,endCoordEast);
-                    addRoad(startCoord,endCoordSouth);
+                    if(i < nbCities - 1){
+                        Coordinate endCoordEast = new Coordinate(coordPlanHippodamien[i+1][j][0],coordPlanHippodamien[i+1][j][1]);
+                        addRoad(startCoord,endCoordEast);
+                    }
+                    if(j < nbCities - 1){
+                        Coordinate endCoordSouth = new Coordinate(coordPlanHippodamien[i][j+1][0],coordPlanHippodamien[i][j+1][1]);
+                        addRoad(startCoord,endCoordSouth);
+                    }
                 }
             }
         }
@@ -101,34 +105,32 @@ public class Configuration {
     }
 
     public void addRoad(City A, City B) {
-        if(!isHippodamien){
-            float[] coordRoad = getHippodamianRoad(A,B);
-        } else {
-            Road road = new Road(A,B);
-            A.addConnectedCity(B);
-            B.addConnectedCity(A);
-            roads.add(road);
-        }
+        Road road = new Road(A,B);
+        A.addConnectedCity(B);
+        B.addConnectedCity(A);
+        roads.add(road);
     }
 
     //This method is meant to be used in the future instead of the top one
     public void addRoad(Coordinate coordA, Coordinate coordB){
+        //creation of the road
+        Road newRoad = new Road(coordA,coordB);
+        //if the starting or ending point corresponds to a city, it is attributed to the road
+        for(City city : cities){
+            if(city.getPosition().equals(coordA)){
+                newRoad.setStart(city);
+            }
+            if(city.getPosition().equals(coordB)){
+                newRoad.setEnd(city);
+            }
+        }
         if(isHippodamien){
 
         }else{
-            Road road = new Road(coordA,coordB);
-            for(City city : cities){
-                if(city.getPosition().equals(coordA)){
-
-                }
-            }
-
-            //TODO : adapt the rest of the method
-            //A.addConnectedCity(B);
-            //B.addConnectedCity(A);
-            roads.add(road);
 
         }
+        //adding the road to the road list
+        roads.add(newRoad);
     }
 
     public void setupCars(int numberCars) {

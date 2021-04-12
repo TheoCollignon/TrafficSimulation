@@ -122,6 +122,7 @@ public class Configuration {
 
                 }
             }
+
             //TODO : adapt the rest of the method
             //A.addConnectedCity(B);
             //B.addConnectedCity(A);

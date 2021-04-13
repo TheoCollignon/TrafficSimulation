@@ -22,7 +22,7 @@ public class Configuration {
         roads = new ArrayList<>();
         cars = new ArrayList<>();
         trafficLights = new ArrayList<>();
-        isHippodamien = false;
+        isHippodamien = true;
     }
 
     public void addRandomElements(int nbCities) {
@@ -93,7 +93,7 @@ public class Configuration {
         }
         // when the cities are linked, we setup all the point between the road
         for (int i = 0; i < roads.size(); i++) {
-            roads.get(i).calculateCoordinates(roads.get(i).getCoordsList().get(0), roads.get(i).getCoordsList().get(1),25);
+            roads.get(i).calculateCoordinates(roads.get(i).getCoordsList().get(0), roads.get(i).getCoordsList().get(roads.get(i).getCoordsList().size() - 1),100);
         }
     }
 
@@ -110,7 +110,10 @@ public class Configuration {
     public void addRoad(City A, City B) {
         Road road = new Road(A,B);
         A.addConnectedCity(B);
+        A.addConnectedRoad(road);
         B.addConnectedCity(A);
+        B.addConnectedRoad(road);
+
         roads.add(road);
     }
 
@@ -136,7 +139,7 @@ public class Configuration {
         roads.add(newRoad);
     }
 
-    public void setupCars(int numberCars) {
+    public ArrayList<Car> setupCars(int numberCars) {
         // init the cars
         for (int j = 0; j < numberCars; j++ ) {
             // find a random connected city
@@ -156,6 +159,7 @@ public class Configuration {
 
             cars.add(c);
         }
+        return cars;
     }
 
     public Road findRoad(City A, City B) {

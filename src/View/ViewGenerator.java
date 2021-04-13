@@ -2,7 +2,11 @@ package View;
 
 import Model.*;
 import Controller.Controller;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -14,6 +18,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 
@@ -39,7 +44,7 @@ public class ViewGenerator extends Application {
         for (Road road : configuration.getRoads()) {
             ArrayList<Coordinate> roadCoords = road.getCoordsList();
             for (int i = 0; i < 2; i++) {
-                Line line = new Line(roadCoords.get(i).getX(), roadCoords.get(i).getY(), roadCoords.get(i+1).getX(), roadCoords.get(i+1).getY());
+                Line line = new Line(roadCoords.get(i).getX(), roadCoords.get(i).getY(), roadCoords.get(roadCoords.size() -1 ).getX(), roadCoords.get(roadCoords.size() -1 ).getY());
                 line.setStrokeWidth(road.getWidth());
                 mainPane.getChildren().add(line);
             }
@@ -96,20 +101,28 @@ public class ViewGenerator extends Application {
         for (Node node: mainPane.getChildren()) {
             if (String.valueOf(car.getId()).equals(node.getId())) {
                 Circle circle = (Circle) node;
-//                if ( circle.getCenterX() == car.getPosition().getX() ) System.out.println("avant x correct " + circle.getCenterX());
-//                if ( circle.getCenterY() == car.getPosition().getY() ) System.out.println("avant y correct " + circle.getCenterY());
 
                 circle.setCenterX(car.getPosition().getX());
                 circle.setCenterY(car.getPosition().getY());
 
-//                if ( circle.getCenterX() == car.getPosition().getX() ) System.out.println("apres x correct " + circle.getCenterX());
-//                if ( circle.getCenterY() == car.getPosition().getY() ) System.out.println("apres y correct " + circle.getCenterY());
-//                System.out.println("--------");
-//                System.out.println("affichage x apres : " + circle.getCenterX());
-//                System.out.println("affichage y apres : " + circle.getCenterY());
                 circle.setFill(Color.color(Math.random(), Math.random(), Math.random()));
             }
         }
 
     }
+
+    public void updateView(ArrayList<Car> cars) {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), ev -> {
+            //what you want to do
+            for(Car c : cars) {
+                updateCarPositionDraw(c);
+            }
+        }));
+        timeline.setCycleCount(1);//do it x times
+        timeline.setCycleCount(Animation.INDEFINITE);//or indefinitely
+
+        //play:
+        timeline.play();
+    }
+
 }

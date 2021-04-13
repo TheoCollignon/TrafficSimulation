@@ -1,8 +1,11 @@
 package Controller;
 
+import Model.Car;
 import Model.Configuration;
 import Model.JSONParser;
 import View.ViewGenerator;
+
+import java.util.ArrayList;
 
 public class Controller {
     private static Controller instance = null;
@@ -31,7 +34,8 @@ public class Controller {
         configuration = new Configuration(viewGenerator);
         jsonParser = new JSONParser();
         configuration.addRandomElements(5);
-        configuration.setupCars(5);
+        ArrayList<Car> cars = configuration.setupCars(5);
+        viewGenerator.updateView(cars);
         jsonParser.saveJSONFile(configuration, "test");
     }
 
@@ -39,6 +43,7 @@ public class Controller {
         this.viewGenerator = viewGenerator;
         createConfiguration();
         viewGenerator.drawConfiguration(configuration);
+
 
     }
 }

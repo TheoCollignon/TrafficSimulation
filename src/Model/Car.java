@@ -25,7 +25,7 @@ public class Car extends Thread{
             try {
                 // here the action of the cars
                 roadOn.moveCarPosition(this);
-                viewGenerator.updateCarPositionDraw(this);
+                // viewGenerator.updateCarPositionDraw(this);
                 Thread.sleep(duration);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -66,5 +66,10 @@ public class Car extends Thread{
                 ", viewGenerator=" + viewGenerator +
                 ", roadOn=" + roadOn +
                 '}';
+    }
+
+    public void changeRoad(Road nextRoad) {
+        this.roadOn = nextRoad;
+        // this.roadOn.moveCarPosition(this);
     }
 }

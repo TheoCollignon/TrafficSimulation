@@ -1,8 +1,6 @@
 package Model;
 
 import View.ViewGenerator;
-import com.ibm.dtfj.image.CorruptData;
-
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Arrays;
@@ -95,7 +93,7 @@ public class Configuration {
         }
         // when the cities are linked, we setup all the point between the road
         for (int i = 0; i < roads.size(); i++) {
-            roads.get(i).calculateCoordinates(roads.get(i).getCoordsList().get(0), roads.get(i).getCoordsList().get(1),5);
+            roads.get(i).calculateCoordinates(roads.get(i).getCoordsList().get(0), roads.get(i).getCoordsList().get(1),25);
         }
     }
 

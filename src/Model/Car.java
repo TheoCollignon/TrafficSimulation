@@ -21,7 +21,7 @@ public class Car extends Thread{
 
     public void run() {
         while (true) {
-            int duration = 3000;
+            int duration = 200;
             try {
                 // here the action of the cars
                 roadOn.moveCarPosition(this);

@@ -18,7 +18,7 @@ public class Road {
         coordsList.add(new Coordinate(B.getPosition().getX(), B.getPosition().getY()));
     }
 
-    //creating a road that doesn't necessarily join two cities (meant to replace the first constructor in the future)
+    // creating a road that doesn't necessarily join two cities (meant to replace the first constructor in the future)
     public Road(Coordinate A, Coordinate B){
         this.roadWidth = 10;
         this.coordStart = A;
@@ -41,19 +41,18 @@ public class Road {
             // System.out.println("liste coord point : " + newPoint[0] + "," + newPoint[1]);
             coordsList.add(new Coordinate(newPoint[0], newPoint[1]));
         }
-        //System.out.println("-------");
 
     }
 
-    public void moveCarPosition(Car car){
+    public boolean moveCarPosition(Car car){
         for(Coordinate coord : coordsList) {
-//            if(coord.getCar() != null) System.out.println("tro for");
-//            if(coord.getCar() != (car)) System.out.println("tro foooooooooooooooor");
             if (coord.getCar() == (car)) {
                 // verify if there is a next coordinate
                 if (coordsList.indexOf(coord) < coordsList.size() - 1) {
                     // get the next element
                     car.changeCarPosition(coordsList.get(coordsList.indexOf(coord) + 1));
+                    return true;
+
                     // System.out.println("moving car : " + coord.getCar());
                 } else {
                     // re-route later
@@ -61,6 +60,7 @@ public class Road {
                 }
             }
         }
+        return false;
     }
 
     public ArrayList<Coordinate> getCoordsList() {

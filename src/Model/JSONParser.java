@@ -15,19 +15,23 @@ public class JSONParser {
 
             JSONObject cities = new JSONObject();
             for (City city: configuration.getCities()) {
-                JSONArray cityArray = new JSONArray();
-                JSONObject x = new JSONObject();
-                JSONObject y = new JSONObject();
-                JSONObject size = new JSONObject();
-                x.put("X",city.getPosition().getX());
-                y.put("Y",city.getPosition().getX());
-                size.put("Size",city.getPosition().getX());
-                cityArray.put(x);
-                cityArray.put(y);
-                cityArray.put(size);
+                JSONObject cityArray = new JSONObject();
+                cityArray.put("X",""+city.getPosition().getX());
+                cityArray.put("Y",""+city.getPosition().getY());
+                cityArray.put("Size",""+city.getSize());
                 cities.put(city.getName(),cityArray);
             }
+            JSONObject roads = new JSONObject();
+            for (Road road: configuration.getRoads()) {
+                JSONObject roadArray = new JSONObject();
+                roadArray.put("startX",""+road.getCoordStart().getX());
+                roadArray.put("startY",""+road.getCoordStart().getY());
+                roadArray.put("endX",""+road.getCoordEnd().getX());
+                roadArray.put("endY",""+road.getCoordEnd().getY());
+                roads.put("",roadArray);
+            }
             obj.put("Cities", cities);
+            obj.put("Roads", roads);
 
             file.write(obj.toString());
             file.flush();

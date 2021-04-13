@@ -14,6 +14,8 @@ public class Road {
         this.start = A;
         this.end = B;
         this.roadWidth = 10;
+        coordStart = A.getPosition();
+        coordEnd = B.getPosition();
         coordsList.add(new Coordinate(A.getPosition().getX(), A.getPosition().getY()));
         coordsList.add(new Coordinate(B.getPosition().getX(), B.getPosition().getY()));
     }
@@ -97,5 +99,13 @@ public class Road {
 
     public void setEnd(City end) {
         this.end = end;
+    }
+
+    public Coordinate getCoordStart() {
+        return coordStart;
+    }
+
+    public Coordinate getCoordEnd() {
+        return coordEnd;
     }
 }

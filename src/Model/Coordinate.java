@@ -13,7 +13,11 @@ public class Coordinate {
     }
 
     public City getCity() {
-        return city;
+        if(city != null){
+            return city;
+        } else {
+            return null;
+        }
     }
 
     public void setCity(City city) {

@@ -12,11 +12,13 @@ public class Configuration {
     private ArrayList<Car> cars;
     private ArrayList<TrafficLight> trafficLights;
     private ViewGenerator viewGenerator;
-    private Random random = new Random();
+    private Random random;
     boolean isHippodamien;
     float[][][] coordPlanHippodamien;
+    MapLayout mapLayout;
 
     public Configuration(ViewGenerator viewGenerator) {
+        random = new Random();
         this.viewGenerator = viewGenerator;
         cities = new ArrayList<>();
         roads = new ArrayList<>();
@@ -27,6 +29,8 @@ public class Configuration {
 
     public void addRandomElements(int nbCities) {
 
+        //creating the map layout
+        mapLayout = new MapLayout(nbCities);
         //creating cities
         for (int i = 0; i < nbCities; i++) {
             int x = random.nextInt(500) + 50;
@@ -56,8 +60,10 @@ public class Configuration {
             //giving coordinates to every point in the plan
             for(int i = 0; i < nbCities; i++) {
                 for(int j = 0; j < nbCities; j++){
-                    float[] coords = {listCityCoordsX[i], listCityCoordsY[j]};
+                    Coordinate newCoord = new Coordinate(listCityCoordsX[i], listCityCoordsY[j]);
+                    float[] coords = {newCoord.getX(), newCoord.getY()};
                     coordPlanHippodamien[i][j] = coords;
+                    mapLayout.setBranch(i, j, newCoord);
                 }
             }
             //adding the roads

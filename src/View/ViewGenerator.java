@@ -60,7 +60,7 @@ public class ViewGenerator extends Application {
         for (City city : configuration.getCities()) {
             Circle whole = new Circle(city.getPosition().getX(), city.getPosition().getY(), city.getSize());
             Text t = new Text(city.getPosition().getX() - 5, city.getPosition().getY() + 5, city.getName());
-            whole.setFill(Color.LIGHTGRAY);
+            whole.setFill((Color.color(Math.random(), Math.random(), Math.random())));
             mainPane.getChildren().add(whole);
             mainPane.getChildren().add(t);
         }

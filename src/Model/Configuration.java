@@ -35,7 +35,7 @@ public class Configuration {
         for (int i = 0; i < nbCities; i++) {
             int x = random.nextInt(500) + 50;
             int y = random.nextInt(500) + 50;
-            int size = random.nextInt(25) + 15;
+            int size = random.nextInt(20) + 10;
             String name = String.valueOf(i + 1);
             while (!addCity(new Coordinate(x, y), size, name)) {
                 x = random.nextInt(500) + 50;
@@ -99,7 +99,7 @@ public class Configuration {
         }
         // when the cities are linked, we setup all the point between the road
         for (int i = 0; i < roads.size(); i++) {
-            roads.get(i).calculateCoordinates(roads.get(i).getCoordsList().get(0), roads.get(i).getCoordsList().get(roads.get(i).getCoordsList().size() - 1),100);
+            roads.get(i).calculateCoordinates(roads.get(i).getCoordsList().get(0), roads.get(i).getCoordsList().get(roads.get(i).getCoordsList().size() - 1),25);
         }
     }
 
@@ -155,12 +155,12 @@ public class Configuration {
             Car c = null;
             // put it in the list
             if (road.getCoordsList().get(0).getCar() != null) {
-                c = new Car( road.getCoordsList().get(road.getCoordsList().size()-1),100, viewGenerator, road);
-                road.getCoordsList().get(road.getCoordsList().size()-1).setCar(c);
+                c = new Car( road.getCoordsList().get(road.getCoordsList().size()-1),100, viewGenerator, road, road.getStart(), road.getEnd());
+                road.getCoordsList().get(road.getCoordsList().size()-1).addCar(c);
             }
             else {
-                c = new Car( road.getCoordsList().get(0),100, viewGenerator, road);
-                road.getCoordsList().get(0).setCar(c);
+                c = new Car( road.getCoordsList().get(0),100, viewGenerator, road,  road.getStart(), road.getEnd());
+                road.getCoordsList().get(0).addCar(c);
             }
 
             cars.add(c);

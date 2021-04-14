@@ -9,25 +9,29 @@ public class Car extends Thread{
     private int energy;
     private ViewGenerator viewGenerator;
     private Road roadOn;
+    private City cityFrom;
+    private City destination;
 
 
-    public Car(Coordinate position, int energy, ViewGenerator viewGenerator, Road roadOn) {
+    public Car(Coordinate position, int energy, ViewGenerator viewGenerator, Road roadOn, City cityFrom, City destination) {
         this.position = position;
         this.energy = energy;
         this.viewGenerator = viewGenerator;
         this.roadOn = roadOn;
+        this.cityFrom = cityFrom;
+        this.destination = destination;
         this.start();
     }
 
     public void run() {
         while (true) {
-            int duration = 200;
+            int duration = 20;
             try {
                 // here the action of the cars
-                roadOn.moveCarPosition(this);
-                // viewGenerator.updateCarPositionDraw(this);
+                roadOn.moveCarPosition(this, cityFrom);
                 Thread.sleep(duration);
             } catch (InterruptedException e) {
+                System.out.println("crashed");
                 e.printStackTrace();
                 break;
             }
@@ -36,9 +40,10 @@ public class Car extends Thread{
     }
 
     public void changeCarPosition(Coordinate position) {
-        this.position.setCar(null);
+        if( this.position == position) System.out.println("error");
+        this.position.removeCar(this);
         this.position = position;
-        this.position.setCar(this);
+        this.position.addCar(this);
 
     }
 
@@ -58,18 +63,37 @@ public class Car extends Thread{
         this.position = position;
     }
 
-    @Override
-    public String toString() {
-        return "Car{" +
-                "position=" + position +
-                ", energy=" + energy +
-                ", viewGenerator=" + viewGenerator +
-                ", roadOn=" + roadOn +
-                '}';
+
+    public void changeRoad(Road nextRoad, City currentCity) {
+        this.roadOn = nextRoad;
+        this.cityFrom = currentCity;
+        // we want to setup the destination
+        if (currentCity != nextRoad.getStart()) this.destination = nextRoad.getStart();
+        else this.destination = nextRoad.getEnd();
+
     }
 
-    public void changeRoad(Road nextRoad) {
-        this.roadOn = nextRoad;
-        // this.roadOn.moveCarPosition(this);
+    public int getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
+    public ViewGenerator getViewGenerator() {
+        return viewGenerator;
+    }
+
+    public void setViewGenerator(ViewGenerator viewGenerator) {
+        this.viewGenerator = viewGenerator;
+    }
+
+    public Road getRoadOn() {
+        return roadOn;
+    }
+
+    public void setRoadOn(Road roadOn) {
+        this.roadOn = roadOn;
     }
 }

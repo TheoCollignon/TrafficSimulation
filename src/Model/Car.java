@@ -4,6 +4,8 @@ import View.ViewGenerator;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.util.Random;
+
 public class Car extends Thread{
     private Coordinate position;
     private int energy;
@@ -11,6 +13,7 @@ public class Car extends Thread{
     private Road roadOn;
     private City cityFrom;
     private City destination;
+    private Random random;
 
 
     public Car(Coordinate position, int energy, ViewGenerator viewGenerator, Road roadOn, City cityFrom, City destination) {
@@ -20,12 +23,13 @@ public class Car extends Thread{
         this.roadOn = roadOn;
         this.cityFrom = cityFrom;
         this.destination = destination;
+        random = new Random();
         this.start();
     }
 
     public void run() {
         while (true) {
-            int duration = 20;
+            int duration = random.nextInt(100) + 50;
             try {
                 // here the action of the cars
                 roadOn.moveCarPosition(this, cityFrom);
@@ -40,7 +44,12 @@ public class Car extends Thread{
     }
 
     public void changeCarPosition(Coordinate position) {
-        if( this.position == position) System.out.println("error");
+        if (this.position == position) System.out.println("Error"); // this has to be fixed, even if there is another error somewhere
+       /* try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
         this.position.removeCar(this);
         this.position = position;
         this.position.addCar(this);

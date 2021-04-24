@@ -6,7 +6,7 @@ import javafx.scene.shape.Circle;
 
 import java.util.Random;
 
-public class Car extends Thread{
+public class Car {
     private Coordinate position;
     private int energy;
     private ViewGenerator viewGenerator;
@@ -14,9 +14,11 @@ public class Car extends Thread{
     private City cityFrom;
     private City destination;
     private Random random;
+    private int speed;
+    private int id;
 
 
-    public Car(Coordinate position, int energy, ViewGenerator viewGenerator, Road roadOn, City cityFrom, City destination) {
+    public Car(Coordinate position, int energy, ViewGenerator viewGenerator, Road roadOn, City cityFrom, City destination, int id) {
         this.position = position;
         this.energy = energy;
         this.viewGenerator = viewGenerator;
@@ -24,24 +26,24 @@ public class Car extends Thread{
         this.cityFrom = cityFrom;
         this.destination = destination;
         random = new Random();
-        this.start();
+        this.speed = random.nextInt(10) + 0 ;
+        this.id = id;
     }
-
-    public void run() {
-        while (true) {
-            int duration = random.nextInt(100) + 50;
-            try {
-                // here the action of the cars
-                roadOn.moveCarPosition(this, cityFrom);
-                Thread.sleep(duration);
-            } catch (InterruptedException e) {
-                System.out.println("crashed");
-                e.printStackTrace();
-                break;
-            }
-        }
-
-    }
+    //    public void run() {
+//        while (true) {
+//            int duration = random.nextInt(100) + 50;
+//            try {
+//                // here the action of the cars
+//                roadOn.moveCarPosition(this, cityFrom);
+//                Thread.sleep(duration);
+//            } catch (InterruptedException e) {
+//                System.out.println("crashed");
+//                e.printStackTrace();
+//                break;
+//            }
+//        }
+//
+//    }
 
     public void changeCarPosition(Coordinate position) {
         if (this.position == position) System.out.println("Error"); // this has to be fixed, even if there is another error somewhere
@@ -54,6 +56,14 @@ public class Car extends Thread{
         this.position = position;
         this.position.addCar(this);
 
+    }
+
+    public City getCityFrom() {
+        return cityFrom;
+    }
+
+    public void setCityFrom(City cityFrom) {
+        this.cityFrom = cityFrom;
     }
 
     public int getEnegy() {
@@ -86,6 +96,14 @@ public class Car extends Thread{
         return energy;
     }
 
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
     public void setEnergy(int energy) {
         this.energy = energy;
     }
@@ -104,5 +122,29 @@ public class Car extends Thread{
 
     public void setRoadOn(Road roadOn) {
         this.roadOn = roadOn;
+    }
+
+    public City getDestination() {
+        return destination;
+    }
+
+    public void setDestination(City destination) {
+        this.destination = destination;
+    }
+
+    public Random getRandom() {
+        return random;
+    }
+
+    public void setRandom(Random random) {
+        this.random = random;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

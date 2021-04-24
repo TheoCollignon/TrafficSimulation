@@ -146,6 +146,7 @@ public class Configuration {
     }
 
     public ArrayList<Car> setupCars(int numberCars) {
+        int id = 1;
         // init the cars
         for (int j = 0; j < numberCars; j++ ) {
             // find a random connected city
@@ -154,12 +155,13 @@ public class Configuration {
             Road road = findRoad(cities.get(j),cities.get(j).getConnectedCities().get(randomCityConnected));
             Car c = null;
             // put it in the list
+            id++;
             if (road.getCoordsList().get(0).getCar() != null) {
-                c = new Car( road.getCoordsList().get(road.getCoordsList().size()-1),100, viewGenerator, road, road.getStart(), road.getEnd());
+                c = new Car( road.getCoordsList().get(road.getCoordsList().size()-1),100, viewGenerator, road, road.getStart(), road.getEnd(), id);
                 road.getCoordsList().get(road.getCoordsList().size()-1).addCar(c);
             }
             else {
-                c = new Car( road.getCoordsList().get(0),100, viewGenerator, road,  road.getStart(), road.getEnd());
+                c = new Car( road.getCoordsList().get(0),100, viewGenerator, road,  road.getStart(), road.getEnd(), id);
                 road.getCoordsList().get(0).addCar(c);
             }
 

@@ -2,7 +2,7 @@ package Controller;
 
 import Model.Car;
 import Model.Configuration;
-import Model.JSONParser;
+import Model.JSONManager;
 import View.ViewGenerator;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ public class Controller {
     private static Controller instance = null;
     private Configuration configuration = null;
     private ViewGenerator viewGenerator = null;
-    private JSONParser jsonParser = null;
+    private JSONManager jsonManager = null;
 
     public static Controller getInstance() {
         if (null == instance) {
@@ -32,12 +32,12 @@ public class Controller {
         configuration.addRoad(B,C);
         configuration.addTrafficLight();*/
         configuration = new Configuration(viewGenerator);
-        jsonParser = new JSONParser();
+        jsonManager = new JSONManager();
         configuration.addRandomElements(5);
         ArrayList<Car> cars = configuration.setupCars(5);
         CarManager cm = new CarManager(cars);
         viewGenerator.updateView(cars);
-        jsonParser.saveJSONFile(configuration, "test");
+        jsonManager.saveJSONFile(configuration, "test");
     }
 
     public void loadConfiguration(ViewGenerator viewGenerator) {

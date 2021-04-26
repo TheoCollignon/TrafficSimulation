@@ -110,9 +110,17 @@ public class ViewGenerator extends Application {
         for (Node node: mainPane.getChildren()) {
             if (String.valueOf(car.getId()).equals(node.getId())) {
                 Circle circle = (Circle) node;
-
-                circle.setCenterX(car.getPosition().getX());
-                circle.setCenterY(car.getPosition().getY());
+                // trying to put the car on the right side of the road for better display
+                if ( car.getRoadOn().getStart() == car.getDestination()) {
+                    circle.setCenterX(car.getPosition().getX());
+                    circle.setCenterY(car.getPosition().getY() - 5);
+                } else if  ( car.getRoadOn().getEnd() == car.getDestination()) {
+                    circle.setCenterX(car.getPosition().getX());
+                    circle.setCenterY(car.getPosition().getY() + 5);
+                } else {
+                    circle.setCenterX(car.getPosition().getX());
+                    circle.setCenterY(car.getPosition().getY());
+                }
 
                 circle.setFill(Color.color(Math.random(), Math.random(), Math.random()));
             }

@@ -26,7 +26,7 @@ public class Car {
         this.cityFrom = cityFrom;
         this.destination = destination;
         random = new Random();
-        this.speed = random.nextInt(10) + 0 ;
+        this.speed = random.nextInt(100) + 20 ;
         this.id = id;
     }
     //    public void run() {

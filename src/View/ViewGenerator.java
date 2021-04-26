@@ -49,10 +49,19 @@ public class ViewGenerator extends Application {
                 mainPane.getChildren().add(line);
             }
             for (int i = 0; i < roadCoords.size() - 1; i++) {
-                Circle circle = new Circle(roadCoords.get(i).getX(), roadCoords.get(i).getY(), 2);
-                circle.setFill(Color.GREEN);
-                circle.setStrokeWidth(road.getWidth());
-                mainPane.getChildren().add(circle);
+                if (i + 1 < (roadCoords.size() - 1) ) {
+                    if (i%2 != 1) {
+                        Line line = new Line(roadCoords.get(i).getX(), roadCoords.get(i).getY(), roadCoords.get(i + 1).getX(), roadCoords.get(i + 1).getY());
+                        line.setStrokeWidth(road.getWidth() - 13); // markings
+                        line.setStroke(Color.WHITE);
+                        mainPane.getChildren().add(line);
+                    }
+                }
+                // circle of the position of the car, actually not usefull, but can be use for debugging
+//                Circle circle = new Circle(roadCoords.get(i).getX(), roadCoords.get(i).getY(), 2);
+//                circle.setFill(Color.WHITE);
+//                circle.setStrokeWidth(road.getWidth());
+//                mainPane.getChildren().add(circle);
             }
 
         }

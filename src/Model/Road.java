@@ -13,7 +13,7 @@ public class Road {
     public Road(City A, City B) {
         this.start = A;
         this.end = B;
-        this.roadWidth = 10;
+        this.roadWidth = 15;
         coordStart = A.getPosition();
         coordEnd = B.getPosition();
         coordsList.add(coordStart);
@@ -22,7 +22,7 @@ public class Road {
 
     // creating a road that doesn't necessarily join two cities (meant to replace the first constructor in the future)
     public Road(Coordinate A, Coordinate B){
-        this.roadWidth = 10;
+        this.roadWidth = 15;
         this.coordStart = A;
         this.coordEnd = B;
         coordsList.add(A);

@@ -1,13 +1,13 @@
 package Model;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.ParseException;
+import java.util.Iterator;
+import java.util.Set;
 
 public class JSONManager {
 
@@ -50,17 +50,27 @@ public class JSONManager {
     public void readJSONFile(String fileName) {
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("employees.json"))
+        try (FileReader reader = new FileReader("./configurationFiles/"+fileName+".json"))
         {
-            //Read JSON file
             Object obj = jsonParser.parse(reader);
-
-            JSONArray employeeList = (JSONArray) obj;
-            System.out.println(employeeList);
-
-            //Iterate over employee array
-            //employeeList.forEach( emp -> parseEmployeeObject( (JSONObject) emp ) );
-
+            JSONObject config = (JSONObject) obj;
+            JSONObject cities = (JSONObject) config.get("Cities");
+            Set keySetCities = cities.keySet();
+            System.out.println(keySetCities.toString());
+            Iterator itr = keySetCities.iterator();
+            while (itr.hasNext()) {
+                String t = (String) itr.next();
+                System.out.println(cities.get(t));
+            }
+            //System.out.println(cities.get(0));
+            JSONObject roads = (JSONObject) config.get("Roads");
+            Set keySetRoads = roads.keySet();
+            System.out.println(keySetRoads.toString());
+            itr = keySetRoads.iterator();
+            while (itr.hasNext()) {
+                String t = (String) itr.next();
+                System.out.println(roads.get(t));
+            }
         } catch (IOException /*| ParseException*/ | org.json.simple.parser.ParseException e) {
             e.printStackTrace();
         }

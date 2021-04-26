@@ -111,16 +111,40 @@ public class ViewGenerator extends Application {
             if (String.valueOf(car.getId()).equals(node.getId())) {
                 Circle circle = (Circle) node;
                 // trying to put the car on the right side of the road for better display
-                if ( car.getRoadOn().getStart() == car.getDestination()) {
-                    circle.setCenterX(car.getPosition().getX());
-                    circle.setCenterY(car.getPosition().getY() - 5);
-                } else if  ( car.getRoadOn().getEnd() == car.getDestination()) {
-                    circle.setCenterX(car.getPosition().getX());
-                    circle.setCenterY(car.getPosition().getY() + 5);
-                } else {
-                    circle.setCenterX(car.getPosition().getX());
-                    circle.setCenterY(car.getPosition().getY());
+                float carPositionX = car.getPosition().getX();
+                float carPositionY = car.getPosition().getY();
+
+                // edit the X position for better looking on the road
+                if (car.getRoadOn().getEnd().getPosition().getY() > car.getRoadOn().getStart().getPosition().getY()) {
+                    if ( car.getRoadOn().getStart() == car.getDestination()) {
+                        carPositionX += 4;
+                    } else if  ( car.getRoadOn().getEnd() == car.getDestination()) {
+                        carPositionX -= 4;
+                    }
+                } else if (car.getRoadOn().getEnd().getPosition().getY() <= car.getRoadOn().getStart().getPosition().getY()){
+                    if ( car.getRoadOn().getStart() == car.getDestination()) {
+                        carPositionX -= 4;
+                    } else if  ( car.getRoadOn().getEnd() == car.getDestination()) {
+                        carPositionX += 4;
+                    }
                 }
+                // edit the Y position for better looking on the road
+                if (car.getRoadOn().getEnd().getPosition().getX() <= car.getRoadOn().getStart().getPosition().getX()) {
+                    if ( car.getRoadOn().getStart() == car.getDestination()) {
+                        carPositionY += 4;
+                    } else if  ( car.getRoadOn().getEnd() == car.getDestination()) {
+                        carPositionY -= 4;
+                    }
+                } else if (car.getRoadOn().getEnd().getPosition().getX() > car.getRoadOn().getStart().getPosition().getX()){
+                    if ( car.getRoadOn().getStart() == car.getDestination()) {
+                        carPositionY -= 4;
+                    } else if  ( car.getRoadOn().getEnd() == car.getDestination()) {
+                        carPositionY += 4;
+                    }
+                }
+                circle.setCenterX(carPositionX);
+                circle.setCenterY(carPositionY);
+
 
                 circle.setFill(Color.color(Math.random(), Math.random(), Math.random()));
             }

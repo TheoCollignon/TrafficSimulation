@@ -14,33 +14,35 @@ public class JSONManager {
     public void saveJSONFile(Configuration configuration, String fileName) {
         try {
             FileWriter file = new FileWriter("./configurationFiles/"+fileName+".json");
-            JSONObject obj = new JSONObject();
-
-            JSONObject cities = new JSONObject();
-            for (City city: configuration.getCities()) {
-                JSONObject cityArray = new JSONObject();
-                cityArray.put("X",""+city.getPosition().getX());
-                cityArray.put("Y",""+city.getPosition().getY());
-                cityArray.put("Size",""+city.getSize());
-                cities.put(city.getName(),cityArray);
+            file.write("{");
+            file.write("\n\t\"Cities\":{");
+            for (int i=0 ; i<configuration.getCities().size(); i++) {
+                City city = configuration.getCities().get(i);
+                file.write("\n\t\t\""+city.getName()+"\":{");
+                file.write("\n\t\t\t\"Size\":\""+city.getSize()+"\",");
+                file.write("\n\t\t\t\"X\":\""+city.getPosition().getX()+"\",");
+                file.write("\n\t\t\t\"Y\":\""+city.getPosition().getY()+"\"");
+                file.write("\n\t\t\t}");
+                if (i!=configuration.getCities().size()-1) {
+                    file.write(",");
+                }
             }
-            JSONObject roads = new JSONObject();
-            System.out.println(configuration.getRoads().size());
-            int i=1;
-            for (Road road: configuration.getRoads()) {
-                JSONObject roadArray = new JSONObject();
-                roadArray.put("startX",""+road.getCoordStart().getX());
-                roadArray.put("startY",""+road.getCoordStart().getY());
-                roadArray.put("endX",""+road.getCoordEnd().getX());
-                roadArray.put("endY",""+road.getCoordEnd().getY());
-                roads.put("Road"+i,roadArray);
-                i++;
+            file.write("\n\t},");
+            file.write("\n\t\"Roads\":{");
+            for (int i=0 ; i<configuration.getRoads().size(); i++) {
+                Road road = configuration.getRoads().get(i);
+                file.write("\n\t\t\"Road"+(i+1)+"\":{");
+                file.write("\n\t\t\t\"startX\":\""+road.getCoordStart().getX()+"\",");
+                file.write("\n\t\t\t\"startY\":\""+road.getCoordStart().getY()+"\",");
+                file.write("\n\t\t\t\"endX\":\""+road.getCoordEnd().getX()+"\",");
+                file.write("\n\t\t\t\"endY\":\""+road.getCoordEnd().getY()+"\"");
+                file.write("\n\t\t\t}");
+                if (i!=configuration.getRoads().size()-1) {
+                    file.write(",");
+                }
             }
-            obj.put("Cities", cities);
-            obj.put("Roads", roads);
-
-            file.write(obj.toString());
-            file.flush();
+            file.write("\n\t}");
+            file.write("\n}");
             file.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -49,7 +51,6 @@ public class JSONManager {
 
     public void readJSONFile(String fileName) {
         JSONParser jsonParser = new JSONParser();
-
         try (FileReader reader = new FileReader("./configurationFiles/"+fileName+".json"))
         {
             Object obj = jsonParser.parse(reader);

@@ -1,12 +1,11 @@
 package View;
 
-import Model.*;
 import Controller.Controller;
+import Model.*;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -16,6 +15,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -83,7 +83,8 @@ public class ViewGenerator extends Application {
         }
         // Draw cars comme le film
         for (Car cars : configuration.getCars()) {
-            Circle car = new Circle(cars.getPosition().getX(), cars.getPosition().getY(), 5);
+            Rectangle car = new Rectangle(cars.getPosition().getX(),cars.getPosition().getY(), 10,5);
+            // Circle car = new Circle(cars.getPosition().getX(), cars.getPosition().getY(), 5);
             car.setId(String.valueOf(cars.getId()));
             car.setFill(Color.DARKRED);
             mainPane.getChildren().add(car);
@@ -109,7 +110,8 @@ public class ViewGenerator extends Application {
     public void updateCarPositionDraw(Car car) {
         for (Node node: mainPane.getChildren()) {
             if (String.valueOf(car.getId()).equals(node.getId())) {
-                Circle circle = (Circle) node;
+                // Circle circle = (Circle) node;
+                Rectangle carView = (Rectangle) node;
                 // trying to put the car on the right side of the road for better display
                 float carPositionX = car.getPosition().getX();
                 float carPositionY = car.getPosition().getY();
@@ -142,11 +144,22 @@ public class ViewGenerator extends Application {
                         carPositionY += 4;
                     }
                 }
-                circle.setCenterX(carPositionX);
-                circle.setCenterY(carPositionY);
+                // circle.setCenterX(carPositionX);
+                // circle.setCenterY(carPositionY);
+                carView.setX(carPositionX);
+                carView.setY(carPositionY);
+
+                // rotation of the car on the same angle of the road
+                double rotateValue =  (car.getRoadOn().getEnd().getPosition().getY() * car.getRoadOn().getStart().getPosition().getY())
+                        + ( car.getRoadOn().getEnd().getPosition().getX() * car.getRoadOn().getStart().getPosition().getX());
+                /*double rotateValue =  (car.getRoadOn().getEnd().getPosition().getY() - car.getRoadOn().getStart().getPosition().getY())
+                        / ( car.getRoadOn().getEnd().getPosition().getX() - car.getRoadOn().getStart().getPosition().getX()); */
+                System.out.println("rot" + rotateValue%360);
+                carView.setRotate(rotateValue%360 * Math.PI);
 
 
-                circle.setFill(Color.color(Math.random(), Math.random(), Math.random()));
+                // to be delete, but for the moment, it helps to know if the car's thread is alive
+                carView.setFill(Color.color(Math.random(), Math.random(), Math.random()));
             }
         }
 

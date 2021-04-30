@@ -34,7 +34,6 @@ public class Road {
         // We need to know how many point there is between two city, the longer the road is -> more point
         double distance = Math.sqrt(Math.pow(pointB.getX() - pointA.getX(),2) + Math.pow(pointB.getY() - pointA.getY(),2));
         int pointNum = (int)(distance/10) ;
-        System.out.println("point" +  pointNum);
 
         coordsList.clear();
         coordsList.add(pointA);

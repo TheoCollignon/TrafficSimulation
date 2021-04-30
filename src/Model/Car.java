@@ -62,11 +62,37 @@ public class Car {
     public void changeCoordinate(Coordinate position) {
         // if there is enough energy, we move the car
         if (this.energy >= 0) {
+            adaptCarSpeed(this.position);
             this.energy -= 0.01 * this.speed;
             this.position.removeCar(this);
             this.position = position;
             this.position.addCar(this);
         }
+    }
+
+    public void adaptCarSpeed(Coordinate position) {
+        // we'll make the car slow down in the last 25% of the road
+        int adaptValue =  (int)(this.roadOn.getPointNum() * 0.20) ;
+        System.out.println("adapt" + adaptValue);
+
+        // slowing down the car part :
+        // if we are close to the end city
+        if ((this.roadOn.getCoordsList().indexOf(position) >  (this.roadOn.getPointNum() - adaptValue )) && this.getDestination() == this.roadOn.getEnd()) {
+            this.speed = this.speed * 2;
+        }
+        // if we are close to the start city
+        else if ((this.roadOn.getCoordsList().indexOf(position) < adaptValue ) && this.getDestination() == this.roadOn.getStart()) {
+            this.speed = this.speed * 2;
+        }
+        // speeding up the cars :
+
+
+
+        // when at city :
+
+
+
+
     }
 
     public City getCityFrom() {

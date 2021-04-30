@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Road {
     private ArrayList<Coordinate> coordsList = new ArrayList<>();
     private int roadWidth;
+    private int pointNum;
     private Coordinate coordStart;
     private Coordinate coordEnd;
     private City start;
@@ -14,6 +15,7 @@ public class Road {
         this.start = A;
         this.end = B;
         this.roadWidth = 15;
+        this.pointNum = -1;
         coordStart = A.getPosition();
         coordEnd = B.getPosition();
         coordsList.add(coordStart);
@@ -33,17 +35,17 @@ public class Road {
 
         // We need to know how many point there is between two city, the longer the road is -> more point
         double distance = Math.sqrt(Math.pow(pointB.getX() - pointA.getX(),2) + Math.pow(pointB.getY() - pointA.getY(),2));
-        int pointNum = (int)(distance/10);
+        this.pointNum = (int)(distance/10);
 
         coordsList.clear();
         coordsList.add(pointA);
         float diff_X = pointB.getX() - pointA.getX();
         float diff_Y = pointB.getY() - pointA.getY();
 
-        float interval_X = diff_X / (pointNum + 1);
-        float interval_Y = diff_Y / (pointNum + 1);
+        float interval_X = diff_X / (this.pointNum + 1);
+        float interval_Y = diff_Y / (this.pointNum + 1);
 
-        for (int i = 1; i <= pointNum; i++)
+        for (int i = 1; i <= this.pointNum; i++)
         {
             float[] newPoint = {pointA.getX() + interval_X * i, pointA.getY() + interval_Y*i};
             coordsList.add(new Coordinate(newPoint[0], newPoint[1]));
@@ -137,5 +139,21 @@ public class Road {
 
     public Coordinate getCoordEnd() {
         return coordEnd;
+    }
+
+    public int getPointNum() {
+        return pointNum;
+    }
+
+    public void setPointNum(int pointNum) {
+        this.pointNum = pointNum;
+    }
+
+    public void setCoordStart(Coordinate coordStart) {
+        this.coordStart = coordStart;
+    }
+
+    public void setCoordEnd(Coordinate coordEnd) {
+        this.coordEnd = coordEnd;
     }
 }

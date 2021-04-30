@@ -19,9 +19,9 @@ public class JSONManager {
             for (int i=0 ; i<configuration.getCities().size(); i++) {
                 City city = configuration.getCities().get(i);
                 file.write("\n\t\t\""+city.getName()+"\":{");
-                file.write("\n\t\t\t\"Size\":\""+city.getSize()+"\",");
-                file.write("\n\t\t\t\"X\":\""+city.getPosition().getX()+"\",");
-                file.write("\n\t\t\t\"Y\":\""+city.getPosition().getY()+"\"");
+                file.write("\n\t\t\t\"Size\":"+city.getSize()+",");
+                file.write("\n\t\t\t\"X\":"+city.getPosition().getX()+",");
+                file.write("\n\t\t\t\"Y\":"+city.getPosition().getY()+"");
                 file.write("\n\t\t\t}");
                 if (i!=configuration.getCities().size()-1) {
                     file.write(",");
@@ -32,10 +32,15 @@ public class JSONManager {
             for (int i=0 ; i<configuration.getRoads().size(); i++) {
                 Road road = configuration.getRoads().get(i);
                 file.write("\n\t\t\"Road"+(i+1)+"\":{");
-                file.write("\n\t\t\t\"startX\":\""+road.getCoordStart().getX()+"\",");
-                file.write("\n\t\t\t\"startY\":\""+road.getCoordStart().getY()+"\",");
-                file.write("\n\t\t\t\"endX\":\""+road.getCoordEnd().getX()+"\",");
-                file.write("\n\t\t\t\"endY\":\""+road.getCoordEnd().getY()+"\"");
+                file.write("\n\t\t\t\"Coords\": [");
+                for (int j=0 ; j<road.getCoordsList().size(); j++) {
+                    Coordinate coordinate = road.getCoordsList().get(j);
+                    file.write("["+coordinate.getX()+","+coordinate.getY()+"]");
+                    if (j!=road.getCoordsList().size()-1) {
+                        file.write(",");
+                    }
+                }
+                file.write("],\n\t\t\t\"Width\":"+road.getRoadWidth());
                 file.write("\n\t\t\t}");
                 if (i!=configuration.getRoads().size()-1) {
                     file.write(",");
@@ -57,7 +62,7 @@ public class JSONManager {
             JSONObject config = (JSONObject) obj;
             JSONObject cities = (JSONObject) config.get("Cities");
             Set keySetCities = cities.keySet();
-            System.out.println(keySetCities.toString());
+            //System.out.println(keySetCities.toString());
             Iterator itr = keySetCities.iterator();
             while (itr.hasNext()) {
                 String t = (String) itr.next();
@@ -66,11 +71,11 @@ public class JSONManager {
             //System.out.println(cities.get(0));
             JSONObject roads = (JSONObject) config.get("Roads");
             Set keySetRoads = roads.keySet();
-            System.out.println(keySetRoads.toString());
+            //System.out.println(keySetRoads.toString());
             itr = keySetRoads.iterator();
             while (itr.hasNext()) {
                 String t = (String) itr.next();
-                System.out.println(roads.get(t));
+                //System.out.println(roads.get(t));
             }
         } catch (IOException /*| ParseException*/ | org.json.simple.parser.ParseException e) {
             e.printStackTrace();

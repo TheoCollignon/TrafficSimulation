@@ -8,6 +8,7 @@ public class City {
     private String name;
     private ArrayList<City> connectedCities;
     private ArrayList<Road> connectedRoad; // I dont like this solution, to change later
+
     public City(Coordinate position, int size, String name) {
         this.position = position;
         this.size = size;

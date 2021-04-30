@@ -1,8 +1,6 @@
 package Model;
 
 import View.ViewGenerator;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 
 import java.util.Random;
 
@@ -46,21 +44,29 @@ public class Car {
 //    }
 
     public void changeCarPosition(Coordinate position) {
-        if (this.position == position) System.out.println("Error"); // this has to be fixed, even if there is another error somewhere
-       /* try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
+        // this has to be fixed, even if there is another error somewhere
+        if (this.position == position) System.out.println("Error-001");
+        // if there is a car in front of us, we can't go to the next coordinate
+        if (position.getCar().size() == 0 ) {
+            changeCoordinate(position);
+        }
+        else {
+            // if there is a car on the next coordinate, we verify that it is on the other side of the road to continue
+            if (this.destination != position.getCar().get(0).getDestination() ) {
+                changeCoordinate(position);
+            }
+        }
+
+    }
+
+    public void changeCoordinate(Coordinate position) {
         // if there is enough energy, we move the car
-        if (this.energy >= 0 ) {
+        if (this.energy >= 0) {
             this.energy -= 0.01 * this.speed;
-            System.out.println(this.energy);
             this.position.removeCar(this);
             this.position = position;
             this.position.addCar(this);
         }
-
     }
 
     public City getCityFrom() {

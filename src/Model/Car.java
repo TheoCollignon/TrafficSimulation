@@ -61,13 +61,26 @@ public class Car {
 
     public void changeCoordinate(Coordinate position) {
         // if there is enough energy, we move the car
-        if (this.energy >= 0) {
+        if (this.energy >= 0 && !isInTownEvent()) {
             adaptCarSpeed(this.position);
             this.energy -= 0.01 * this.speed;
             this.position.removeCar(this);
             this.position = position;
             this.position.addCar(this);
         }
+    }
+
+    public boolean isInTownEvent() {
+        // when at city :
+        if ((this.position == this.roadOn.getStart().getPosition()) || (this.position == this.roadOn.getEnd().getPosition()))  {
+            int randomValue = this.random.nextInt(100);
+            int eventProba = 70;
+            if (randomValue <= eventProba) {
+                // make an event to stop the car in town, redlight, buy an ice cream, say hello to nahtan
+                // actually the car won't move
+                return true;
+            }
+        } return false;
     }
 
     public void adaptCarSpeed(Coordinate position) {
@@ -77,16 +90,16 @@ public class Car {
         double speedValue= 0.7;
 
         // speed max verification
-
-            // slowing down the car part :
-            // if we are close to the end city
-            if ((this.roadOn.getCoordsList().indexOf(position) >  (this.roadOn.getPointNum() - adaptValue )) && this.getDestination() == this.roadOn.getEnd()) {
-                this.speed =(int)(this.speed * slowValue);
-            }
-            // if we are close to the start city
-            else if ((this.roadOn.getCoordsList().indexOf(position) < adaptValue ) && this.getDestination() == this.roadOn.getStart()) {
-                this.speed = (int)(this.speed * slowValue );
-            }
+        // slowing down the car part :
+        // if we are close to the end city
+        if ((this.roadOn.getCoordsList().indexOf(position) >  (this.roadOn.getPointNum() - adaptValue )) && this.getDestination() == this.roadOn.getEnd()) {
+            this.speed =(int)(this.speed * slowValue);
+        }
+        // if we are close to the start city
+        else if ((this.roadOn.getCoordsList().indexOf(position) < adaptValue ) && this.getDestination() == this.roadOn.getStart()) {
+            this.speed = (int)(this.speed * slowValue );
+        }
+        // this if is important, in case of switching of road size too quickly
         if (this.speed > 50){
             // speeding up the cars :
              if ((this.roadOn.getCoordsList().indexOf(position) < adaptValue ) && this.getDestination() == this.roadOn.getEnd()) {
@@ -96,12 +109,8 @@ public class Car {
             else if ((this.roadOn.getCoordsList().indexOf(position) > (this.roadOn.getPointNum() - adaptValue)) && this.getDestination() == this.roadOn.getStart()) {
                 this.speed = (int)(this.speed * speedValue);
             }
-            // System.out.println("my speed" + this.speed);
-
-
-            // when at city :
-
         }
+
 
 
 

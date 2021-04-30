@@ -15,23 +15,33 @@ public class JSONManager {
         try {
             FileWriter file = new FileWriter("./configurationFiles/"+fileName+".json");
             file.write("{");
+            // Stock cities in JSON file
+            file.write("\n\t\"isHippodamien\":"+configuration.isHippodamien+",");
             file.write("\n\t\"Cities\":{");
             for (int i=0 ; i<configuration.getCities().size(); i++) {
                 City city = configuration.getCities().get(i);
                 file.write("\n\t\t\""+city.getName()+"\":{");
                 file.write("\n\t\t\t\"Size\":"+city.getSize()+",");
-                file.write("\n\t\t\t\"X\":"+city.getPosition().getX()+",");
-                file.write("\n\t\t\t\"Y\":"+city.getPosition().getY()+"");
-                file.write("\n\t\t\t}");
+                file.write("\n\t\t\t\"Coords\":["+city.getPosition().getX()+","+city.getPosition().getY()+"],");
+                file.write("\n\t\t\t\"ConnectedCities\": [");
+                for (int j=0 ; j<city.getConnectedCities().size(); j++) {
+                    City cityB = city.getConnectedCities().get(j);
+                    file.write(cityB.getName());
+                    if (j!=city.getConnectedCities().size()-1) {
+                        file.write(",");
+                    }
+                }
+                file.write("]\n\t\t}");
                 if (i!=configuration.getCities().size()-1) {
                     file.write(",");
                 }
             }
             file.write("\n\t},");
+            // Stock roads in JSON file
             file.write("\n\t\"Roads\":{");
             for (int i=0 ; i<configuration.getRoads().size(); i++) {
                 Road road = configuration.getRoads().get(i);
-                file.write("\n\t\t\"Road"+(i+1)+"\":{");
+                file.write("\n\t\t\"Road"+i+"\":{");
                 file.write("\n\t\t\t\"Coords\": [");
                 for (int j=0 ; j<road.getCoordsList().size(); j++) {
                     Coordinate coordinate = road.getCoordsList().get(j);
@@ -40,9 +50,29 @@ public class JSONManager {
                         file.write(",");
                     }
                 }
-                file.write("],\n\t\t\t\"Width\":"+road.getRoadWidth());
-                file.write("\n\t\t\t}");
+                file.write("],\n\t\t\t\"Width\":"+road.getRoadWidth()+",");
+                if (road.getStart()==null) file.write("\n\t\t\t\"StartCity\":null,");
+                else file.write("\n\t\t\t\"StartCity\":"+road.getStart().getName()+",");
+                if (road.getEnd()==null) file.write("\n\t\t\t\"EndCity\":null");
+                else file.write("\n\t\t\t\"EndCity\":"+road.getEnd().getName());
+                file.write("\n\t\t}");
                 if (i!=configuration.getRoads().size()-1) {
+                    file.write(",");
+                }
+            }
+            file.write("\n\t},");
+            // Stock cars in JSON file
+            file.write("\n\t\"Cars\":{");
+            for (int i=0 ; i<configuration.getCars().size(); i++) {
+                Car car = configuration.getCars().get(i);
+                file.write("\n\t\t\"Car"+car.getId()+"\":{");
+                file.write("\n\t\t\t\"Coords\":["+car.getPosition().getX()+","+car.getPosition().getY()+"],");
+                file.write("\n\t\t\t\"Energy\":"+car.getEnergy()+",");
+                file.write("\n\t\t\t\"CityFrom\":"+car.getCityFrom().getName()+",");
+                file.write("\n\t\t\t\"Destination\":"+car.getDestination().getName()+",");
+                file.write("\n\t\t\t\"Speed\":"+car.getSpeed());
+                file.write("\n\t\t}");
+                if (i!=configuration.getCars().size()-1) {
                     file.write(",");
                 }
             }

@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class Car {
     private Coordinate position;
-    private int energy;
+    private float energy;
     private ViewGenerator viewGenerator;
     private Road roadOn;
     private City cityFrom;
@@ -18,7 +18,7 @@ public class Car {
     private int id;
 
 
-    public Car(Coordinate position, int energy, ViewGenerator viewGenerator, Road roadOn, City cityFrom, City destination, int id) {
+    public Car(Coordinate position, float energy, ViewGenerator viewGenerator, Road roadOn, City cityFrom, City destination, int id) {
         this.position = position;
         this.energy = energy;
         this.viewGenerator = viewGenerator;
@@ -52,9 +52,14 @@ public class Car {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/
-        this.position.removeCar(this);
-        this.position = position;
-        this.position.addCar(this);
+        // if there is enough energy, we move the car
+        if (this.energy >= 0 ) {
+            this.energy -= 0.01 * this.speed;
+            System.out.println(this.energy);
+            this.position.removeCar(this);
+            this.position = position;
+            this.position.addCar(this);
+        }
 
     }
 
@@ -66,7 +71,7 @@ public class Car {
         this.cityFrom = cityFrom;
     }
 
-    public int getEnegy() {
+    public float getEnegy() {
         return energy;
     }
 
@@ -92,7 +97,7 @@ public class Car {
 
     }
 
-    public int getEnergy() {
+    public float getEnergy() {
         return energy;
     }
 

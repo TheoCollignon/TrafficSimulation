@@ -8,10 +8,12 @@ import java.util.Random;
 public class MapLayout {
 
     List<List<Crossroad>> listCrossroads;
+    List<List<Road>> listPossiblePaths;
     Random random;
 
     public MapLayout(int mapSize){
         random = new Random();
+        listPossiblePaths = new ArrayList<>();
         listCrossroads = new ArrayList<>();
         for (int i = 0; i < mapSize; i++){
             List<Crossroad> tempList = new ArrayList<>();

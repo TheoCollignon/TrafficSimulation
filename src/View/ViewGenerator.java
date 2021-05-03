@@ -83,7 +83,7 @@ public class ViewGenerator extends Application {
         }
         // Draw cars comme le film
         for (Car cars : configuration.getCars()) {
-            Rectangle car = new Rectangle(cars.getPosition().getX(),cars.getPosition().getY(), 5,10);
+            Rectangle car = new Rectangle(cars.getPosition().getX(),cars.getPosition().getY(), 10,5);
             // Circle car = new Circle(cars.getPosition().getX(), cars.getPosition().getY(), 5);
             car.setId(String.valueOf(cars.getId()));
             car.setFill(Color.DARKRED);
@@ -150,18 +150,15 @@ public class ViewGenerator extends Application {
                 carView.setY(carPositionY);
 
                 // rotation of the car on the same angle of the road
-             /*   double rotateValue =  (car.getRoadOn().getEnd().getPosition().getY() * car.getRoadOn().getStart().getPosition().getY())
-                        + ( car.getRoadOn().getEnd().getPosition().getX() * car.getRoadOn().getStart().getPosition().getX());*/
-              /*  double rotateValue =  (car.getRoadOn().getEnd().getPosition().getY() - car.getRoadOn().getStart().getPosition().getY())
-                        / ( car.getRoadOn().getEnd().getPosition().getX() - car.getRoadOn().getStart().getPosition().getX()); */
-
-                double rotateValue =  Math.acos( (car.getRoadOn().getEnd().getPosition().getX() - car.getRoadOn().getStart().getPosition().getX())
-                        / (Math.sqrt(Math.pow(car.getRoadOn().getEnd().getPosition().getX() - car.getRoadOn().getStart().getPosition().getX(),2) +
-                        Math.pow(car.getRoadOn().getEnd().getPosition().getY() - car.getRoadOn().getStart().getPosition().getY(),2))) );
+                double distanceAB = Math.sqrt(Math.pow(car.getRoadOn().getEnd().getPosition().getX() - car.getRoadOn().getStart().getPosition().getX(),2) +
+                      Math.pow(car.getRoadOn().getEnd().getPosition().getY() - car.getRoadOn().getStart().getPosition().getY(),2));
+                double cos = (car.getRoadOn().getEnd().getPosition().getX() - car.getRoadOn().getStart().getPosition().getX() )/ distanceAB;
+                double arccos =  Math.acos( cos);
+                double rotateValue = arccos;
+                if ((car.getRoadOn().getEnd().getPosition().getY() - car.getRoadOn().getStart().getPosition().getY()) <= 0 ) rotateValue = -rotateValue;
+                // radiant to degres
                 rotateValue = rotateValue * 180 / Math.PI;
-                System.out.println("rotate degres : " + rotateValue);
-                carView.setRotate(rotateValue + 90 %360);
-
+                carView.setRotate(rotateValue);
 
                 // to be delete, but for the moment, it helps to know if the car's thread is alive
                 carView.setFill(Color.color(Math.random(), Math.random(), Math.random()));

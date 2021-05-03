@@ -1,9 +1,10 @@
 package Model;
 
 import View.ViewGenerator;
+
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Arrays;
+import java.util.Random;
 
 public class Configuration {
 
@@ -32,7 +33,7 @@ public class Configuration {
         //creating the map layout
         mapLayout = new MapLayout(nbCities);
         //creating cities
-        for (int i = 0; i < nbCities; i++) {
+         for (int i = 0; i < nbCities; i++) {
             int x = random.nextInt(500) + 50;
             int y = random.nextInt(500) + 50;
             int size = random.nextInt(20) + 10;
@@ -42,6 +43,7 @@ public class Configuration {
                 y = random.nextInt(500) + 50;
             }
         }
+
         //generating the hippodamian grid in case the configuration is hoppodamian
         if(isHippodamien){
 

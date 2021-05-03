@@ -1,10 +1,11 @@
 package Model;
 
 import View.ViewGenerator;
+import com.sun.scenario.effect.Crop;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
+import java.util.Arrays;
 
 public class Configuration {
 
@@ -25,7 +26,7 @@ public class Configuration {
         roads = new ArrayList<>();
         cars = new ArrayList<>();
         trafficLights = new ArrayList<>();
-        isHippodamien = false;
+        isHippodamien = true;
     }
 
     public void addRandomElements(int nbCities) {
@@ -33,7 +34,7 @@ public class Configuration {
         //creating the map layout
         mapLayout = new MapLayout(nbCities);
         //creating cities
-         for (int i = 0; i < nbCities; i++) {
+        for (int i = 0; i < nbCities; i++) {
             int x = random.nextInt(500) + 50;
             int y = random.nextInt(500) + 50;
             int size = random.nextInt(20) + 10;
@@ -43,7 +44,6 @@ public class Configuration {
                 y = random.nextInt(500) + 50;
             }
         }
-
         //generating the hippodamian grid in case the configuration is hoppodamian
         if(isHippodamien){
 
@@ -63,25 +63,31 @@ public class Configuration {
             for(int i = 0; i < nbCities; i++) {
                 for(int j = 0; j < nbCities; j++){
                     Coordinate newCoord = new Coordinate(listCityCoordsX[i], listCityCoordsY[j]);
+                    Crossroad newCross = new Crossroad(newCoord);
+                    for(City c : cities){
+                        if(c.getPosition().equals(newCoord)){
+                            c.setCrossRoad(newCross);
+                        }
+                    }
                     float[] coords = {newCoord.getX(), newCoord.getY()};
                     coordPlanHippodamien[i][j] = coords;
-                    mapLayout.setBranch(i, j, newCoord);
+                    mapLayout.setCrossroad(i, j, newCross);
                 }
             }
             //adding the roads
             for(int i = 0; i < nbCities ; i++) {
                 for (int j = 0; j < nbCities ; j++) {
-                    //getting the coords of the current point
-                    Coordinate startCoord = new Coordinate(coordPlanHippodamien[i][j][0],coordPlanHippodamien[i][j][1]);
                     //If we're at the last point, don't try to draw an additional horizontal road
                     if(i < nbCities - 1){
-                        Coordinate endCoordEast = new Coordinate(coordPlanHippodamien[i+1][j][0],coordPlanHippodamien[i+1][j][1]);
-                        addRoad(startCoord,endCoordEast);
+                        Road newRoad = addRoad(mapLayout.getListCrossroads().get(i).get(j),mapLayout.getListCrossroads().get(i+1).get(j));
+                        mapLayout.getListCrossroads().get(i).get(j).addJoinedRoad(newRoad);
+                        mapLayout.getListCrossroads().get(i+1).get(j).addJoinedRoad(newRoad);
                     }
                     //same as above for vertical roads
                     if(j < nbCities - 1){
-                        Coordinate endCoordSouth = new Coordinate(coordPlanHippodamien[i][j+1][0],coordPlanHippodamien[i][j+1][1]);
-                        addRoad(startCoord,endCoordSouth);
+                        Road newRoad = addRoad(mapLayout.getListCrossroads().get(i).get(j),mapLayout.getListCrossroads().get(i).get(j+1));
+                        mapLayout.getListCrossroads().get(i).get(j).addJoinedRoad(newRoad);
+                        mapLayout.getListCrossroads().get(i).get(j+1).addJoinedRoad(newRoad);
                     }
                 }
             }
@@ -126,25 +132,23 @@ public class Configuration {
     }
 
     //This method is meant to be used in the future instead of the top one
-    public void addRoad(Coordinate coordA, Coordinate coordB){
+    public Road addRoad(Crossroad crossA, Crossroad crossB){
         //creation of the road
-        Road newRoad = new Road(coordA,coordB);
+        Road newRoad = new Road(crossA,crossB);
+        newRoad.setCrossroadStart(crossA);
+        newRoad.setCrossroadEnd(crossB);
         //if the starting or ending point corresponds to a city, it is attributed to the road
         for(City city : cities){
-            if(city.getPosition().equals(coordA)){
+            if(city.getPosition().equals(crossA.getCoords())){
                 newRoad.setStart(city);
             }
-            if(city.getPosition().equals(coordB)){
+            if(city.getPosition().equals(crossB.getCoords())){
                 newRoad.setEnd(city);
             }
         }
-        if(isHippodamien){
-
-        }else{
-
-        }
         //adding the road to the road list
         roads.add(newRoad);
+        return newRoad;
     }
 
     public ArrayList<Car> setupCars(int numberCars) {

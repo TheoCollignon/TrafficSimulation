@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class City {
     private Coordinate position;
+    Crossroad crossRoad;
     private int size;
     private String name;
     private ArrayList<City> connectedCities;
@@ -64,5 +65,13 @@ public class City {
 
     public void setConnectedRoad(ArrayList<Road> connectedRoad) {
         this.connectedRoad = connectedRoad;
+    }
+
+    public Crossroad getCrossRoad() {
+        return crossRoad;
+    }
+
+    public void setCrossRoad(Crossroad crossRoad) {
+        this.crossRoad = crossRoad;
     }
 }

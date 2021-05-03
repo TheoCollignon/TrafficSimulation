@@ -6,6 +6,8 @@ public class Road {
     private ArrayList<Coordinate> coordsList = new ArrayList<>();
     private int roadWidth;
     private int pointNum;
+    Crossroad crossroadStart;
+    Crossroad crossroadEnd;
     private Coordinate coordStart;
     private Coordinate coordEnd;
     private City start;
@@ -23,12 +25,10 @@ public class Road {
     }
 
     // creating a road that doesn't necessarily join two cities (meant to replace the first constructor in the future)
-    public Road(Coordinate A, Coordinate B){
+    public Road(Crossroad A, Crossroad B){
         this.roadWidth = 15;
-        this.coordStart = A;
-        this.coordEnd = B;
-        coordsList.add(A);
-        coordsList.add(B);
+        coordsList.add(A.getCoords());
+        coordsList.add(B.getCoords());
     }
 
     public void calculateCoordinates(Coordinate pointA, Coordinate pointB) {
@@ -155,5 +155,21 @@ public class Road {
 
     public void setCoordEnd(Coordinate coordEnd) {
         this.coordEnd = coordEnd;
+    }
+
+    public Crossroad getCrossroadStart() {
+        return crossroadStart;
+    }
+
+    public void setCrossroadStart(Crossroad crossroadStart) {
+        this.crossroadStart = crossroadStart;
+    }
+
+    public Crossroad getCrossroadEnd() {
+        return crossroadEnd;
+    }
+
+    public void setCrossroadEnd(Crossroad crossroadEnd) {
+        this.crossroadEnd = crossroadEnd;
     }
 }

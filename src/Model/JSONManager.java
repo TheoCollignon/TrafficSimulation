@@ -1,12 +1,15 @@
 package Model;
 
+import View.ViewGenerator;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 public class JSONManager {
@@ -22,16 +25,8 @@ public class JSONManager {
                 City city = configuration.getCities().get(i);
                 file.write("\n\t\t\""+city.getName()+"\":{");
                 file.write("\n\t\t\t\"Size\":"+city.getSize()+",");
-                file.write("\n\t\t\t\"Coords\":["+city.getPosition().getX()+","+city.getPosition().getY()+"],");
-                file.write("\n\t\t\t\"ConnectedCities\": [");
-                for (int j=0 ; j<city.getConnectedCities().size(); j++) {
-                    City cityB = city.getConnectedCities().get(j);
-                    file.write(cityB.getName());
-                    if (j!=city.getConnectedCities().size()-1) {
-                        file.write(",");
-                    }
-                }
-                file.write("]\n\t\t}");
+                file.write("\n\t\t\t\"Coords\":["+city.getPosition().getX()+","+city.getPosition().getY()+"]");
+                file.write("\n\t\t}");
                 if (i!=configuration.getCities().size()-1) {
                     file.write(",");
                 }
@@ -84,19 +79,49 @@ public class JSONManager {
         }
     }
 
-    public void readJSONFile(String fileName) {
-        JSONParser jsonParser = new JSONParser();
+    public Configuration readJSONFile(ViewGenerator viewGenerator, String fileName) {
+        Configuration configuration = new Configuration(viewGenerator);
+        Object obj = null;
+        try {
+            obj = new JSONParser().parse(new FileReader("./configurationFiles/"+fileName+".json"));
+            JSONObject jo = (JSONObject) obj;
+            Map cities = (Map) jo.get("Cities");
+            Iterator<Map.Entry> itr1 = cities.entrySet().iterator();
+            while (itr1.hasNext()) {
+                Map.Entry pair = itr1.next();
+                String name = (String) pair.getKey();
+                Map city = (Map) cities.get(pair.getKey());
+                int size = Integer.parseInt(city.get("Size").toString());
+                String tempCoord = city.get("Coords").toString();
+                tempCoord = tempCoord.substring(1);
+                tempCoord = tempCoord.substring(0, tempCoord.length() - 1);
+                String[] coords = tempCoord.split(",");
+                Coordinate coordinate = new Coordinate(Float.parseFloat(coords[0]), Float.parseFloat(coords[1]));
+                configuration.addCity(coordinate, size, name);
+            }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
+        /*JSONParser jsonParser = new JSONParser();
         try (FileReader reader = new FileReader("./configurationFiles/"+fileName+".json"))
         {
             Object obj = jsonParser.parse(reader);
             JSONObject config = (JSONObject) obj;
             JSONObject cities = (JSONObject) config.get("Cities");
+            String test = cities.toJSONString();
+            System.out.println(test);
             Set keySetCities = cities.keySet();
-            //System.out.println(keySetCities.toString());
+
             Iterator itr = keySetCities.iterator();
             while (itr.hasNext()) {
                 String t = (String) itr.next();
-                System.out.println(cities.get(t));
+                //System.out.println(cities.get(t));
+
             }
             //System.out.println(cities.get(0));
             JSONObject roads = (JSONObject) config.get("Roads");
@@ -107,9 +132,9 @@ public class JSONManager {
                 String t = (String) itr.next();
                 //System.out.println(roads.get(t));
             }
-        } catch (IOException /*| ParseException*/ | org.json.simple.parser.ParseException e) {
+        } catch (IOException /*| ParseException | org.json.simple.parser.ParseException e) {
             e.printStackTrace();
-        }
+        }*/
+        return configuration;
     }
-
 }

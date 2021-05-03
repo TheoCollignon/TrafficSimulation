@@ -38,7 +38,7 @@ public class Controller {
         CarManager cm = new CarManager(cars);
         viewGenerator.updateView(cars);
         jsonManager.saveJSONFile(configuration, "test");
-        jsonManager.readJSONFile("test");
+        jsonManager.readJSONFile(viewGenerator,"test");
     }
 
     public void loadConfiguration(ViewGenerator viewGenerator) {

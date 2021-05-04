@@ -1,11 +1,10 @@
 package Model;
 
 import View.ViewGenerator;
-import com.sun.scenario.effect.Crop;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Arrays;
+import java.util.Random;
 
 public class Configuration {
 

@@ -62,7 +62,6 @@ public class JSONManager {
             for (int i=0 ; i<configuration.getCars().size(); i++) {
                 Car car = configuration.getCars().get(i);
                 file.write("\n\t\t\"Car"+car.getId()+"\":{");
-                file.write("\n\t\t\t\"Coords\":["+car.getPosition().getX()+","+car.getPosition().getY()+"],");
                 file.write("\n\t\t\t\"Energy\":"+car.getEnergy()+",");
                 file.write("\n\t\t\t\"CityFrom\":"+car.getCityFrom().getName()+",");
                 file.write("\n\t\t\t\"Destination\":"+car.getDestination().getName()+",");
@@ -135,7 +134,8 @@ public class JSONManager {
                     tempCoords = tempCoords.substring(0, tempCoords.length() - 1);
                     String[] coordsArray = tempCoords.split("/");
                     ArrayList<Coordinate> coordinatesList = new ArrayList<>();
-                    for (int i = 0; i < coordsArray.length; i++) {
+                    coordinatesList.add(start.getPosition());
+                    for (int i = 1; i < coordsArray.length-1; i++) {
                         String temp = coordsArray[i];
                         temp = temp.substring(1);
                         temp = temp.substring(0, temp.length() - 1);
@@ -143,8 +143,30 @@ public class JSONManager {
                         Coordinate coordinate = new Coordinate(Float.parseFloat(coordinateString[0]), Float.parseFloat(coordinateString[1]));
                         coordinatesList.add(coordinate);
                     }
+                    coordinatesList.add(end.getPosition());
                     createdRoad.setCoordsList(coordinatesList);
                     //configuration.addCity(coordinate, size);
+                }
+
+                Map cars = (Map) jo.get("Cars");
+                Iterator<Map.Entry> itr3 = cars.entrySet().iterator();
+                while (itr3.hasNext()) {
+                    Map.Entry pair = itr3.next();
+                    Map car = (Map) cars.get(pair.getKey());
+                    float energy = Float.parseFloat(car.get("Energy").toString());
+                    int speed = Integer.parseInt(car.get("Speed").toString());
+
+                    String startCity = car.get("CityFrom").toString();
+                    String endCity = car.get("Destination").toString();
+                    City cityFrom = null;
+                    City destination = null;
+                    for (City city : configuration.getCities()) {
+                        if (city.getName().equals(startCity)) cityFrom=city;
+                        if (city.getName().equals(endCity)) destination=city;
+                    }
+
+                    int id = Integer.parseInt(((String)pair.getKey()).substring(3));
+                    configuration.addCar(cityFrom.getPosition(), energy, cityFrom, destination, id, speed);
                 }
             }
         } catch (IOException | ParseException e) {

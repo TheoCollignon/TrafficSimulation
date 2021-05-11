@@ -31,21 +31,26 @@ public class Controller {
         configuration.addRoad(A,B);
         configuration.addRoad(B,C);
         configuration.addTrafficLight();*/
-        configuration = new Configuration(viewGenerator);
         jsonManager = new JSONManager();
+        configuration = new Configuration(viewGenerator);
         configuration.addRandomElements(5);
         ArrayList<Car> cars = configuration.setupCars(5);
+        jsonManager.saveJSONFile(configuration, "test");
         CarManager cm = new CarManager(cars);
         viewGenerator.updateView(cars);
-        jsonManager.saveJSONFile(configuration, "test");
-        jsonManager.readJSONFile(viewGenerator,"test");
+    }
+
+    public void loadJSONConfiguration(String fileName) {
+        jsonManager = new JSONManager();
+        configuration = jsonManager.readJSONFile(viewGenerator,fileName);
+        CarManager cm = new CarManager(configuration.getCars());
+        viewGenerator.updateView(configuration.getCars());
     }
 
     public void loadConfiguration(ViewGenerator viewGenerator) {
         this.viewGenerator = viewGenerator;
         createConfiguration();
+        //loadJSONConfiguration("test");
         viewGenerator.drawConfiguration(configuration);
-
-
     }
 }

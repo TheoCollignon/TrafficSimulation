@@ -8,6 +8,7 @@ import org.json.simple.parser.ParseException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -99,42 +100,56 @@ public class JSONManager {
                 Coordinate coordinate = new Coordinate(Float.parseFloat(coords[0]), Float.parseFloat(coords[1]));
                 configuration.addCity(coordinate, size, name);
             }
+            if(!(boolean) jo.get("isHippodamien")) {
+                Map roads = (Map) jo.get("Roads");
+                Iterator<Map.Entry> itr2 = roads.entrySet().iterator();
+                while (itr2.hasNext()) {
+                    Map.Entry pair = itr2.next();
+                    Map road = (Map) roads.get(pair.getKey());
+                    String startCity = road.get("StartCity").toString();
+                    String endCity = road.get("EndCity").toString();
+                    City start = null;
+                    City end = null;
+                    for (City city : configuration.getCities()) {
+                        if (city.getName().equals(startCity)) start=city;
+                        if (city.getName().equals(endCity)) end=city;
+                    }
+                    Road createdRoad = configuration.addRoad(start,end);
+
+                    int width = Integer.parseInt(road.get("Width").toString());
+                    createdRoad.setRoadWidth(width);
+                    StringBuilder coords = new StringBuilder(road.get("Coords").toString());
+                    boolean needChanges = false;
+                    for (int i = 0; i < coords.length(); i++) {
+                        if (coords.charAt(i) == ',') {
+                            if (needChanges) {
+                                coords.setCharAt(i, '/');
+                                needChanges = false;
+                            } else {
+                                needChanges = true;
+                            }
+                        }
+                    }
+                    String tempCoords = coords.toString();
+                    tempCoords = tempCoords.substring(1);
+                    tempCoords = tempCoords.substring(0, tempCoords.length() - 1);
+                    String[] coordsArray = tempCoords.split("/");
+                    ArrayList<Coordinate> coordinatesList = new ArrayList<>();
+                    for (int i = 0; i < coordsArray.length; i++) {
+                        String temp = coordsArray[i];
+                        temp = temp.substring(1);
+                        temp = temp.substring(0, temp.length() - 1);
+                        String[] coordinateString = temp.split(",");
+                        Coordinate coordinate = new Coordinate(Float.parseFloat(coordinateString[0]), Float.parseFloat(coordinateString[1]));
+                        coordinatesList.add(coordinate);
+                    }
+                    createdRoad.setCoordsList(coordinatesList);
+                    //configuration.addCity(coordinate, size);
+                }
+            }
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
-
-
-
-
-
-        /*JSONParser jsonParser = new JSONParser();
-        try (FileReader reader = new FileReader("./configurationFiles/"+fileName+".json"))
-        {
-            Object obj = jsonParser.parse(reader);
-            JSONObject config = (JSONObject) obj;
-            JSONObject cities = (JSONObject) config.get("Cities");
-            String test = cities.toJSONString();
-            System.out.println(test);
-            Set keySetCities = cities.keySet();
-
-            Iterator itr = keySetCities.iterator();
-            while (itr.hasNext()) {
-                String t = (String) itr.next();
-                //System.out.println(cities.get(t));
-
-            }
-            //System.out.println(cities.get(0));
-            JSONObject roads = (JSONObject) config.get("Roads");
-            Set keySetRoads = roads.keySet();
-            //System.out.println(keySetRoads.toString());
-            itr = keySetRoads.iterator();
-            while (itr.hasNext()) {
-                String t = (String) itr.next();
-                //System.out.println(roads.get(t));
-            }
-        } catch (IOException /*| ParseException | org.json.simple.parser.ParseException e) {
-            e.printStackTrace();
-        }*/
         return configuration;
     }
 }

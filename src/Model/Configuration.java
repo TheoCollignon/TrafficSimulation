@@ -120,7 +120,7 @@ public class Configuration {
         return true;
     }
 
-    public void addRoad(City A, City B) {
+    public Road addRoad(City A, City B) {
         Road road = new Road(A,B);
         A.addConnectedCity(B);
         A.addConnectedRoad(road);
@@ -128,6 +128,7 @@ public class Configuration {
         B.addConnectedRoad(road);
 
         roads.add(road);
+        return road;
     }
 
     //This method is meant to be used in the future instead of the top one

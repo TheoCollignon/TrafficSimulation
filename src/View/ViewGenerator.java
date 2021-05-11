@@ -152,9 +152,28 @@ public class ViewGenerator extends Application {
                 carView.setY(carPositionY);
 
                 // rotation of the car on the same angle of the road
-                double distanceAB = Math.sqrt(Math.pow(car.getRoadOn().getEnd().getPosition().getX() - car.getRoadOn().getStart().getPosition().getX(),2) +
-                      Math.pow(car.getRoadOn().getEnd().getPosition().getY() - car.getRoadOn().getStart().getPosition().getY(),2));
-                double cos = (car.getRoadOn().getEnd().getPosition().getX() - car.getRoadOn().getStart().getPosition().getX() )/ distanceAB;
+                // default value :
+                float xA = car.getRoadOn().getStart().getPosition().getX();
+                float xB = car.getRoadOn().getEnd().getPosition().getX();
+                float yA = car.getRoadOn().getStart().getPosition().getY();
+                float yB = car.getRoadOn().getEnd().getPosition().getY();
+
+                for (int i=0; i< car.getRoadOn().getCoordsList().size(); i++) {
+                    if (car.getRoadOn().getCoordsList().get(i).getCar().size() > 0){
+                        if (car.getRoadOn().getCoordsList().get(i).getCar().get(0).equals(car)){
+                            if (car.getRoadOn().getCoordsList().size()  > i + 1) {
+                                xA = car.getRoadOn().getCoordsList().get(i).getX();
+                                xB = car.getRoadOn().getCoordsList().get(i+1).getX();
+                                yA = car.getRoadOn().getCoordsList().get(i).getY();
+                                yB = car.getRoadOn().getCoordsList().get(i+1).getY();
+                            }
+                        }
+                    }
+                }
+
+                double distanceAB = Math.sqrt(Math.pow(xB - xA,2) +
+                      Math.pow( yB- yA,2));
+                double cos = (xB- xA )/ distanceAB;
                 double arccos =  Math.acos( cos);
                 double rotateValue = arccos;
                 if ((car.getRoadOn().getEnd().getPosition().getY() - car.getRoadOn().getStart().getPosition().getY()) <= 0 ) rotateValue = -rotateValue;

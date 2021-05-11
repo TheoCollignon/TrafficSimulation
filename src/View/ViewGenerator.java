@@ -181,10 +181,12 @@ public class ViewGenerator extends Application {
                       Math.pow( yB- yA,2));
                 double cos = (xB- xA )/ distanceAB;
                 double arccos =  Math.acos( cos);
+                double sin = (yB- yA )/ distanceAB;
                 double rotateValue = arccos;
-                if ((car.getRoadOn().getEnd().getPosition().getY() - car.getRoadOn().getStart().getPosition().getY()) <= 0 ) rotateValue = -rotateValue;
+                // if ((car.getRoadOn().getEnd().getPosition().getY() - car.getRoadOn().getStart().getPosition().getY()) <= 0 ) rotateValue = -rotateValue;
+                if (sin <= 0 ) rotateValue = -rotateValue;
                 // radiant to degres
-                rotateValue = rotateValue * 180 / Math.PI;
+                rotateValue = (rotateValue * 180 / Math.PI)%360;
                 carView.setRotate(rotateValue);
 
                 // to be delete, but for the moment, it helps to know if the car's thread is alive

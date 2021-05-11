@@ -43,17 +43,19 @@ public class ViewGenerator extends Application {
         // Draw Roads
         for (Road road : configuration.getRoads()) {
             ArrayList<Coordinate> roadCoords = road.getCoordsList();
-            for (int i = 0; i < 2; i++) {
-                Line line = new Line(roadCoords.get(i).getX(), roadCoords.get(i).getY(), roadCoords.get(roadCoords.size() -1 ).getX(), roadCoords.get(roadCoords.size() -1 ).getY());
-                line.setStrokeWidth(road.getWidth());
-                mainPane.getChildren().add(line);
+            for (int i = 0; i <  roadCoords.size() - 1; i++) {
+                if (i + 1 < (roadCoords.size() - 1) ) {
+                    Line line = new Line(roadCoords.get(i).getX(), roadCoords.get(i).getY(), roadCoords.get(i + 1).getX(), roadCoords.get(i + 1).getY());
+                    line.setStrokeWidth(road.getWidth());
+                    mainPane.getChildren().add(line);
+                }
             }
             for (int i = 0; i < roadCoords.size() - 1; i++) {
                 if (i + 1 < (roadCoords.size() - 1) ) {
                     if (i%2 != 1) {
                         Line line = new Line(roadCoords.get(i).getX(), roadCoords.get(i).getY(), roadCoords.get(i + 1).getX(), roadCoords.get(i + 1).getY());
                         line.setStrokeWidth(road.getWidth() - 13); // markings
-                        line.setStroke(Color.WHITE);
+                        line.setStroke(Color.RED);
                         mainPane.getChildren().add(line);
                     }
                 }

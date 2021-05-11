@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Road {
     private ArrayList<Coordinate> coordsList = new ArrayList<>();
@@ -35,21 +36,32 @@ public class Road {
 
         // We need to know how many point there is between two city, the longer the road is -> more point
         double distance = Math.sqrt(Math.pow(pointB.getX() - pointA.getX(),2) + Math.pow(pointB.getY() - pointA.getY(),2));
-        this.pointNum = (int)(distance/10);
-
+        this.pointNum = (int)(distance / 10);
+        // we clear once
         coordsList.clear();
+        // we had the first city
         coordsList.add(pointA);
+        Random random = new Random();
+
+
         float diff_X = pointB.getX() - pointA.getX();
         float diff_Y = pointB.getY() - pointA.getY();
 
         float interval_X = diff_X / (this.pointNum + 1);
         float interval_Y = diff_Y / (this.pointNum + 1);
 
+        float randomValue = (float)random.nextInt(5);
+        int isUpDown = random.nextInt(2);
+        if (isUpDown == 1) randomValue = -randomValue;
         for (int i = 1; i <= this.pointNum; i++)
         {
-            float[] newPoint = {pointA.getX() + interval_X * i, pointA.getY() + interval_Y*i};
+            int angle = i;
+            if (i > (this.pointNum /2)) angle = (this.pointNum - i);
+            float[] newPoint = {pointA.getX() + interval_X * i +   randomValue * (angle-1)  , pointA.getY() + interval_Y*i + randomValue * (angle-1)};
             coordsList.add(new Coordinate(newPoint[0], newPoint[1]));
         }
+
+        // add back the second town
         coordsList.add(pointB);
 
     }

@@ -50,20 +50,46 @@ public class Road {
         float interval_X = diff_X / (this.pointNum + 1);
         float interval_Y = diff_Y / (this.pointNum + 1);
 
-        float randomValue = (float)random.nextInt(5);
+        float randomValue = (float)random.nextInt(2);
+
+        // to know if we want the arc to go up or down
         int isUpDown = random.nextInt(2);
         if (isUpDown == 1) randomValue = -randomValue;
+
+
+        Coordinate pointC = new Coordinate((pointA.getX() + pointB.getX())/2, (pointA.getY() + pointB.getY())/2 + randomValue );
+
+
         for (int i = 1; i <= this.pointNum; i++)
         {
-            int angle = i;
-            if (i > (this.pointNum /2)) angle = (this.pointNum - i);
-            float[] newPoint = {pointA.getX() + interval_X * i +   randomValue * (angle-1)  , pointA.getY() + interval_Y*i + randomValue * (angle-1)};
+            // float[] newPoint = {pointA.getX() + interval_X * i   , pointA.getY() + interval_Y*i };
+            float x = pointA.getX() + interval_X * i;
+            // float y =  pointA.getY() + interval_Y*i;
+            float y = calculateNewton(pointA, pointB, pointC, x);
+
+            float[] newPoint = { x  , y };
             coordsList.add(new Coordinate(newPoint[0], newPoint[1]));
         }
+
 
         // add back the second town
         coordsList.add(pointB);
 
+    }
+
+    public float calculateNewton(Coordinate a, Coordinate b, Coordinate c, float X) {
+        float xA = a.getX();
+        float xB = b.getX();
+        float xC = c.getX();
+        float yA = a.getY();
+        float yB = b.getY();
+        float yC = c.getY();
+        float a0 = yA;
+        float a1 = (yB - yA) / (xB - xA);
+        float subA1 = (yC - yB) / (xC - xB);
+        float a2 = a1 - subA1;
+        // p(x) = a0 + a1 * (X - xA) + a2(X - xB)
+        return a0*1 + a1 * (X - xA) + a2*(X-xA) * (X - xB);
     }
 
     // fromcity is the city where the car come from, not the destination

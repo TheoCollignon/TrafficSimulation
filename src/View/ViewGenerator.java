@@ -59,6 +59,12 @@ public class ViewGenerator extends Application {
                         mainPane.getChildren().add(line);
                     }
                 }
+                // TOBEDELETE
+//                Circle c1 = new Circle(  ((road.getStart().getPosition().getX() + road.getEnd().getPosition().getX())/2) ,
+//                        ((road.getStart().getPosition().getY() + road.getEnd().getPosition().getY())/2)+1,10);
+//                c1.setFill((Color.color(Math.random(), Math.random(), Math.random())));
+//                mainPane.getChildren().add(c1);
+                // END TO BE DELETE
                 // circle of the position of the car, actually not usefull, but can be use for debugging
 //                Circle circle = new Circle(roadCoords.get(i).getX(), roadCoords.get(i).getY(), 2);
 //                circle.setFill(Color.WHITE);

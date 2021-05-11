@@ -176,6 +176,18 @@ public class Configuration {
         return cars;
     }
 
+    public void addCar(Coordinate position, float energy, City cityFrom, City destination, int id, int speed) {
+        Road road = findRoad(cityFrom,destination);
+        Car car = new Car(position, energy, viewGenerator, road, cityFrom, destination, id);
+        car.setSpeed(speed);
+        for (Coordinate coord: road.getCoordsList()) {
+            if (coord.getX()==position.getX() && coord.getY()==position.getY()) {
+                coord.addCar(car);
+            }
+        }
+        cars.add(car);
+    }
+
     public Road findRoad(City A, City B) {
         for (Road road : roads){
             if ((road.getStart() == A && road.getEnd() == B) ||(road.getStart() == B && road.getEnd() == A) ) {

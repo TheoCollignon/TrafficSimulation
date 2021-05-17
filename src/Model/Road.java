@@ -71,7 +71,13 @@ public class Road {
             // float[] newPoint = {pointA.getX() + interval_X * i   , pointA.getY() + interval_Y*i };
             float x = pointA.getX() + interval_X * i;
             // float y =  pointA.getY() + interval_Y*i;
-            float y = calculateNewton(pointA, pointB, pointC, x);
+            float y;
+            if(isHippodamian){
+                y = pointA.getY() + interval_Y * i;
+            } else{
+                y = calculateNewton(pointA, pointB, pointC, x);
+            }
+
 
             float[] newPoint = { x  , y };
             coordsList.add(new Coordinate(newPoint[0], newPoint[1]));

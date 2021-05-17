@@ -4,6 +4,7 @@ import View.ViewGenerator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Configuration {
@@ -25,7 +26,7 @@ public class Configuration {
         roads = new ArrayList<>();
         cars = new ArrayList<>();
         trafficLights = new ArrayList<>();
-        isHippodamien = false;
+        isHippodamien = true;
     }
 
     public void addRandomElements(int nbCities) {
@@ -65,7 +66,7 @@ public class Configuration {
                     Crossroad newCross = new Crossroad(newCoord);
                     for(City c : cities){
                         if(c.getPosition().equals(newCoord)){
-                            c.setCrossRoad(newCross);
+                            newCross = c.getCrossRoad();
                         }
                     }
                     float[] coords = {newCoord.getX(), newCoord.getY()};
@@ -90,6 +91,9 @@ public class Configuration {
                     }
                 }
             }
+            for (int i = 0; i < roads.size(); i++) {
+                roads.get(i).calculateCoordinates(roads.get(i).getCoordsList().get(0), roads.get(i).getCoordsList().get(roads.get(i).getCoordsList().size() - 1),isHippodamien);
+            }
         }
         //creating roads
         for (int i = 0; i < nbCities; i++) {
@@ -106,8 +110,12 @@ public class Configuration {
         }
         // when the cities are linked, we setup all the point between the road
         for (int i = 0; i < roads.size(); i++) {
-            roads.get(i).calculateCoordinates(roads.get(i).getCoordsList().get(0), roads.get(i).getCoordsList().get(roads.get(i).getCoordsList().size() - 1));
+            roads.get(i).calculateCoordinates(roads.get(i).getCoordsList().get(0), roads.get(i).getCoordsList().get(roads.get(i).getCoordsList().size() - 1), isHippodamien);
         }
+
+        //TESTING AREA
+        List<Road> path = mapLayout.getPathBetweenTwoCities(cities.get(0),cities.get(1));
+        //TESTING AREA
     }
 
     public boolean addCity(Coordinate position, int size, String name) {

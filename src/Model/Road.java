@@ -150,12 +150,16 @@ public class Road {
                     }else if( car.getPosition() == this.crossroadStart.getCoords()) {
                         currentCrossroad = this.crossroadStart;
                     }
+                    System.out.println(currentCrossroad.getCity());
+                    System.out.println(car.getDestination());
                     if(currentCrossroad.isCity && currentCrossroad.getCity().equals(car.getDestination())){
                         //generating a new road plan according to a random destination
+                        System.out.println("arrived");
                         car.getNewRoadPlan(currentCrossroad.getCity());
                         Road firstRoad = car.getRoadPlan().get(0);
                         car.changeRoad(firstRoad, currentCrossroad, true);
                     }else{
+                        System.out.println("changing direction");
                         Road nextRoad = car.getNextRoad(this);
                         car.changeRoad(nextRoad, currentCrossroad,false);
                     }

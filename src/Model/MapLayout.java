@@ -50,8 +50,8 @@ public class MapLayout {
 
     //djikstra initialization
     public List<Road> getPathBetweenTwoCities(City A, City B){
-        minimalWeight = 1000000;
-        bestPath = new ArrayList<>();
+        this.minimalWeight = 1000000;
+        this.bestPath = new ArrayList<>();
         Crossroad crossStart = A.getCrossRoad();
         Crossroad crossEnd = B.getCrossRoad();
         List<Road> path = new ArrayList<>();
@@ -72,20 +72,19 @@ public class MapLayout {
             return;
         }
         List<Road> possibleRoads = cross.getJoinedRoads();
-        for (Road r : possibleRoads){
-            if(!pathUntilNow.contains(r)){
-                pathUntilNow.add(r);
+        for (Road road : possibleRoads){
+            if(!pathUntilNow.contains(road)){
+                pathUntilNow.add(road);
                 Crossroad next;
-                if(r.getCrossroadStart().equals(cross)){
-                    next = r.getCrossroadEnd();
+                if(road.getCrossroadStart().equals(cross)){
+                    next = road.getCrossroadEnd();
                 } else {
-                    next = r.getCrossroadStart();
+                    next = road.getCrossroadStart();
                 }
                 nextCrossroad(next,goal,pathUntilNow);
-                pathUntilNow.remove(r);
+                pathUntilNow.remove(road);
             }
         }
-        return;
     }
 
     double getPathWeight(List<Road> path){

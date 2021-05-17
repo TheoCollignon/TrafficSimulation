@@ -36,14 +36,8 @@ public class Car {
         getNewRoadPlan(cityFrom);
         Road firstRoad = roadPlan.get(0);
         this.roadOn = firstRoad;
-        //putting the car on its first coordinate
-        if(firstRoad.getCoordsList().get(0).getCar() != null){
-            firstRoad.getCoordsList().get(firstRoad.getCoordsList().size()-1).addCar(this);
-            this.direction = -1;
-        }else{
-            firstRoad.getCoordsList().get(0).addCar(this);
-            this.direction = 1;
-        }
+        firstRoad.getCoordsList().get(0).addCar(this);
+        this.direction = 1;
     }
     //    public void run() {
 //        while (true) {
@@ -150,13 +144,14 @@ public class Car {
 
     //choses randomly a city and calls the maplayout to know what path to follow
     public void getNewRoadPlan(City cityStart){
-        this.roadPlan.clear();
         City chosenCity = cityStart;
         this.cityFrom = cityStart;
-        while(roadPlan.size() == 0){
+        this.roadPlan.clear();
+        while(this.roadPlan.size() == 0){
             while(chosenCity.equals(cityStart)){
                 chosenCity = config.getCities().get(random.nextInt(config.getCities().size()));
             }
+            this.roadPlan.clear();
             this.roadPlan.addAll(config.mapLayout.getPathBetweenTwoCities(cityStart, chosenCity));
         }
         this.destination = chosenCity;
@@ -170,8 +165,6 @@ public class Car {
                 return roadPlan.get(i+1);
             }
         }
-        System.out.println(roadPlan);
-        System.out.println("oh noooo");
         //road somehow non-existent
         return null;
     }

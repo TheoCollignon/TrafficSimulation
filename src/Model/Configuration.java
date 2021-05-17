@@ -158,8 +158,7 @@ public class Configuration {
         // init the cars
         for (int j = 0; j < numberCars; j++ ) {
             // find a random connected city
-            int randomCity = random.nextInt(cities.size());
-            City randomStartCity = cities.get(randomCity);
+            City randomStartCity = cities.get(j);
             // create the car
             id++;
             Car car = new Car(this, randomStartCity.getPosition(),100, viewGenerator,randomStartCity,id);

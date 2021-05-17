@@ -7,6 +7,7 @@ public class Road {
     private ArrayList<Coordinate> coordsList = new ArrayList<>();
     private int roadWidth;
     private int pointNum;
+    private int roadLength;
     Crossroad crossroadStart;
     Crossroad crossroadEnd;
     private Coordinate coordStart;
@@ -15,6 +16,7 @@ public class Road {
     private City end;
 
     public Road(City A, City B) {
+        this.roadLength = 0;
         this.start = A;
         this.end = B;
         this.roadWidth = 15;
@@ -32,17 +34,17 @@ public class Road {
         coordsList.add(B.getCoords());
     }
 
-    public void calculateCoordinates(Coordinate pointA, Coordinate pointB) {
+    public void calculateCoordinates(Coordinate pointA, Coordinate pointB, boolean isHippodamian) {
 
         // We need to know how many point there is between two city, the longer the road is -> more point
         double distance = Math.sqrt(Math.pow(pointB.getX() - pointA.getX(),2) + Math.pow(pointB.getY() - pointA.getY(),2));
+        this.roadLength += distance;
         this.pointNum = (int)(distance / 10);
         // we clear once
         coordsList.clear();
         // we had the first city
         coordsList.add(pointA);
         Random random = new Random();
-
 
         float diff_X = pointB.getX() - pointA.getX();
         float diff_Y = pointB.getY() - pointA.getY();
@@ -51,6 +53,10 @@ public class Road {
         float interval_Y = diff_Y / (this.pointNum + 1);
 
         float randomValue = (float)random.nextInt(2);
+
+        if(isHippodamian){
+            randomValue = 0;
+        }
 
         // to know if we want the arc to go up or down
         int isUpDown = random.nextInt(2);
@@ -70,7 +76,6 @@ public class Road {
             float[] newPoint = { x  , y };
             coordsList.add(new Coordinate(newPoint[0], newPoint[1]));
         }
-
 
         // add back the second town
         coordsList.add(pointB);
@@ -209,5 +214,13 @@ public class Road {
 
     public void setCrossroadEnd(Crossroad crossroadEnd) {
         this.crossroadEnd = crossroadEnd;
+    }
+
+    public int getRoadLength() {
+        return roadLength;
+    }
+
+    public void setRoadLength(int roadLength) {
+        this.roadLength = roadLength;
     }
 }

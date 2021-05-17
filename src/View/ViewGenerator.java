@@ -43,6 +43,7 @@ public class ViewGenerator extends Application {
         // Draw Roads
         for (Road road : configuration.getRoads()) {
             ArrayList<Coordinate> roadCoords = road.getCoordsList();
+
             for (int i = 0; i <  roadCoords.size() - 1; i++) {
                 if (i + 1 < (roadCoords.size() - 1) ) {
                     Line line = new Line(roadCoords.get(i).getX(), roadCoords.get(i).getY(), roadCoords.get(i + 1).getX(), roadCoords.get(i + 1).getY());

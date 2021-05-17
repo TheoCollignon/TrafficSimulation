@@ -2,6 +2,7 @@ package Model;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -10,6 +11,8 @@ public class MapLayout {
     List<List<Crossroad>> listCrossroads;
     List<List<Road>> listPossiblePaths;
     Random random;
+    double minimalWeight;
+    List<Road> bestPath;
 
     public MapLayout(int mapSize){
         random = new Random();
@@ -43,6 +46,53 @@ public class MapLayout {
             }
         }
         return null;
+    }
+
+    //djikstra initialization
+    public List<Road> getPathBetweenTwoCities(City A, City B){
+        minimalWeight = 1000000;
+        bestPath = new ArrayList<>();
+        Crossroad crossStart = A.getCrossRoad();
+        Crossroad crossEnd = B.getCrossRoad();
+        List<Road> path = new ArrayList<>();
+
+        nextCrossroad(crossStart, crossEnd, path);
+        return bestPath;
+    }
+
+    //recurrent function
+    void nextCrossroad(Crossroad cross, Crossroad goal, List<Road> pathUntilNow){
+
+        if(cross.equals(goal)){
+            if(getPathWeight(pathUntilNow) < minimalWeight){
+                minimalWeight = getPathWeight(pathUntilNow);
+                this.bestPath.addAll(pathUntilNow);
+            }
+            return;
+        }
+        List<Road> possibleRoads = cross.getJoinedRoads();
+        for (Road r : possibleRoads){
+            if(!pathUntilNow.contains(r)){
+                pathUntilNow.add(r);
+                Crossroad next;
+                if(r.getCrossroadStart().equals(cross)){
+                    next = r.getCrossroadEnd();
+                } else {
+                    next = r.getCrossroadStart();
+                }
+                nextCrossroad(next,goal,pathUntilNow);
+                pathUntilNow.remove(r);
+            }
+        }
+        return;
+    }
+
+    double getPathWeight(List<Road> path){
+        double weight = 0;
+        for(Road r : path){
+            weight += r.getRoadLength();
+        }
+        return weight;
     }
 
     public List<List<Crossroad>> getListCrossroads() {

@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Road {
@@ -29,7 +30,32 @@ public class Road {
 
     // creating a road that doesn't necessarily join two cities (meant to replace the first constructor in the future)
     public Road(Crossroad A, Crossroad B){
+        boolean isStartACity = false;
+        boolean isEndACity = false;
+        crossroadStart = A;
+        crossroadEnd = B;
+        //if the starting or ending crossroad is a city, we keep track of that
+        if(A.isCity){
+            this.start = A.getCity();
+            isStartACity = true;
+        }
+        if(B.isCity){
+            this.end = B.getCity();
+            isEndACity = true;
+        }
+        //adding the connection between cities
+        //adding the connected road only there because of current car behavior
+        if(isStartACity && isEndACity){
+            this.start.addConnectedCity(this.end);
+            this.end.addConnectedCity(this.start);
+            this.start.addConnectedRoad(this);
+            this.end.addConnectedRoad(this);
+        }
+        this.roadLength = 0;
         this.roadWidth = 15;
+        this.pointNum = -1;
+        coordStart = A.getCoords();
+        coordEnd = B.getCoords();
         coordsList.add(A.getCoords());
         coordsList.add(B.getCoords());
     }
@@ -62,9 +88,7 @@ public class Road {
         int isUpDown = random.nextInt(2);
         if (isUpDown == 1) randomValue = -randomValue;
 
-
         Coordinate pointC = new Coordinate((pointA.getX() + pointB.getX())/2, (pointA.getY() + pointB.getY())/2 + randomValue );
-
 
         for (int i = 1; i <= this.pointNum; i++)
         {
@@ -77,7 +101,6 @@ public class Road {
             } else{
                 y = calculateNewton(pointA, pointB, pointC, x);
             }
-
 
             float[] newPoint = { x  , y };
             coordsList.add(new Coordinate(newPoint[0], newPoint[1]));
@@ -180,14 +203,6 @@ public class Road {
 
     public void setEnd(City end) {
         this.end = end;
-    }
-
-    public Coordinate getCoordStart() {
-        return coordStart;
-    }
-
-    public Coordinate getCoordEnd() {
-        return coordEnd;
     }
 
     public int getPointNum() {

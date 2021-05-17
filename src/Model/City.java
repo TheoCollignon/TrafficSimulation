@@ -12,6 +12,8 @@ public class City {
 
     public City(Coordinate position, int size, String name) {
         crossRoad = new Crossroad(position);
+        crossRoad.isCity = true;
+        crossRoad.setCity(this);
         this.position = position;
         this.size = size;
         this.name = name;

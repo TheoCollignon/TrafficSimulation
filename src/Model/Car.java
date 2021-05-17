@@ -56,7 +56,6 @@ public class Car {
                 changeCoordinate(position);
             }
         }
-
     }
 
     public void changeCoordinate(Coordinate position) {

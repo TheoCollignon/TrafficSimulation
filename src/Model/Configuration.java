@@ -26,7 +26,7 @@ public class Configuration {
         roads = new ArrayList<>();
         cars = new ArrayList<>();
         trafficLights = new ArrayList<>();
-        isHippodamien = true;
+        isHippodamien = false;
     }
 
     public void addRandomElements(int nbCities) {
@@ -99,13 +99,21 @@ public class Configuration {
         for (int i = 0; i < nbCities; i++) {
             for (int j = i + 1; j < nbCities; j++) {
                 boolean isRoad = random.nextBoolean();
-                if (isRoad) addRoad(cities.get(i), cities.get(j));
+                if (isRoad){
+                    //creating a road and joining it to its crossroad extremities
+                    //breaks djikstra for now
+                    Road newRoad = addRoad(cities.get(i).getCrossRoad(), cities.get(j).getCrossRoad());
+                    cities.get(i).getCrossRoad().addJoinedRoad(newRoad);
+                    cities.get(j).getCrossRoad().addJoinedRoad(newRoad);
+                }
             }
             int nbConnectedCities = cities.get(i).getConnectedCities().size();
             if (nbConnectedCities == 0) {
                 int connectedCity = i;
                 while (connectedCity == i) connectedCity = random.nextInt(cities.size());
-                addRoad(cities.get(i), cities.get(connectedCity));
+                Road newRoad = addRoad(cities.get(i).getCrossRoad(), cities.get(connectedCity).getCrossRoad());
+                cities.get(i).getCrossRoad().addJoinedRoad(newRoad);
+                cities.get(connectedCity).getCrossRoad().addJoinedRoad(newRoad);
             }
         }
         // when the cities are linked, we setup all the point between the road
@@ -113,8 +121,11 @@ public class Configuration {
             roads.get(i).calculateCoordinates(roads.get(i).getCoordsList().get(0), roads.get(i).getCoordsList().get(roads.get(i).getCoordsList().size() - 1), isHippodamien);
         }
 
+
+
         //TESTING AREA
         List<Road> path = mapLayout.getPathBetweenTwoCities(cities.get(0),cities.get(1));
+        System.out.println(path.size());
         //TESTING AREA
     }
 
@@ -128,6 +139,7 @@ public class Configuration {
         return true;
     }
 
+    //used only in JSONManager /!\ to change
     public Road addRoad(City A, City B) {
         Road road = new Road(A,B);
         A.addConnectedCity(B);
@@ -141,19 +153,7 @@ public class Configuration {
 
     //This method is meant to be used in the future instead of the top one
     public Road addRoad(Crossroad crossA, Crossroad crossB){
-        //creation of the road
         Road newRoad = new Road(crossA,crossB);
-        newRoad.setCrossroadStart(crossA);
-        newRoad.setCrossroadEnd(crossB);
-        //if the starting or ending point corresponds to a city, it is attributed to the road
-        for(City city : cities){
-            if(city.getPosition().equals(crossA.getCoords())){
-                newRoad.setStart(city);
-            }
-            if(city.getPosition().equals(crossB.getCoords())){
-                newRoad.setEnd(city);
-            }
-        }
         //adding the road to the road list
         roads.add(newRoad);
         return newRoad;
@@ -205,8 +205,6 @@ public class Configuration {
         return null;
     }
 
-
-
     public void addTrafficLight() {
         trafficLights.add(new TrafficLight(viewGenerator));
     }
@@ -227,8 +225,4 @@ public class Configuration {
         return cars;
     }
 
-    float[] getHippodamianRoad(City A, City B){
-        float[] coordsRoad = null;
-        return coordsRoad;
-    }
 }

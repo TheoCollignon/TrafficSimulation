@@ -7,6 +7,8 @@ public class Crossroad {
 
     List<Road> joinedRoads;
     Coordinate coords;
+    public boolean isCity;
+    City city;
 
     public Crossroad (Coordinate coordinates){
         coords = coordinates;
@@ -35,5 +37,17 @@ public class Crossroad {
 
     public void setCoords(Coordinate coords) {
         this.coords = coords;
+    }
+
+    public boolean isCity() {
+        return isCity;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 }

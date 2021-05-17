@@ -54,6 +54,7 @@ public class MapLayout {
         bestPath = new ArrayList<>();
         Crossroad crossStart = A.getCrossRoad();
         Crossroad crossEnd = B.getCrossRoad();
+        System.out.println(crossStart.getJoinedRoads());
         List<Road> path = new ArrayList<>();
 
         nextCrossroad(crossStart, crossEnd, path);
@@ -66,7 +67,10 @@ public class MapLayout {
         if(cross.equals(goal)){
             if(getPathWeight(pathUntilNow) < minimalWeight){
                 minimalWeight = getPathWeight(pathUntilNow);
+                bestPath.clear();
                 this.bestPath.addAll(pathUntilNow);
+                System.out.println("new path !");
+                System.out.println(minimalWeight);
             }
             return;
         }

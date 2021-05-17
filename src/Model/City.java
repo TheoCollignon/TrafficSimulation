@@ -8,7 +8,6 @@ public class City {
     private int size;
     private String name;
     private ArrayList<City> connectedCities;
-    private ArrayList<Road> connectedRoad; // I dont like this solution, to change later
 
     public City(Coordinate position, int size, String name) {
         crossRoad = new Crossroad(position);
@@ -18,16 +17,12 @@ public class City {
         this.size = size;
         this.name = name;
         this.connectedCities = new ArrayList<>();
-        this.connectedRoad = new ArrayList<>();
     }
 
     public void addConnectedCity(City city) {
         connectedCities.add(city);
     }
 
-    public void addConnectedRoad(Road road) {
-        connectedRoad.add(road);
-    }
 
 
     public Coordinate getPosition() {
@@ -60,14 +55,6 @@ public class City {
 
     public void setConnectedCities(ArrayList<City> connectedCities) {
         this.connectedCities = connectedCities;
-    }
-
-    public ArrayList<Road> getConnectedRoad() {
-        return connectedRoad;
-    }
-
-    public void setConnectedRoad(ArrayList<Road> connectedRoad) {
-        this.connectedRoad = connectedRoad;
     }
 
     public Crossroad getCrossRoad() {

@@ -62,7 +62,6 @@ public class MapLayout {
 
     //recurrent function
     void nextCrossroad(Crossroad cross, Crossroad goal, List<Road> pathUntilNow){
-
         if(cross.equals(goal)){
             if(getPathWeight(pathUntilNow) < minimalWeight){
                 minimalWeight = getPathWeight(pathUntilNow);

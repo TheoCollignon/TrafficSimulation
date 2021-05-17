@@ -86,8 +86,9 @@ public class Car {
     }
 
     public boolean isInTownEvent() {
-        // when at city :
-        if ((this.position == this.roadOn.getStart().getPosition()) || (this.position == this.roadOn.getEnd().getPosition()))  {
+        // checking if start or end exists and then if we are currently in it before anything else
+        if ((this.roadOn.getStart() != null && this.position == this.roadOn.getStart().getPosition()) ||
+                (this.position == this.roadOn.getEnd().getPosition()))  {
             int randomValue = this.random.nextInt(100);
             int eventProba = 70;
             if (randomValue <= eventProba) {

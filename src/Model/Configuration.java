@@ -94,31 +94,31 @@ public class Configuration {
             for (int i = 0; i < roads.size(); i++) {
                 roads.get(i).calculateCoordinates(roads.get(i).getCoordsList().get(0), roads.get(i).getCoordsList().get(roads.get(i).getCoordsList().size() - 1),isHippodamien);
             }
-        }
-        //creating roads
-        for (int i = 0; i < nbCities; i++) {
-            for (int j = i + 1; j < nbCities; j++) {
-                boolean isRoad = random.nextBoolean();
-                if (isRoad){
-                    //creating a road and joining it to its crossroad extremities
-                    //breaks djikstra for now
-                    Road newRoad = addRoad(cities.get(i).getCrossRoad(), cities.get(j).getCrossRoad());
+        }else {
+            //creating roads
+            for (int i = 0; i < nbCities; i++) {
+                for (int j = i + 1; j < nbCities; j++) {
+                    boolean isRoad = random.nextBoolean();
+                    if (isRoad) {
+                        //creating a road and joining it to its crossroad extremities
+                        Road newRoad = addRoad(cities.get(i).getCrossRoad(), cities.get(j).getCrossRoad());
+                        cities.get(i).getCrossRoad().addJoinedRoad(newRoad);
+                        cities.get(j).getCrossRoad().addJoinedRoad(newRoad);
+                    }
+                }
+                int nbConnectedCities = cities.get(i).getConnectedCities().size();
+                if (nbConnectedCities == 0) {
+                    int connectedCity = i;
+                    while (connectedCity == i) connectedCity = random.nextInt(cities.size());
+                    Road newRoad = addRoad(cities.get(i).getCrossRoad(), cities.get(connectedCity).getCrossRoad());
                     cities.get(i).getCrossRoad().addJoinedRoad(newRoad);
-                    cities.get(j).getCrossRoad().addJoinedRoad(newRoad);
+                    cities.get(connectedCity).getCrossRoad().addJoinedRoad(newRoad);
                 }
             }
-            int nbConnectedCities = cities.get(i).getConnectedCities().size();
-            if (nbConnectedCities == 0) {
-                int connectedCity = i;
-                while (connectedCity == i) connectedCity = random.nextInt(cities.size());
-                Road newRoad = addRoad(cities.get(i).getCrossRoad(), cities.get(connectedCity).getCrossRoad());
-                cities.get(i).getCrossRoad().addJoinedRoad(newRoad);
-                cities.get(connectedCity).getCrossRoad().addJoinedRoad(newRoad);
+            // when the cities are linked, we setup all the point between the road
+            for (int i = 0; i < roads.size(); i++) {
+                roads.get(i).calculateCoordinates(roads.get(i).getCoordsList().get(0), roads.get(i).getCoordsList().get(roads.get(i).getCoordsList().size() - 1), isHippodamien);
             }
-        }
-        // when the cities are linked, we setup all the point between the road
-        for (int i = 0; i < roads.size(); i++) {
-            roads.get(i).calculateCoordinates(roads.get(i).getCoordsList().get(0), roads.get(i).getCoordsList().get(roads.get(i).getCoordsList().size() - 1), isHippodamien);
         }
 
     }
@@ -137,9 +137,7 @@ public class Configuration {
     public Road addRoad(City A, City B) {
         Road road = new Road(A,B);
         A.addConnectedCity(B);
-        A.addConnectedRoad(road);
         B.addConnectedCity(A);
-        B.addConnectedRoad(road);
 
         roads.add(road);
         return road;

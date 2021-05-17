@@ -48,8 +48,6 @@ public class Road {
         if(isStartACity && isEndACity){
             this.start.addConnectedCity(this.end);
             this.end.addConnectedCity(this.start);
-            this.start.addConnectedRoad(this);
-            this.end.addConnectedRoad(this);
         }
         this.roadLength = 0;
         this.roadWidth = 15;
@@ -150,8 +148,6 @@ public class Road {
                     }else if( car.getPosition() == this.crossroadStart.getCoords()) {
                         currentCrossroad = this.crossroadStart;
                     }
-                    System.out.println(currentCrossroad.getCity());
-                    System.out.println(car.getDestination());
                     if(currentCrossroad.isCity && currentCrossroad.getCity().equals(car.getDestination())){
                         //generating a new road plan according to a random destination
                         System.out.println("arrived");

@@ -11,6 +11,7 @@ public class City {
     private ArrayList<Road> connectedRoad; // I dont like this solution, to change later
 
     public City(Coordinate position, int size, String name) {
+        crossRoad = new Crossroad(position);
         this.position = position;
         this.size = size;
         this.name = name;

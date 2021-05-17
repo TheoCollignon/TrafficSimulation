@@ -17,11 +17,11 @@ public class CarManager extends Thread{
 
     public void run() {
         while (true) {
-            for (Car c : carList) {
+            for (Car car : carList) {
                 try {
                     // here the action of the cars
-                    c.getRoadOn().moveCarPosition(c, c.getCityFrom());
-                    Thread.sleep(c.getSpeed());
+                    car.getRoadOn().moveCarPosition(car);
+                    Thread.sleep(car.getSpeed());
                 } catch (InterruptedException e) {
                     System.out.println("crashed");
                     e.printStackTrace();

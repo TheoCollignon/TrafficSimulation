@@ -2,30 +2,48 @@ package Model;
 
 import View.ViewGenerator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Car {
     private Coordinate position;
+    //gives the direction of the car relative to the road : -1 means the car is moving towards to start of the road
+    private float direction;
     private float energy;
     private ViewGenerator viewGenerator;
     private Road roadOn;
     private City cityFrom;
     private City destination;
     private Random random;
+    private Configuration config;
     private int speed;
     private int id;
+    private List<Road> roadPlan;
 
 
-    public Car(Coordinate position, float energy, ViewGenerator viewGenerator, Road roadOn, City cityFrom, City destination, int id) {
+    public Car(Configuration config, Coordinate position, float energy, ViewGenerator viewGenerator, City cityFrom, int id) {
         this.position = position;
+        this.config = config;
+        this.roadPlan = new ArrayList<>();
         this.energy = energy;
         this.viewGenerator = viewGenerator;
-        this.roadOn = roadOn;
         this.cityFrom = cityFrom;
-        this.destination = destination;
         random = new Random();
         this.speed = random.nextInt(100) + 20 ;
         this.id = id;
+        //generating a first road plan
+        getNewRoadPlan(cityFrom);
+        Road firstRoad = roadPlan.get(0);
+        this.roadOn = firstRoad;
+        //putting the car on its first coordinate
+        if(firstRoad.getCoordsList().get(0).getCar() != null){
+            firstRoad.getCoordsList().get(firstRoad.getCoordsList().size()-1).addCar(this);
+            this.direction = -1;
+        }else{
+            firstRoad.getCoordsList().get(0).addCar(this);
+            this.direction = 1;
+        }
     }
     //    public void run() {
 //        while (true) {
@@ -52,7 +70,7 @@ public class Car {
         }
         else {
             // if there is a car on the next coordinate, we verify that it is on the other side of the road to continue
-            if (this.destination != position.getCar().get(0).getDestination() ) {
+            if (this.direction != position.getCar().get(0).getDirection() ) {
                 changeCoordinate(position);
             }
         }
@@ -66,7 +84,11 @@ public class Car {
             this.position.removeCar(this);
             this.position = position;
             this.position.addCar(this);
+            if(this.energy < 0){
+                System.out.println("All out of gas !");
+            }
         }
+
     }
 
     public boolean isInTownEvent() {
@@ -91,29 +113,67 @@ public class Car {
         // speed max verification
         // slowing down the car part :
         // if we are close to the end city
-        if ((this.roadOn.getCoordsList().indexOf(position) >  (this.roadOn.getPointNum() - adaptValue )) && this.getDestination() == this.roadOn.getEnd()) {
+        if ((this.roadOn.getCoordsList().indexOf(position) >  (this.roadOn.getPointNum() - adaptValue )) && this.getDirection() == 1) {
             this.speed =(int)(this.speed * slowValue);
         }
         // if we are close to the start city
-        else if ((this.roadOn.getCoordsList().indexOf(position) < adaptValue ) && this.getDestination() == this.roadOn.getStart()) {
+        else if ((this.roadOn.getCoordsList().indexOf(position) < adaptValue ) && this.getDirection() == -1) {
             this.speed = (int)(this.speed * slowValue );
         }
         // this if is important, in case of switching of road size too quickly
         if (this.speed > 50){
             // speeding up the cars :
-             if ((this.roadOn.getCoordsList().indexOf(position) < adaptValue ) && this.getDestination() == this.roadOn.getEnd()) {
+             if ((this.roadOn.getCoordsList().indexOf(position) < adaptValue ) && this.getDirection() == 1) {
                 this.speed = (int)(this.speed * speedValue);
             }
             // if we are close to the start city
-            else if ((this.roadOn.getCoordsList().indexOf(position) > (this.roadOn.getPointNum() - adaptValue)) && this.getDestination() == this.roadOn.getStart()) {
+            else if ((this.roadOn.getCoordsList().indexOf(position) > (this.roadOn.getPointNum() - adaptValue)) && this.getDirection() == -1) {
                 this.speed = (int)(this.speed * speedValue);
             }
         }
+    }
 
+    public void changeRoad(Road nextRoad, Crossroad currentCrossroad, boolean isNewTravel) {
+        this.roadOn = nextRoad;
+        //if this is the beginning of a new travel, we keep in mind the starting city
+        if(isNewTravel){
+            this.cityFrom = currentCrossroad.getCity();
+        }
+        // we want to setup the destination
+        if (currentCrossroad != nextRoad.getCrossroadStart()){
+            direction = -1;
+        } else{
+            direction = 1;
+        }
 
+    }
 
+    //choses randomly a city and calls the maplayout to know what path to follow
+    public void getNewRoadPlan(City cityStart){
+        this.roadPlan.clear();
+        City chosenCity = cityStart;
+        this.cityFrom = cityStart;
+        while(roadPlan.size() == 0){
+            while(chosenCity.equals(cityStart)){
+                chosenCity = config.getCities().get(random.nextInt(config.getCities().size()));
+            }
+            this.roadPlan.addAll(config.mapLayout.getPathBetweenTwoCities(cityStart, chosenCity));
+        }
+        this.destination = chosenCity;
+        System.out.println("new road plan :");
+        System.out.println(roadPlan);
+    }
 
-
+    public Road getNextRoad(Road lastRoad){
+        for(int i = 0; i < roadPlan.size(); i++){
+            if(roadPlan.get(i).equals(lastRoad)){
+                return roadPlan.get(i+1);
+            }
+        }
+        System.out.println(roadPlan);
+        System.out.println("oh noooo");
+        //road somehow non-existent
+        return null;
     }
 
     public City getCityFrom() {
@@ -130,16 +190,6 @@ public class Car {
 
     public void setPosition(Coordinate position) {
         this.position = position;
-    }
-
-
-    public void changeRoad(Road nextRoad, City currentCity) {
-        this.roadOn = nextRoad;
-        this.cityFrom = currentCity;
-        // we want to setup the destination
-        if (currentCity != nextRoad.getStart()) this.destination = nextRoad.getStart();
-        else this.destination = nextRoad.getEnd();
-
     }
 
     public float getEnergy() {
@@ -182,19 +232,19 @@ public class Car {
         this.destination = destination;
     }
 
-    public Random getRandom() {
-        return random;
-    }
-
-    public void setRandom(Random random) {
-        this.random = random;
-    }
-
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public float getDirection() {
+        return direction;
+    }
+
+    public List<Road> getRoadPlan() {
+        return roadPlan;
     }
 }

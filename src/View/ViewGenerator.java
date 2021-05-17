@@ -60,17 +60,6 @@ public class ViewGenerator extends Application {
                         mainPane.getChildren().add(line);
                     }
                 }
-                // TOBEDELETE
-//                Circle c1 = new Circle(  ((road.getStart().getPosition().getX() + road.getEnd().getPosition().getX())/2) ,
-//                        ((road.getStart().getPosition().getY() + road.getEnd().getPosition().getY())/2)+1,10);
-//                c1.setFill((Color.color(Math.random(), Math.random(), Math.random())));
-//                mainPane.getChildren().add(c1);
-                // END TO BE DELETE
-                // circle of the position of the car, actually not usefull, but can be use for debugging
-//                Circle circle = new Circle(roadCoords.get(i).getX(), roadCoords.get(i).getY(), 2);
-//                circle.setFill(Color.WHITE);
-//                circle.setStrokeWidth(road.getWidth());
-//                mainPane.getChildren().add(circle);
             }
 
         }
@@ -126,30 +115,30 @@ public class ViewGenerator extends Application {
                 float carPositionY = car.getPosition().getY();
 
                 // edit the X position for better looking on the road
-                if (car.getRoadOn().getEnd().getPosition().getY() > car.getRoadOn().getStart().getPosition().getY()) {
-                    if ( car.getRoadOn().getStart() == car.getDestination()) {
+                if (car.getRoadOn().getCrossroadEnd().getCoords().getY() > car.getRoadOn().getCrossroadStart().getCoords().getY()) {
+                    if ( car.getDirection() == -1) {
                         carPositionX += 4;
-                    } else if  ( car.getRoadOn().getEnd() == car.getDestination()) {
+                    } else if  ( car.getDirection() == 1) {
                         carPositionX -= 4;
                     }
-                } else if (car.getRoadOn().getEnd().getPosition().getY() <= car.getRoadOn().getStart().getPosition().getY()){
-                    if ( car.getRoadOn().getStart() == car.getDestination()) {
+                } else if (car.getRoadOn().getCrossroadEnd().getCoords().getY() <= car.getRoadOn().getCrossroadStart().getCoords().getY()){
+                    if ( car.getDirection() == -1) {
                         carPositionX -= 4;
-                    } else if  ( car.getRoadOn().getEnd() == car.getDestination()) {
+                    } else if  ( car.getDirection() == 1) {
                         carPositionX += 4;
                     }
                 }
                 // edit the Y position for better looking on the road
-                if (car.getRoadOn().getEnd().getPosition().getX() <= car.getRoadOn().getStart().getPosition().getX()) {
-                    if ( car.getRoadOn().getStart() == car.getDestination()) {
+                if (car.getRoadOn().getCrossroadEnd().getCoords().getX() <= car.getRoadOn().getCrossroadStart().getCoords().getX()) {
+                    if ( car.getDirection() == -1) {
                         carPositionY += 4;
-                    } else if  ( car.getRoadOn().getEnd() == car.getDestination()) {
+                    } else if  ( car.getDirection() == 1) {
                         carPositionY -= 4;
                     }
-                } else if (car.getRoadOn().getEnd().getPosition().getX() > car.getRoadOn().getStart().getPosition().getX()){
-                    if ( car.getRoadOn().getStart() == car.getDestination()) {
+                } else if (car.getRoadOn().getCrossroadEnd().getCoords().getX() > car.getRoadOn().getCrossroadStart().getCoords().getX()){
+                    if ( car.getDirection() == -1) {
                         carPositionY -= 4;
-                    } else if  ( car.getRoadOn().getEnd() == car.getDestination()) {
+                    } else if  ( car.getDirection() == 1) {
                         carPositionY += 4;
                     }
                 }
@@ -160,10 +149,10 @@ public class ViewGenerator extends Application {
 
                 // rotation of the car on the same angle of the road
                 // default value :
-                float xA = car.getRoadOn().getStart().getPosition().getX();
-                float xB = car.getRoadOn().getEnd().getPosition().getX();
-                float yA = car.getRoadOn().getStart().getPosition().getY();
-                float yB = car.getRoadOn().getEnd().getPosition().getY();
+                float xA = car.getRoadOn().getCrossroadStart().getCoords().getX();
+                float xB = car.getRoadOn().getCrossroadEnd().getCoords().getX();
+                float yA = car.getRoadOn().getCrossroadStart().getCoords().getY();
+                float yB = car.getRoadOn().getCrossroadEnd().getCoords().getY();
 
                 for (int i=0; i< car.getRoadOn().getCoordsList().size(); i++) {
                     if (car.getRoadOn().getCoordsList().get(i).getCar().size() > 0){

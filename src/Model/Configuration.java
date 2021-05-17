@@ -121,12 +121,6 @@ public class Configuration {
             roads.get(i).calculateCoordinates(roads.get(i).getCoordsList().get(0), roads.get(i).getCoordsList().get(roads.get(i).getCoordsList().size() - 1), isHippodamien);
         }
 
-
-
-        //TESTING AREA
-        List<Road> path = mapLayout.getPathBetweenTwoCities(cities.get(0),cities.get(1));
-        System.out.println(path.size());
-        //TESTING AREA
     }
 
     public boolean addCity(Coordinate position, int size, String name) {
@@ -164,29 +158,20 @@ public class Configuration {
         // init the cars
         for (int j = 0; j < numberCars; j++ ) {
             // find a random connected city
-            int randomCityConnected = random.nextInt(cities.get(j).getConnectedCities().size());
+            int randomCity = random.nextInt(cities.size());
+            City randomStartCity = cities.get(randomCity);
             // create the car
-            Road road = findRoad(cities.get(j),cities.get(j).getConnectedCities().get(randomCityConnected));
-            Car c = null;
-            // put it in the list
             id++;
-            if (road.getCoordsList().get(0).getCar() != null) {
-                c = new Car( road.getCoordsList().get(road.getCoordsList().size()-1),100, viewGenerator, road, road.getStart(), road.getEnd(), id);
-                road.getCoordsList().get(road.getCoordsList().size()-1).addCar(c);
-            }
-            else {
-                c = new Car( road.getCoordsList().get(0),100, viewGenerator, road,  road.getStart(), road.getEnd(), id);
-                road.getCoordsList().get(0).addCar(c);
-            }
-
-            cars.add(c);
+            Car car = new Car(this, randomStartCity.getPosition(),100, viewGenerator,randomStartCity,id);
+            // put it in the list
+            cars.add(car);
         }
         return cars;
     }
 
     public void addCar(Coordinate position, float energy, City cityFrom, City destination, int id, int speed) {
-        Road road = findRoad(cityFrom,destination);
-        Car car = new Car(position, energy, viewGenerator, road, cityFrom, destination, id);
+        Car car = new Car(this,position, energy, viewGenerator, cityFrom, id);
+        Road road = car.getRoadOn();
         car.setSpeed(speed);
         for (Coordinate coord: road.getCoordsList()) {
             if (coord.getX()==position.getX() && coord.getY()==position.getY()) {

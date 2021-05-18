@@ -19,6 +19,7 @@ public class Car {
     private Configuration config;
     private int speed;
     private int id;
+    //the list of roads the car has to drive on to get to its destination
     private List<Road> roadPlan;
 
 
@@ -44,21 +45,6 @@ public class Car {
             this.direction = -1;
         }
     }
-    //    public void run() {
-//        while (true) {
-//            int duration = random.nextInt(100) + 50;
-//            try {
-//                // here the action of the cars
-//                roadOn.moveCarPosition(this, cityFrom);
-//                Thread.sleep(duration);
-//            } catch (InterruptedException e) {
-//                System.out.println("crashed");
-//                e.printStackTrace();
-//                break;
-//            }
-//        }
-//
-//    }
 
     public void changeCarPosition(Coordinate position) {
         // this has to be fixed, even if there is another error somewhere
@@ -71,7 +57,9 @@ public class Car {
             // if there is a car on the next coordinate, we verify that it is on the other side of the road to continue
             if (this.direction != position.getCar().get(0).getDirection() ) {
                 changeCoordinate(position);
-            }
+            } /*else {
+                System.out.println("blocked :(((((");
+            }*/
         }
     }
 
@@ -87,7 +75,6 @@ public class Car {
                 System.out.println("All out of gas !");
             }
         }
-
     }
 
     public boolean isInTownEvent() {
@@ -139,7 +126,7 @@ public class Car {
         if(isNewTravel){
             this.cityFrom = currentCrossroad.getCity();
         }
-        // we want to setup the destination
+        // setting up the direction
         if (currentCrossroad != nextRoad.getCrossroadStart()){
             direction = -1;
         } else{

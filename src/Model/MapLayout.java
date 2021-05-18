@@ -31,7 +31,7 @@ public class MapLayout {
         listCrossroads.get(coordX).set(coordY, cross);
     }
 
-    //returns a path from one city to another (with some randomness if several paths have the same length)
+    //returns a path from one city to another
     public List<Road> getPath(City startingCity, City endCity){
         List<Road> finalList = new ArrayList<>();
 

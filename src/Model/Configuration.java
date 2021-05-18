@@ -25,7 +25,7 @@ public class Configuration {
         roads = new ArrayList<>();
         cars = new ArrayList<>();
         trafficLights = new ArrayList<>();
-        isHippodamien = true;
+        isHippodamien = false;
     }
 
     public void addRandomElements(int nbCities) {

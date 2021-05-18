@@ -24,7 +24,7 @@ public class Controller {
         jsonManager = new JSONManager();
         configuration = new Configuration(viewGenerator);
         configuration.addRandomElements(5);
-        ArrayList<Car> cars = configuration.setupCars(1);
+        ArrayList<Car> cars = configuration.setupCars(2);
         jsonManager.saveJSONFile(configuration, "test");
         CarManager cm = new CarManager(cars);
         viewGenerator.updateView(cars);

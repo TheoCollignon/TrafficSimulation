@@ -129,7 +129,6 @@ public class Road {
         for(Coordinate coord : coordsList) {
             if (coord.getCar().contains(car)) {
                 // verify if there is a next coordinate
-                // the car is rolling to its destination
                 if ((coordsList.indexOf(coord) < coordsList.size() - 1) && car.getDirection() == 1) {
                     // get the next element
                     car.changeCarPosition(coordsList.get(coordsList.indexOf(coord) + 1));

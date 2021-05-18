@@ -22,22 +22,11 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 
-public class ViewGenerator extends Application {
+public class ViewGenerator {
     private Stage stage;
     @FXML
     private Pane mainPane;
     Controller controller = Controller.getInstance();
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        this.stage = primaryStage;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
-        Parent rootLayout = loader.load();
-        mainPane = (Pane) loader.getNamespace().get("mainPane");
-        controller.loadConfiguration(this);
-        stage.setScene(new Scene(rootLayout, 600, 600));
-        stage.show();
-    }
 
     public void drawConfiguration(Configuration configuration) {
         // Draw Roads

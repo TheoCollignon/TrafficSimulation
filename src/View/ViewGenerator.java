@@ -200,4 +200,7 @@ public class ViewGenerator extends Application {
         timeline.play();
     }
 
+    public void setMainPane(Pane mainPane) {
+        this.mainPane = mainPane;
+    }
 }

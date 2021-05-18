@@ -16,7 +16,6 @@ public class Configuration {
     private ViewGenerator viewGenerator;
     private Random random;
     boolean isHippodamien;
-    float[][][] coordPlanHippodamien;
     MapLayout mapLayout;
 
     public Configuration(ViewGenerator viewGenerator) {
@@ -26,7 +25,7 @@ public class Configuration {
         roads = new ArrayList<>();
         cars = new ArrayList<>();
         trafficLights = new ArrayList<>();
-        isHippodamien = false;
+        isHippodamien = true;
     }
 
     public void addRandomElements(int nbCities) {
@@ -48,7 +47,6 @@ public class Configuration {
         if(isHippodamien){
 
             //creating the coord lists...
-            coordPlanHippodamien = new float[nbCities][nbCities][2];
             float[] listCityCoordsX = new float[nbCities];
             float[] listCityCoordsY = new float[nbCities];
             //... and filling them
@@ -69,8 +67,6 @@ public class Configuration {
                             newCross = c.getCrossRoad();
                         }
                     }
-                    float[] coords = {newCoord.getX(), newCoord.getY()};
-                    coordPlanHippodamien[i][j] = coords;
                     mapLayout.setCrossroad(i, j, newCross);
                 }
             }

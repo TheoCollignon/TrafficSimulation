@@ -36,8 +36,13 @@ public class Car {
         getNewRoadPlan(cityFrom);
         Road firstRoad = roadPlan.get(0);
         this.roadOn = firstRoad;
-        firstRoad.getCoordsList().get(0).addCar(this);
-        this.direction = 1;
+        if(firstRoad.getStart() != null){
+            firstRoad.getCoordsList().get(0).addCar(this);
+            this.direction = 1;
+        } else {
+            firstRoad.getCoordsList().get(firstRoad.getCoordsList().size()-1).addCar(this);
+            this.direction = -1;
+        }
     }
     //    public void run() {
 //        while (true) {
@@ -88,7 +93,7 @@ public class Car {
     public boolean isInTownEvent() {
         // checking if start or end exists and then if we are currently in it before anything else
         if ((this.roadOn.getStart() != null && this.position == this.roadOn.getStart().getPosition()) ||
-                (this.position == this.roadOn.getEnd().getPosition()))  {
+                (this.roadOn.getEnd() != null && this.position == this.roadOn.getEnd().getPosition()))  {
             int randomValue = this.random.nextInt(100);
             int eventProba = 70;
             if (randomValue <= eventProba) {
@@ -156,8 +161,7 @@ public class Car {
             this.roadPlan.addAll(config.mapLayout.getPathBetweenTwoCities(cityStart, chosenCity));
         }
         this.destination = chosenCity;
-        System.out.println("new road plan :");
-        System.out.println(roadPlan);
+        //System.out.println("new road plan !");
     }
 
     public Road getNextRoad(Road lastRoad){

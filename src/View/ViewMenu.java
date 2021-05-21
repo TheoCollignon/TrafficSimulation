@@ -11,13 +11,13 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class ViewMenu extends Application {
+    @FXML
+    private Stage globalStage;
     private ViewGenerator viewGenerator = new ViewGenerator();
 
     @Override
@@ -25,12 +25,16 @@ public class ViewMenu extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("menu.fxml"));
         Parent rootLayout = loader.load();
         stage.setScene(new Scene(rootLayout, 600, 600));
+        this.globalStage = stage;
         stage.setTitle("Menu");
         stage.show();
     }
 
     @FXML
-    public void loadRandomConfiguration() {
+    public void loadRandomConfiguration(ActionEvent event) {
+        Button close = (Button) event.getSource();
+        Stage oldstage = (Stage) close.getScene().getWindow();
+        oldstage.close();
         try {
             Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("simulationViewer.fxml"));
@@ -52,7 +56,10 @@ public class ViewMenu extends Application {
     }
 
     @FXML
-    public void loadConfigSelectorWindow() {
+    public void loadConfigSelectorWindow(ActionEvent event) {
+        Button close = (Button) event.getSource();
+        Stage oldstage = (Stage) close.getScene().getWindow();
+        oldstage.close();
         Stage stage = new Stage();
         File f = new File("./configurationFiles/");
         // This filter will only include files ending with .json
@@ -78,6 +85,9 @@ public class ViewMenu extends Application {
     }
 
     private void loadJSONFile(ActionEvent value) {
+        Button close = (Button) value.getSource();
+        Stage oldstage = (Stage) close.getScene().getWindow();
+        oldstage.close();
         String fileName = ((Button)value.getSource()).getText();
         try {
             Stage stage = new Stage();

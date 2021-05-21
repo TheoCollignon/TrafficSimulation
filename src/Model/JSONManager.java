@@ -85,9 +85,12 @@ public class JSONManager {
         try {
             obj = new JSONParser().parse(new FileReader("./configurationFiles/"+fileName+".json"));
             JSONObject jo = (JSONObject) obj;
+            // CITIES
             Map cities = (Map) jo.get("Cities");
+            int nbCities = 0;
             Iterator<Map.Entry> itr1 = cities.entrySet().iterator();
             while (itr1.hasNext()) {
+                nbCities++;
                 Map.Entry pair = itr1.next();
                 String name = (String) pair.getKey();
                 Map city = (Map) cities.get(pair.getKey());
@@ -99,6 +102,9 @@ public class JSONManager {
                 Coordinate coordinate = new Coordinate(Float.parseFloat(coords[0]), Float.parseFloat(coords[1]));
                 configuration.addCity(coordinate, size, name);
             }
+
+            configuration.mapLayout = new MapLayout(nbCities);
+
             if(!(boolean) jo.get("isHippodamien")) {
                 Map roads = (Map) jo.get("Roads");
                 Iterator<Map.Entry> itr2 = roads.entrySet().iterator();

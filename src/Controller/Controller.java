@@ -20,7 +20,8 @@ public class Controller {
         return instance;
     }
 
-    public void createConfiguration() {
+    public void createRandomConfiguration(ViewGenerator viewGenerator) {
+        this.viewGenerator = viewGenerator;
         jsonManager = new JSONManager();
         configuration = new Configuration(viewGenerator);
         configuration.addRandomElements(5);
@@ -28,19 +29,15 @@ public class Controller {
         jsonManager.saveJSONFile(configuration, "test");
         CarManager cm = new CarManager(cars);
         viewGenerator.updateView(cars);
+        viewGenerator.drawConfiguration(configuration);
     }
 
-    public void loadJSONConfiguration(String fileName) {
+    public void loadJSONConfiguration(ViewGenerator viewGenerator, String fileName) {
+        this.viewGenerator = viewGenerator;
         jsonManager = new JSONManager();
         configuration = jsonManager.readJSONFile(viewGenerator,fileName);
         CarManager cm = new CarManager(configuration.getCars());
         viewGenerator.updateView(configuration.getCars());
-    }
-
-    public void loadConfiguration(ViewGenerator viewGenerator) {
-        this.viewGenerator = viewGenerator;
-        createConfiguration();
-        //loadJSONConfiguration("test");
         viewGenerator.drawConfiguration(configuration);
     }
 }

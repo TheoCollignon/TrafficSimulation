@@ -75,15 +75,11 @@ public class Configuration {
                 for (int j = 0; j < nbCities ; j++) {
                     //If we're at the last point, don't try to draw an additional horizontal road
                     if(i < nbCities - 1){
-                        Road newRoad = addRoad(mapLayout.getListCrossroads().get(i).get(j),mapLayout.getListCrossroads().get(i+1).get(j));
-                        mapLayout.getListCrossroads().get(i).get(j).addJoinedRoad(newRoad);
-                        mapLayout.getListCrossroads().get(i+1).get(j).addJoinedRoad(newRoad);
+                        addRoad(mapLayout.getListCrossroads().get(i).get(j),mapLayout.getListCrossroads().get(i+1).get(j));
                     }
                     //same as above for vertical roads
                     if(j < nbCities - 1){
-                        Road newRoad = addRoad(mapLayout.getListCrossroads().get(i).get(j),mapLayout.getListCrossroads().get(i).get(j+1));
-                        mapLayout.getListCrossroads().get(i).get(j).addJoinedRoad(newRoad);
-                        mapLayout.getListCrossroads().get(i).get(j+1).addJoinedRoad(newRoad);
+                        addRoad(mapLayout.getListCrossroads().get(i).get(j),mapLayout.getListCrossroads().get(i).get(j+1));
                     }
                 }
             }
@@ -97,18 +93,14 @@ public class Configuration {
                     boolean isRoad = random.nextBoolean();
                     if (isRoad) {
                         //creating a road and joining it to its crossroad extremities
-                        Road newRoad = addRoad(cities.get(i).getCrossRoad(), cities.get(j).getCrossRoad());
-                        cities.get(i).getCrossRoad().addJoinedRoad(newRoad);
-                        cities.get(j).getCrossRoad().addJoinedRoad(newRoad);
+                        addRoad(cities.get(i).getCrossRoad(), cities.get(j).getCrossRoad());
                     }
                 }
                 int nbConnectedCities = cities.get(i).getConnectedCities().size();
                 if (nbConnectedCities == 0) {
                     int connectedCity = i;
                     while (connectedCity == i) connectedCity = random.nextInt(cities.size());
-                    Road newRoad = addRoad(cities.get(i).getCrossRoad(), cities.get(connectedCity).getCrossRoad());
-                    cities.get(i).getCrossRoad().addJoinedRoad(newRoad);
-                    cities.get(connectedCity).getCrossRoad().addJoinedRoad(newRoad);
+                    addRoad(cities.get(i).getCrossRoad(), cities.get(connectedCity).getCrossRoad());
                 }
             }
             // when the cities are linked, we setup all the point between the road
@@ -131,17 +123,14 @@ public class Configuration {
 
     //used only in JSONManager /!\ to change
     public Road addRoad(City A, City B) {
-        Road road = new Road(A,B);
-        A.addConnectedCity(B);
-        B.addConnectedCity(A);
-
-        roads.add(road);
-        return road;
+        return addRoad(A.getCrossRoad(), B.getCrossRoad());
     }
 
     //This method is meant to be used in the future instead of the top one
     public Road addRoad(Crossroad crossA, Crossroad crossB){
         Road newRoad = new Road(crossA,crossB);
+        crossA.addJoinedRoad(newRoad);
+        crossB.addJoinedRoad(newRoad);
         //adding the road to the road list
         roads.add(newRoad);
         return newRoad;
@@ -164,13 +153,7 @@ public class Configuration {
 
     public void addCar(Coordinate position, float energy, City cityFrom, City destination, int id, int speed) {
         Car car = new Car(this,position, energy, viewGenerator, cityFrom, id);
-        Road road = car.getRoadOn();
         car.setSpeed(speed);
-        for (Coordinate coord: road.getCoordsList()) {
-            if (coord.getX()==position.getX() && coord.getY()==position.getY()) {
-                coord.addCar(car);
-            }
-        }
         cars.add(car);
     }
 

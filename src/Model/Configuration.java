@@ -36,14 +36,17 @@ public class Configuration {
         //generating the hippodamian grid in case the configuration is hippodamian
         if(isHippodamien){
             generateHippodamianRoads();
-        }else {
-            generateNormalRoads();
+        } else {
+            for (int i = 0; i < roads.size(); i++) {
+                roads.get(i).calculateCoordinates(isHippodamien);
+            }
         }
     }
 
     public void addRandomElements(int nbCities, boolean isHippodamien) {
         //creating cities randomly
         generateRandomCities(nbCities);
+        if (!isHippodamien) generateNormalRoads();
         addElements(isHippodamien);
     }
 

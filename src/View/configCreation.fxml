@@ -11,13 +11,14 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="561.0" prefWidth="600.0">
                <children>
-                  <Pane prefHeight="600.0" prefWidth="600.0" fx:id="cityPane" onMouseClicked="#addCityWhereMouseIs"/>
+                  <Pane fx:id="cityPane" onMouseClicked="#addCityWhereMouseIs" prefHeight="600.0" prefWidth="600.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="48.0" prefWidth="600.0">
                <children>
                   <Button fx:id="buttonHippodamian" disable="true" layoutX="92.0" layoutY="40.0" mnemonicParsing="false" onAction="#createHippodamianConfig" text="Hippodamian configuration" />
                   <Button fx:id="buttonNormal" disable="true" layoutX="373.0" layoutY="40.0" mnemonicParsing="false" onAction="#createNormalConfig" text="Normal configuration" />
+                  <Button fx:id="validateRoads" disable="true" layoutX="273.0" layoutY="74.0" mnemonicParsing="false" onAction="#validateConfig" text="Valider" visible="false" />
                </children>
             </AnchorPane>
         </items>

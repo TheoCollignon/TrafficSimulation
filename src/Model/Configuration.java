@@ -31,8 +31,84 @@ public class Configuration {
     public void addRandomElements(int nbCities) {
 
         //creating the map layout
-        mapLayout = new MapLayout(nbCities);
+        this.mapLayout = new MapLayout(nbCities);
         //creating cities
+        generateRandomCities(nbCities);
+        //generating the hippodamian grid in case the configuration is hippodamian
+        if(isHippodamien){
+            generateHippodamianRoads(nbCities);
+        }else {
+            generateNormalRoads(nbCities);
+        }
+    }
+
+    public void generateNormalRoads(int nbCities){
+        //creating roads
+        for (int i = 0; i < nbCities; i++) {
+            for (int j = i + 1; j < nbCities; j++) {
+                boolean isRoad = random.nextBoolean();
+                if (isRoad) {
+                    //creating a road and joining it to its crossroad extremities
+                    addRoad(cities.get(i).getCrossRoad(), cities.get(j).getCrossRoad());
+                }
+            }
+            int nbConnectedCities = cities.get(i).getConnectedCities().size();
+            if (nbConnectedCities == 0) {
+                int connectedCity = i;
+                while (connectedCity == i) connectedCity = random.nextInt(cities.size());
+                addRoad(cities.get(i).getCrossRoad(), cities.get(connectedCity).getCrossRoad());
+            }
+        }
+        // when the cities are linked, we setup all the point between the road
+        for (int i = 0; i < roads.size(); i++) {
+            roads.get(i).calculateCoordinates(isHippodamien);
+        }
+    }
+
+    public void generateHippodamianRoads(int nbCities){
+        //creating the coord lists...
+        float[] listCityCoordsX = new float[nbCities];
+        float[] listCityCoordsY = new float[nbCities];
+        //... and filling them
+        for(int i = 0; i < nbCities; i++) {
+            listCityCoordsX[i] = cities.get(i).getPosition().getX();
+            listCityCoordsY[i] = cities.get(i).getPosition().getY();
+        }
+        //sorting the city coordinates list so it ranges correctly
+        Arrays.sort(listCityCoordsY);
+        Arrays.sort(listCityCoordsX);
+        //giving coordinates to every point in the plan
+        for(int i = 0; i < nbCities; i++) {
+            for(int j = 0; j < nbCities; j++){
+                Coordinate newCoord = new Coordinate(listCityCoordsX[i], listCityCoordsY[j]);
+                Crossroad newCross = new Crossroad(newCoord);
+                for(City c : cities){
+                    if(c.getPosition().equals(newCoord)){
+                        newCross = c.getCrossRoad();
+                    }
+                }
+                this.mapLayout.setCrossroad(i, j, newCross);
+            }
+        }
+        //adding the roads
+        for(int i = 0; i < nbCities ; i++) {
+            for (int j = 0; j < nbCities ; j++) {
+                //If we're at the last point, don't try to draw an additional horizontal road
+                if(i < nbCities - 1){
+                    addRoad(mapLayout.getListCrossroads().get(i).get(j),mapLayout.getListCrossroads().get(i+1).get(j));
+                }
+                //same as above for vertical roads
+                if(j < nbCities - 1){
+                    addRoad(mapLayout.getListCrossroads().get(i).get(j),mapLayout.getListCrossroads().get(i).get(j+1));
+                }
+            }
+        }
+        for (int i = 0; i < roads.size(); i++) {
+            roads.get(i).calculateCoordinates(isHippodamien);
+        }
+    }
+
+    public void generateRandomCities(int nbCities){
         for (int i = 0; i < nbCities; i++) {
             int x = random.nextInt(500) + 50;
             int y = random.nextInt(500) + 50;
@@ -43,72 +119,6 @@ public class Configuration {
                 y = random.nextInt(500) + 50;
             }
         }
-        //generating the hippodamian grid in case the configuration is hoppodamian
-        if(isHippodamien){
-
-            //creating the coord lists...
-            float[] listCityCoordsX = new float[nbCities];
-            float[] listCityCoordsY = new float[nbCities];
-            //... and filling them
-            for(int i = 0; i < nbCities; i++) {
-                listCityCoordsX[i] = cities.get(i).getPosition().getX();
-                listCityCoordsY[i] = cities.get(i).getPosition().getY();
-            }
-            //sorting the city coordinates list so it ranges correctly
-            Arrays.sort(listCityCoordsY);
-            Arrays.sort(listCityCoordsX);
-            //giving coordinates to every point in the plan
-            for(int i = 0; i < nbCities; i++) {
-                for(int j = 0; j < nbCities; j++){
-                    Coordinate newCoord = new Coordinate(listCityCoordsX[i], listCityCoordsY[j]);
-                    Crossroad newCross = new Crossroad(newCoord);
-                    for(City c : cities){
-                        if(c.getPosition().equals(newCoord)){
-                            newCross = c.getCrossRoad();
-                        }
-                    }
-                    mapLayout.setCrossroad(i, j, newCross);
-                }
-            }
-            //adding the roads
-            for(int i = 0; i < nbCities ; i++) {
-                for (int j = 0; j < nbCities ; j++) {
-                    //If we're at the last point, don't try to draw an additional horizontal road
-                    if(i < nbCities - 1){
-                        addRoad(mapLayout.getListCrossroads().get(i).get(j),mapLayout.getListCrossroads().get(i+1).get(j));
-                    }
-                    //same as above for vertical roads
-                    if(j < nbCities - 1){
-                        addRoad(mapLayout.getListCrossroads().get(i).get(j),mapLayout.getListCrossroads().get(i).get(j+1));
-                    }
-                }
-            }
-            for (int i = 0; i < roads.size(); i++) {
-                roads.get(i).calculateCoordinates(roads.get(i).getCoordsList().get(0), roads.get(i).getCoordsList().get(roads.get(i).getCoordsList().size() - 1),isHippodamien);
-            }
-        }else {
-            //creating roads
-            for (int i = 0; i < nbCities; i++) {
-                for (int j = i + 1; j < nbCities; j++) {
-                    boolean isRoad = random.nextBoolean();
-                    if (isRoad) {
-                        //creating a road and joining it to its crossroad extremities
-                        addRoad(cities.get(i).getCrossRoad(), cities.get(j).getCrossRoad());
-                    }
-                }
-                int nbConnectedCities = cities.get(i).getConnectedCities().size();
-                if (nbConnectedCities == 0) {
-                    int connectedCity = i;
-                    while (connectedCity == i) connectedCity = random.nextInt(cities.size());
-                    addRoad(cities.get(i).getCrossRoad(), cities.get(connectedCity).getCrossRoad());
-                }
-            }
-            // when the cities are linked, we setup all the point between the road
-            for (int i = 0; i < roads.size(); i++) {
-                roads.get(i).calculateCoordinates(roads.get(i).getCoordsList().get(0), roads.get(i).getCoordsList().get(roads.get(i).getCoordsList().size() - 1), isHippodamien);
-            }
-        }
-
     }
 
     public boolean addCity(Coordinate position, int size, String name) {
@@ -121,12 +131,6 @@ public class Configuration {
         return true;
     }
 
-    //used only in JSONManager /!\ to change
-    public Road addRoad(City A, City B) {
-        return addRoad(A.getCrossRoad(), B.getCrossRoad());
-    }
-
-    //This method is meant to be used in the future instead of the top one
     public Road addRoad(Crossroad crossA, Crossroad crossB){
         Road newRoad = new Road(crossA,crossB);
         crossA.addJoinedRoad(newRoad);

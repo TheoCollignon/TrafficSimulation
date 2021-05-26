@@ -119,7 +119,7 @@ public class JSONManager {
                         if (city.getName().equals(startCity)) start=city;
                         if (city.getName().equals(endCity)) end=city;
                     }
-                    Road createdRoad = configuration.addRoad(start,end);
+                    Road createdRoad = configuration.addRoad(start.getCrossRoad(),end.getCrossRoad());
 
                     int width = Integer.parseInt(road.get("Width").toString());
                     createdRoad.setRoadWidth(width);

@@ -76,13 +76,7 @@ public class ViewGenerator {
             car.setFill(Color.DARKRED);
             mainPane.getChildren().add(car);
         }
-        /*Line line = new Line(100, 10, 10, 110);
-        System.out.println(mainPane);
-        mainPane.getChildren().add(line);*/
     }
-
-
-
 
     public void updateTrafficLight(TrafficLight trafficLight) {
         for (Node node: mainPane.getChildren()) {

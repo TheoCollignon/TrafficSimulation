@@ -20,10 +20,15 @@ public class Controller {
         return instance;
     }
 
+    public Configuration initializeConfig(){
+        configuration = new Configuration(viewGenerator);
+        return configuration;
+    }
+
     public void createRandomConfiguration(ViewGenerator viewGenerator) {
         this.viewGenerator = viewGenerator;
         jsonManager = new JSONManager();
-        configuration = new Configuration(viewGenerator);
+        initializeConfig();
         configuration.addRandomElements(5);
         ArrayList<Car> cars = configuration.setupCars(2);
         jsonManager.saveJSONFile(configuration, "test");

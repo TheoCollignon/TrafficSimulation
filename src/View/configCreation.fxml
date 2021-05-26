@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane prefHeight="750.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ConfigCreation">
+   <children>
+      <SplitPane dividerPositions="0.8" orientation="VERTICAL" prefHeight="750.0" prefWidth="600.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="561.0" prefWidth="600.0">
+               <children>
+                  <Pane prefHeight="600.0" prefWidth="600.0" fx:id="cityPane" onMouseClicked="#addCityWhereMouseIs"/>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="48.0" prefWidth="600.0">
+               <children>
+                  <Button fx:id="buttonHippodamian" disable="true" layoutX="92.0" layoutY="40.0" mnemonicParsing="false" onAction="#createHippodamianConfig" text="Hippodamian configuration" />
+                  <Button fx:id="buttonNormal" disable="true" layoutX="373.0" layoutY="40.0" mnemonicParsing="false" onAction="#createNormalConfig" text="Normal configuration" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

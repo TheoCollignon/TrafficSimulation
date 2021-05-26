@@ -123,8 +123,10 @@ public class Configuration {
 
     public boolean addCity(Coordinate position, int size, String name) {
         for (City city: cities) {
-            if (Math.abs(city.getPosition().getX() - position.getX()) < (size + city.getSize()) ) return false;
-            if (Math.abs(city.getPosition().getY() - position.getY()) < (size + city.getSize()) ) return false;
+            if (Math.abs(city.getPosition().getX() - position.getX()) < (size + city.getSize()) &&
+                Math.abs(city.getPosition().getY() - position.getY()) < (size + city.getSize()) ){
+                return false;
+            }
         }
         City newCity = new City(position, size, name);
         cities.add(newCity);

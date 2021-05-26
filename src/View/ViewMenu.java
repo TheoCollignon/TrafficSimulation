@@ -51,8 +51,21 @@ public class ViewMenu extends Application {
     }
 
     @FXML
-    public void loadConfigCreationWindow() {
-
+    public void loadConfigCreationWindow(ActionEvent event) {
+        Button close = (Button) event.getSource();
+        Stage oldstage = (Stage) close.getScene().getWindow();
+        oldstage.close();
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("configCreation.fxml"));
+            Parent root = loader.load();
+            stage.setScene(new Scene(root, 600, 750));
+            stage.setTitle("Configuration Creation");
+            stage.show();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     @FXML

@@ -25,16 +25,18 @@ public class Controller {
         return configuration;
     }
 
-    public void createRandomConfiguration(ViewGenerator viewGenerator) {
+    public void initializeSimulation(ViewGenerator viewGenerator){
         this.viewGenerator = viewGenerator;
         jsonManager = new JSONManager();
-        initializeConfig();
-        configuration.addRandomElements(5);
-        ArrayList<Car> cars = configuration.setupCars(2);
+        ArrayList<Car> cars = configuration.setupCars(configuration.getCities().size());
         jsonManager.saveJSONFile(configuration, "test");
         CarManager cm = new CarManager(cars);
         viewGenerator.updateView(cars);
         viewGenerator.drawConfiguration(configuration);
+    }
+    public void createRandomConfiguration() {
+        initializeConfig();
+        configuration.addRandomElements(5,false);
     }
 
     public void loadJSONConfiguration(ViewGenerator viewGenerator, String fileName) {

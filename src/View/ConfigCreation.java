@@ -6,6 +6,9 @@ import Model.Configuration;
 import Model.Coordinate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -14,7 +17,9 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import javax.swing.text.View;
 import java.awt.*;
+import java.io.IOException;
 
 public class ConfigCreation {
     @FXML
@@ -26,12 +31,38 @@ public class ConfigCreation {
 
     Controller controller = Controller.getInstance();
     Configuration config;
+    ViewGenerator viewGenerator = new ViewGenerator();
+
+    public void createConfig(boolean isHippo){
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("simulationViewer.fxml"));
+            Parent root = loader.load();
+            viewGenerator.setMainPane((Pane) loader.getNamespace().get("mainPane"));
+            config.addElements(isHippo);
+            controller.initializeSimulation(viewGenerator);
+            stage.setScene(new Scene(root, 600, 600));
+            stage.setTitle("Simulation Viewer");
+            stage.show();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
     public void createHippodamianConfig(ActionEvent actionEvent) {
+        Button close = (Button) actionEvent.getSource();
+        Stage oldstage = (Stage) close.getScene().getWindow();
+        oldstage.close();
+        createConfig(true);
 
     }
 
     public void createNormalConfig(ActionEvent actionEvent) {
+        Button close = (Button) actionEvent.getSource();
+        Stage oldstage = (Stage) close.getScene().getWindow();
+        oldstage.close();
+        createConfig(false);
         
     }
 
@@ -39,7 +70,6 @@ public class ConfigCreation {
         if(config == null){
             config = controller.initializeConfig();
         }
-        System.out.println(config.getCities().size());
         if(config.getCities().size() == 1){
             buttonHippodamian.setDisable(false);
             buttonNormal.setDisable(false);

@@ -40,7 +40,8 @@ public class ViewMenu extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("simulationViewer.fxml"));
             Parent root = loader.load();
             viewGenerator.setMainPane((Pane) loader.getNamespace().get("mainPane"));
-            Controller.getInstance().createRandomConfiguration(viewGenerator);
+            Controller.getInstance().createRandomConfiguration();
+            Controller.getInstance().initializeSimulation(viewGenerator);
             stage.setScene(new Scene(root, 600, 600));
             stage.setTitle("Simulation Viewer");
             stage.show();

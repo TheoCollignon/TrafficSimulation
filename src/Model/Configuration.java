@@ -25,24 +25,30 @@ public class Configuration {
         roads = new ArrayList<>();
         cars = new ArrayList<>();
         trafficLights = new ArrayList<>();
-        isHippodamien = false;
     }
 
-    public void addRandomElements(int nbCities) {
-
+    public void addElements(boolean isHippo){
+        this.isHippodamien = isHippo;
+        System.out.println(isHippo);
+        System.out.println(isHippodamien);
         //creating the map layout
-        this.mapLayout = new MapLayout(nbCities);
-        //creating cities
-        generateRandomCities(nbCities);
+        this.mapLayout = new MapLayout(getCities().size());
         //generating the hippodamian grid in case the configuration is hippodamian
         if(isHippodamien){
-            generateHippodamianRoads(nbCities);
+            generateHippodamianRoads();
         }else {
-            generateNormalRoads(nbCities);
+            generateNormalRoads();
         }
     }
 
-    public void generateNormalRoads(int nbCities){
+    public void addRandomElements(int nbCities, boolean isHippodamien) {
+        //creating cities randomly
+        generateRandomCities(nbCities);
+        addElements(isHippodamien);
+    }
+
+    public void generateNormalRoads(){
+        int nbCities = getCities().size();
         //creating roads
         for (int i = 0; i < nbCities; i++) {
             for (int j = i + 1; j < nbCities; j++) {
@@ -65,7 +71,8 @@ public class Configuration {
         }
     }
 
-    public void generateHippodamianRoads(int nbCities){
+    public void generateHippodamianRoads(){
+        int nbCities = getCities().size();
         //creating the coord lists...
         float[] listCityCoordsX = new float[nbCities];
         float[] listCityCoordsY = new float[nbCities];

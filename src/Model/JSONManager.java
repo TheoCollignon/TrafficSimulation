@@ -172,7 +172,7 @@ public class JSONManager {
                     }
 
                     int id = Integer.parseInt(((String)pair.getKey()).substring(3));
-                    configuration.addCar(cityFrom.getPosition(), energy, cityFrom, destination, id, speed);
+                    configuration.addCar(energy, cityFrom, destination, id, speed);
                 }
             }
         } catch (IOException | ParseException e) {

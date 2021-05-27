@@ -27,14 +27,6 @@ public class Coordinate {
         this.city = city;
     }
 
-    public City getCity() {
-        if(city != null){
-            return city;
-        } else {
-            return null;
-        }
-    }
-
     public void setCity(City city) {
         this.city = city;
     }
@@ -47,8 +39,14 @@ public class Coordinate {
         // delete the car in the list
         // this.carList.remove(carList.get(carList.indexOf(car)));
         this.carList.remove(car);
+    }
 
-
+    public String toString(){
+        String output = "Coords : ";
+        output += String.valueOf(x);
+        output += " , ";
+        output += String.valueOf(y);
+        return output;
     }
 
     public float getX() {

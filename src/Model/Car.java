@@ -23,8 +23,8 @@ public class Car {
     private List<Road> roadPlan;
 
 
-    public Car(Configuration config, Coordinate position, float energy, ViewGenerator viewGenerator, City cityFrom, int id) {
-        this.position = position;
+    public Car(Configuration config, float energy, ViewGenerator viewGenerator, City cityFrom, int id) {
+        this.position = cityFrom.getPosition();
         this.config = config;
         this.roadPlan = new ArrayList<>();
         this.energy = energy;
@@ -37,13 +37,16 @@ public class Car {
         getNewRoadPlan(cityFrom);
         Road firstRoad = roadPlan.get(0);
         this.roadOn = firstRoad;
-        if(firstRoad.getStart() != null){
+        if(firstRoad.getStart() != null && firstRoad.getStart().equals(cityFrom)){
             firstRoad.getCoordsList().get(0).addCar(this);
             this.direction = 1;
-        } else {
+        } else{
             firstRoad.getCoordsList().get(firstRoad.getCoordsList().size()-1).addCar(this);
             this.direction = -1;
         }
+        /* use for debug
+        System.out.println("My position (car number " + id + ") :");
+        System.out.println(position);*/
     }
 
     public void changeCarPosition(Coordinate position) {
@@ -57,8 +60,9 @@ public class Car {
             // if there is a car on the next coordinate, we verify that it is on the other side of the road to continue
             if (this.direction != position.getCar().get(0).getDirection() ) {
                 changeCoordinate(position);
-            } /*else {
-                System.out.println("blocked :(((((");
+            } /*else { //use for debug
+
+                System.out.println("car " + id + " blocked by car " + position.getCar().get(0).getId());
             }*/
         }
     }
@@ -147,6 +151,7 @@ public class Car {
             this.roadPlan.clear();
             this.roadPlan.addAll(config.mapLayout.getPathBetweenTwoCities(cityStart, chosenCity));
         }
+        //printRoadPlan(); //Use for debug
         this.destination = chosenCity;
         //System.out.println("new road plan !");
     }
@@ -158,7 +163,23 @@ public class Car {
             }
         }
         //road somehow non-existent
+        System.out.println("Error : can't find next road");
         return null;
+    }
+
+    //debug method : only works with one car for clarity purposes
+    public void printRoadPlan(){
+        if(this.id == 2){
+            System.out.println("First city coords :");
+            System.out.println(cityFrom.getPosition());
+            System.out.println("Road plan :");
+            int iterator = 1;
+            for(Road r : roadPlan){
+                System.out.println("Road " + String.valueOf(iterator) + " :");
+                System.out.println(r.getCrossroadStart().getCoords());
+                System.out.println(r.getCrossroadEnd().getCoords());
+            }
+        }
     }
 
     public City getCityFrom() {

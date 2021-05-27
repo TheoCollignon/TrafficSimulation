@@ -36,7 +36,7 @@ public class Controller {
     }
     public void createRandomConfiguration() {
         initializeConfig();
-        configuration.addRandomElements(5,false);
+        configuration.addRandomElements(5,true);
     }
 
     public void loadJSONConfiguration(ViewGenerator viewGenerator, String fileName) {

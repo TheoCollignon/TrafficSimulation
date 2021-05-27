@@ -153,22 +153,22 @@ public class Configuration {
     }
 
     public ArrayList<Car> setupCars(int numberCars) {
-        int id = 1;
+        int id = 0;
         // init the cars
         for (int j = 0; j < numberCars; j++ ) {
             // find a random connected city
-            City randomStartCity = cities.get(j);
+            City startCity = cities.get(j);
             // create the car
             id++;
-            Car car = new Car(this, randomStartCity.getPosition(),100, viewGenerator,randomStartCity,id);
+            Car car = new Car(this,100, viewGenerator,startCity,id);
             // put it in the list
             cars.add(car);
         }
         return cars;
     }
 
-    public void addCar(Coordinate position, float energy, City cityFrom, City destination, int id, int speed) {
-        Car car = new Car(this,position, energy, viewGenerator, cityFrom, id);
+    public void addCar(float energy, City cityFrom, City destination, int id, int speed) {
+        Car car = new Car(this, energy, viewGenerator, cityFrom, id);
         car.setSpeed(speed);
         cars.add(car);
     }

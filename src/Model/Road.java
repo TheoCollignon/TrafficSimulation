@@ -144,9 +144,9 @@ public class Road {
                     // re-route
                     Crossroad currentCrossroad = null;
                     // if the car is at the end of the road, we must re-route it
-                    if (car.getPosition() == this.crossroadEnd.getCoords()){
+                    if (car.getPosition().equals(this.crossroadEnd.getCoords())){
                         currentCrossroad = this.crossroadEnd;
-                    }else if( car.getPosition() == this.crossroadStart.getCoords()) {
+                    }else if( car.getPosition().equals(this.crossroadStart.getCoords())) {
                         currentCrossroad = this.crossroadStart;
                     }
                     if(currentCrossroad.isCity && currentCrossroad.getCity().equals(car.getDestination())){

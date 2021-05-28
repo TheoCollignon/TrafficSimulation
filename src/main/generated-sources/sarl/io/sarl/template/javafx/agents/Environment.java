@@ -51,9 +51,10 @@ public class Environment extends Agent {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("The agent was started.");
     this.controller = Controller.getInstance();
-    this.controller.createRandomConfiguration();
-    this.controller.getConfiguration().setupCars(5);
+    while (Objects.equal(this.controller.getConfiguration(), null)) {
+    }
     ArrayList<Road> roads = this.controller.getConfiguration().getRoads();
+    System.out.println(("road: " + roads));
     for (final Road road : roads) {
       ArrayList<Coordinate> _coordsList = road.getCoordsList();
       for (final Coordinate coord : _coordsList) {

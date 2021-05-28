@@ -28,10 +28,15 @@ agent Environment {
 		// Event trigger before the agent begin to live or to be used.
 		// You should put all the initialization statements in this block of code.
 		info("The agent was started.")
+		
 		controller = Controller.getInstance
-		controller.createRandomConfiguration // for testing purpose
-		controller.configuration.setupCars(5)
-		var roads  = controller.configuration.roads
+		while (controller.configuration == null) {
+			// Can be better imo
+		}
+		// controller.createRandomConfiguration // for testing purpose
+		// controller.configuration.setupCars(5)
+		var roads = controller.configuration.roads
+		System.out.println("road: " + roads)
 		for(road : roads) {
 			for (coord : road.coordsList) {
 				for(car : coord.carList) {
@@ -41,7 +46,7 @@ agent Environment {
 				}
 			}
 		}
-		
+		// 
 		every(500)[startEnvironnement]
 		
 	}

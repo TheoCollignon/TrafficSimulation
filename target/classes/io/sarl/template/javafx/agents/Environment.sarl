@@ -48,8 +48,10 @@ agent Environment {
 	on ReturnPerception {
 		info("i : " + occurrence.i)
 		info("id : " + occurrence.id)
+		info("next coordinate available ?  : " + occurrence.nextCoordFree)
 		
 	}
+	
 	
 	def startEnvironnement {
 		var roads = controller.configuration.roads

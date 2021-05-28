@@ -170,6 +170,23 @@ public class Road {
         return false;
     }
 
+    // for testing purpose : 
+    public boolean perceptionFree(Car car) {
+    	 for(Coordinate coord : coordsList) {
+    		 if (coord.getCar().contains(car)) {
+    			// verify if there is a next coordinate
+                 if ((coordsList.indexOf(coord) < coordsList.size() - 1) && car.getDirection() == 1) {
+                     // return if there is nothing 
+                     return (coordsList.get(coordsList.indexOf(coord) + 1).isCar());
+                 } else if (((coordsList.indexOf(coord)) > 0) && car.getDirection() == -1) {
+                     // get the previous element
+                     return (coordsList.get(coordsList.indexOf(coord) - 1).isCar());
+                 }
+    		 }
+    	 }
+    	return false;
+    }
+    // end testing
     public ArrayList<Coordinate> getCoordsList() {
         return coordsList;
     }

@@ -22,10 +22,12 @@ event Perception{
 event ReturnPerception{
 	var i : int
 	var id : UUID
+	var nextCoordFree: boolean
 	
-	new (i : int, id : UUID){
+	new (i : int, id : UUID, nextCoordFree : boolean){
 		this.i = i
 		this.id = id
+		this.nextCoordFree = nextCoordFree
 	}
 	
 }

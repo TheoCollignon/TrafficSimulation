@@ -53,8 +53,9 @@ public class CarAgent extends Agent {
           UUID _iD = this.getID();
           boolean _equals = Objects.equal(_uUID, _iD);
           if (_equals) {
+            boolean nextCoordFree = this.road.perceptionFree(car);
             UUID _iD_1 = this.getID();
-            ReturnPerception returnPerception = new ReturnPerception(i, _iD_1);
+            ReturnPerception returnPerception = new ReturnPerception(i, _iD_1, nextCoordFree);
             DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
             _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(returnPerception);
           }

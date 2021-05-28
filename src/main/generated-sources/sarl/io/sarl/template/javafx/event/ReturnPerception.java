@@ -17,9 +17,12 @@ public class ReturnPerception extends Event {
   
   public UUID id;
   
-  public ReturnPerception(final int i, final UUID id) {
+  public boolean nextCoordFree;
+  
+  public ReturnPerception(final int i, final UUID id, final boolean nextCoordFree) {
     this.i = i;
     this.id = id;
+    this.nextCoordFree = nextCoordFree;
   }
   
   @Override
@@ -37,6 +40,8 @@ public class ReturnPerception extends Event {
       return false;
     if (!Objects.equals(this.id, other.id))
       return false;
+    if (other.nextCoordFree != this.nextCoordFree)
+      return false;
     return super.equals(obj);
   }
   
@@ -48,6 +53,7 @@ public class ReturnPerception extends Event {
     final int prime = 31;
     result = prime * result + Integer.hashCode(this.i);
     result = prime * result + Objects.hashCode(this.id);
+    result = prime * result + Boolean.hashCode(this.nextCoordFree);
     return result;
   }
   
@@ -60,8 +66,9 @@ public class ReturnPerception extends Event {
     super.toString(builder);
     builder.add("i", this.i);
     builder.add("id", this.id);
+    builder.add("nextCoordFree", this.nextCoordFree);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = -1491898299L;
+  private static final long serialVersionUID = -1228631091L;
 }

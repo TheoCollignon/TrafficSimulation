@@ -11,6 +11,7 @@ import io.sarl.template.javafx.Controller.Controller
 import io.sarl.template.javafx.^event.ReturnPerception
 import io.sarl.core.Schedules
 import io.sarl.template.javafx.^event.Perception
+import java.util.Collections
 
 /** 
  * @author Luka Lambalot
@@ -49,13 +50,13 @@ agent Environment {
 	on ReturnPerception {
 		info("i : " + occurrence.i)
 		info("id : " + occurrence.id)
-		info("next coordinate available ?  : " + occurrence.nextCoordFree)
+		info("next coordinate available ?  : " + occurrence.numberOfFreeCoord)
 		
 	}
 	
 	
 	def startEnvironnement {
-		var roads = controller.configuration.roads
+		var roads = Collections.synchronizedList(controller.configuration.roads)
 		for (road : roads) {
 			for (coord : road.coordsList) {
 				for (car : coord.carList) {

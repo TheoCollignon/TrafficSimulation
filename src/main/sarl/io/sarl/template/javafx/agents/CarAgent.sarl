@@ -31,8 +31,8 @@ agent CarAgent {
 				for (car : coord.carList) { // on vérifie si jamais y'a deux voitures sur la même coord, que ce soit la bonne
 					if (car.UUID == this.ID) {
 					// on renvoie l'indice
-						var nextCoordFree = road.perceptionFree(car)
-						var returnPerception = new ReturnPerception(i, this.ID, nextCoordFree)
+						var numberOfFreeCoord = road.perceptionFree(car, 5)
+						var returnPerception = new ReturnPerception(i, this.ID, numberOfFreeCoord)
 						emit(returnPerception)
 					}
 				}

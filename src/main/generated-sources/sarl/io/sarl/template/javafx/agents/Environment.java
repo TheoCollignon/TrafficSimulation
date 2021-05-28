@@ -28,6 +28,8 @@ import io.sarl.template.javafx.event.ReturnPerception;
 import java.io.ObjectStreamException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -76,11 +78,11 @@ public class Environment extends Agent {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("id : " + occurrence.id));
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(("next coordinate available ?  : " + Boolean.valueOf(occurrence.nextCoordFree)));
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(("next coordinate available ?  : " + Integer.valueOf(occurrence.numberOfFreeCoord)));
   }
   
   protected void startEnvironnement() {
-    ArrayList<Road> roads = this.controller.getConfiguration().getRoads();
+    List<Road> roads = Collections.<Road>synchronizedList(this.controller.getConfiguration().getRoads());
     for (final Road road : roads) {
       ArrayList<Coordinate> _coordsList = road.getCoordsList();
       for (final Coordinate coord : _coordsList) {

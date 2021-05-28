@@ -20,6 +20,7 @@ agent Environment {
 	uses Logging, Lifecycle, DefaultContextInteractions, Schedules
 
 	var controller : Controller
+	var configuration : Configuration
 	
 		 
 	on Initialize {

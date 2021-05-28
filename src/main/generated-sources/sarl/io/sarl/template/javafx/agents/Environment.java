@@ -43,6 +43,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public class Environment extends Agent {
   private Controller controller;
   
+  private /* Configuration */Object configuration;
+  
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("The agent was started.");

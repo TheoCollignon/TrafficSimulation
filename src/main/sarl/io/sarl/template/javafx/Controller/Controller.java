@@ -47,4 +47,8 @@ public class Controller {
         viewGenerator.updateView(configuration.getCars());
         viewGenerator.drawConfiguration(configuration);
     }
+    
+    public Configuration getConfiguration() {
+    	return configuration;
+    }
 }

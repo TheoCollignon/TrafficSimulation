@@ -1,0 +1,31 @@
+/** 
+ * 
+ */
+package io.sarl.template.javafx.^event
+
+import io.sarl.template.javafx.Model.Road
+import java.util.UUID
+
+/** 
+ * @author Luka Lambalot
+ * 
+ */
+event Perception{
+	
+	var road : Road
+	
+	new (road : Road){
+		this.road = road
+	}
+}
+
+event ReturnPerception{
+	var i : int
+	var id : UUID
+	
+	new (i : int, id : UUID){
+		this.i = i
+		this.id = id
+	}
+	
+}

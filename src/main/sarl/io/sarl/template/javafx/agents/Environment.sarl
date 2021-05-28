@@ -1,0 +1,73 @@
+/** 
+ * 
+ */
+package io.sarl.template.javafx.agents
+
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Initialize
+import io.sarl.core.Lifecycle
+import io.sarl.core.Logging
+import io.sarl.template.javafx.Controller.Controller
+import io.sarl.template.javafx.^event.ReturnPerception
+import io.sarl.core.Schedules
+import io.sarl.template.javafx.^event.Perception
+
+/** 
+ * @author Luka Lambalot
+ * 
+ */
+agent Environment {
+	uses Logging, Lifecycle, DefaultContextInteractions, Schedules
+
+	var controller : Controller
+	
+		 
+	on Initialize {
+		// Event trigger before the agent begin to live or to be used.
+		// You should put all the initialization statements in this block of code.
+		info("The agent was started.")
+		controller = Controller.getInstance
+		controller.createRandomConfiguration // for testing purpose
+		controller.configuration.setupCars(5)
+		var roads  = controller.configuration.roads
+		for(road : roads) {
+			for (coord : road.coordsList) {
+				for(car : coord.carList) {
+					// pour chaque voiture on spawn un agent voiture
+					// apres defaultcontext on met nos arg
+					spawnInContextWithID(typeof(CarAgent), car.UUID, defaultContext, road)
+				}
+			}
+		}
+		
+		every(500)[startEnvironnement]
+		
+	}
+	
+	
+	on ReturnPerception {
+		info("i : " + occurrence.i)
+		info("id : " + occurrence.id)
+		
+	}
+	
+	def startEnvironnement {
+		var roads = controller.configuration.roads
+		for (road : roads) {
+			for (coord : road.coordsList) {
+				for (car : coord.carList) {
+					// pour chaque voiture on spawn un agent voiture
+					// apres defaultcontext on met nos arg
+					var perception = new Perception(road)
+					emit(perception)[it.UUID == car.UUID]
+				}
+			}
+		}
+	}
+	
+	
+	
+	
+
+	
+}

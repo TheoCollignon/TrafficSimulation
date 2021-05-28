@@ -5,6 +5,7 @@ import io.sarl.template.javafx.View.ViewGenerator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 public class Car {
     private Coordinate position;
@@ -19,11 +20,14 @@ public class Car {
     private Configuration config;
     private int speed;
     private int id;
+    private UUID uuid;
+    
     //the list of roads the car has to drive on to get to its destination
     private List<Road> roadPlan;
 
 
     public Car(Configuration config, float energy, ViewGenerator viewGenerator, City cityFrom, int id) {
+    	this.uuid = UUID.randomUUID();
         this.position = cityFrom.getPosition();
         this.config = config;
         this.roadPlan = new ArrayList<>();
@@ -184,6 +188,10 @@ public class Car {
 
     public City getCityFrom() {
         return cityFrom;
+    }
+    
+    public UUID getUUID() {
+    	return this.uuid;
     }
 
     public void setCityFrom(City cityFrom) {

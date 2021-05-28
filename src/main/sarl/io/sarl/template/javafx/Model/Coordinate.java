@@ -34,6 +34,10 @@ public class Coordinate {
     public void addCar(Car car) {
         this.carList.add(car);
     }
+    
+    public ArrayList<Car> getCarList(){
+    	return this.carList;
+    }
 
     public void removeCar(Car car) {
         // delete the car in the list

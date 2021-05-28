@@ -5,14 +5,12 @@ import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.core.Event;
-import io.sarl.template.javafx.agents.MyAgent;
 import io.sarl.template.javafx.ui.Refresh;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javafx.fxml.FXML;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure0;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -31,13 +29,9 @@ public class MyAppFxViewerController extends FxViewerController {
    */
   @FXML
   public void initialize() {
-    boolean _andSet = this.launched.getAndSet(true);
-    if ((!_andSet)) {
-      final UUID id = UUID.randomUUID();
-      final Procedure0 _function = () -> {
-      };
-      this.startAgentApplication(MyAgent.class, id, _function);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nMyAgent cannot be resolved to a type."
+      + "\nType mismatch: cannot convert from Class<void> to Class<? extends Agent>");
   }
   
   protected void refreshScreen() {

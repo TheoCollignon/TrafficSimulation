@@ -22,4 +22,7 @@ public class Refresh extends Event {
   public Refresh(final Address source) {
     super(source);
   }
+  
+  @SyntheticMember
+  private static final long serialVersionUID = 588368462L;
 }

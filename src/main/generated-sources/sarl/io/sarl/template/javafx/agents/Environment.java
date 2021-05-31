@@ -24,8 +24,8 @@ import io.sarl.template.javafx.Model.Configuration;
 import io.sarl.template.javafx.Model.Coordinate;
 import io.sarl.template.javafx.Model.Road;
 import io.sarl.template.javafx.agents.CarAgent;
+import io.sarl.template.javafx.event.Influence;
 import io.sarl.template.javafx.event.Perception;
-import io.sarl.template.javafx.event.ReturnPerception;
 import java.io.ObjectStreamException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,17 +58,11 @@ public class Environment extends Agent {
       }
       Thread.sleep(50);
       ArrayList<Road> roads = this.controller.getConfiguration().getRoads();
-      System.out.println(("road: " + roads));
-      for (final Road road : roads) {
-        ArrayList<Coordinate> _coordsList = road.getCoordsList();
-        for (final Coordinate coord : _coordsList) {
-          ArrayList<Car> _carList = coord.getCarList();
-          for (final Car car : _carList) {
-            Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
-            DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-            _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContextWithID(CarAgent.class, car.getUUID(), _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultContext(), road);
-          }
-        }
+      ArrayList<Car> cars = this.controller.getConfiguration().getCars();
+      for (final Car car : cars) {
+        Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
+        DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+        _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContextWithID(CarAgent.class, car.getUUID(), _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultContext(), car.getRoadOn());
       }
       this.startSimulationStep();
     } catch (Throwable _e) {
@@ -76,13 +70,20 @@ public class Environment extends Agent {
     }
   }
   
-  private void $behaviorUnit$ReturnPerception$1(final ReturnPerception occurrence) {
+  private void $behaviorUnit$Influence$1(final Influence occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("i : " + Integer.valueOf(occurrence.i)));
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("id : " + occurrence.id));
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(("next coordinate available ?  : " + Integer.valueOf(occurrence.numberOfFreeCoord)));
+    boolean move = true;
+    if ((occurrence.numberOfFreeCoord == 0)) {
+      move = false;
+    }
+    if (true) {
+      this.endSimulationStep();
+    }
   }
   
   protected void startSimulationStep() {
@@ -125,6 +126,10 @@ public class Environment extends Agent {
         }
       }
     }
+  }
+  
+  protected void endSimulationStep() {
+    System.out.println("salut bg");
   }
   
   @Extension
@@ -193,10 +198,10 @@ public class Environment extends Agent {
   
   @SyntheticMember
   @PerceptGuardEvaluator
-  private void $guardEvaluator$ReturnPerception(final ReturnPerception occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+  private void $guardEvaluator$Influence(final Influence occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$ReturnPerception$1(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Influence$1(occurrence));
   }
   
   @Override

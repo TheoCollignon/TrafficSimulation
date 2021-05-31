@@ -8,11 +8,11 @@ import io.sarl.core.Initialize
 import io.sarl.core.Lifecycle
 import io.sarl.core.Logging
 import io.sarl.template.javafx.Controller.Controller
-import io.sarl.template.javafx.^event.ReturnPerception
 import io.sarl.core.Schedules
 import io.sarl.template.javafx.^event.Perception
 import java.util.Collections
 import io.sarl.template.javafx.Model.Configuration
+import io.sarl.template.javafx.^event.Influence
 
 /** 
  * @author Luka Lambalot
@@ -23,7 +23,9 @@ agent Environment {
 
 	var controller : Controller
 	var configuration : Configuration
+	// TOBEDONE : var influences = Collections.synchronizedList(events)
 	
+
 		 
 	on Initialize {
 		// Event trigger before the agent begin to live or to be used.
@@ -39,15 +41,9 @@ agent Environment {
 		// controller.createRandomConfiguration // for testing purpose
 		// controller.configuration.setupCars(5)
 		var roads = controller.configuration.roads
-		System.out.println("road: " + roads)
-		for(road : roads) {
-			for (coord : road.coordsList) {
-				for(car : coord.carList) {
-					// pour chaque voiture on spawn un agent voiture
-					// apres defaultcontext on met nos arg
-					spawnInContextWithID(typeof(CarAgent), car.UUID, defaultContext, road)
-				}
-			}
+		var cars = controller.configuration.cars
+		for (car : cars) {
+			spawnInContextWithID(typeof(CarAgent), car.UUID, defaultContext, car.roadOn)
 		}
 		// every(500)[startSimulationStep]
 		startSimulationStep
@@ -56,10 +52,23 @@ agent Environment {
 	
 	
 	
-	on ReturnPerception {
+	on Influence {
 		info("i : " + occurrence.i)
 		info("id : " + occurrence.id)
 		info("next coordinate available ?  : " + occurrence.numberOfFreeCoord)
+		// we need to know if we can move to the next coordinate
+		var move = true
+		if(occurrence.numberOfFreeCoord == 0) {
+			move = false;
+		}
+		
+		// when we receive an influence we need to know if everyone has done his job yet
+		// tobedone
+		if (true) {
+			// then we end the current step
+			endSimulationStep
+		}
+	
 		
 	}
 	
@@ -77,6 +86,13 @@ agent Environment {
 			}
 		}
 	}
+	
+	def endSimulationStep {
+		System.out.println("salut bg")
+		
+	}
+	
+
 	
 	
 	

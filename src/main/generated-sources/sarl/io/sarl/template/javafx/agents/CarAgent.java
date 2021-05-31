@@ -18,8 +18,8 @@ import io.sarl.lang.core.DynamicSkillProvider;
 import io.sarl.template.javafx.Model.Car;
 import io.sarl.template.javafx.Model.Coordinate;
 import io.sarl.template.javafx.Model.Road;
+import io.sarl.template.javafx.event.Influence;
 import io.sarl.template.javafx.event.Perception;
-import io.sarl.template.javafx.event.ReturnPerception;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
@@ -44,20 +44,27 @@ public class CarAgent extends Agent {
   private void $behaviorUnit$Perception$1(final Perception occurrence) {
     this.road = occurrence.road;
     int i = 0;
+    System.out.println("11");
     ArrayList<Coordinate> _coordsList = this.road.getCoordsList();
     for (final Coordinate coord : _coordsList) {
       {
+        System.out.println("22");
         ArrayList<Car> _carList = coord.getCarList();
         for (final Car car : _carList) {
-          UUID _uUID = car.getUUID();
-          UUID _iD = this.getID();
-          boolean _equals = Objects.equal(_uUID, _iD);
-          if (_equals) {
-            int numberOfFreeCoord = this.road.perceptionFree(car, 5);
-            UUID _iD_1 = this.getID();
-            ReturnPerception returnPerception = new ReturnPerception(i, _iD_1, numberOfFreeCoord);
-            DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-            _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(returnPerception);
+          {
+            System.out.println("33");
+            UUID _uUID = car.getUUID();
+            UUID _iD = this.getID();
+            boolean _equals = Objects.equal(_uUID, _iD);
+            if (_equals) {
+              System.out.println("44");
+              int numberOfFreeCoord = this.road.perceptionFree(car, 5);
+              UUID _iD_1 = this.getID();
+              Influence influence = new Influence(i, _iD_1, numberOfFreeCoord);
+              System.out.println("aeaeaeaeaea");
+              DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+              _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(influence);
+            }
           }
         }
         i++;

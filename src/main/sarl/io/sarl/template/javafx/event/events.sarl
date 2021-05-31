@@ -19,7 +19,8 @@ event Perception{
 	}
 }
 
-event ReturnPerception{
+event Influence{
+	var move : boolean
 	var i : int
 	var id : UUID
 	var numberOfFreeCoord : int

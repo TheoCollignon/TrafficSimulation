@@ -35,7 +35,6 @@ import java.util.UUID;
 import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -71,11 +70,7 @@ public class Environment extends Agent {
           }
         }
       }
-      Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
-      final Procedure1<Agent> _function = (Agent it) -> {
-        this.startEnvironnement();
-      };
-      _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER.every(500, _function);
+      this.startSimulationStep();
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -90,7 +85,7 @@ public class Environment extends Agent {
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(("next coordinate available ?  : " + Integer.valueOf(occurrence.numberOfFreeCoord)));
   }
   
-  protected void startEnvironnement() {
+  protected void startSimulationStep() {
     List<Road> roads = Collections.<Road>synchronizedList(this.controller.getConfiguration().getRoads());
     for (final Road road : roads) {
       ArrayList<Coordinate> _coordsList = road.getCoordsList();

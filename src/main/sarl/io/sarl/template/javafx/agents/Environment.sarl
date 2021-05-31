@@ -49,8 +49,8 @@ agent Environment {
 				}
 			}
 		}
-		// 
-		every(500)[startEnvironnement]
+		// every(500)[startSimulationStep]
+		startSimulationStep
 		
 	}
 	
@@ -64,7 +64,7 @@ agent Environment {
 	}
 	
 	
-	def startEnvironnement {
+	def startSimulationStep {
 		var roads = Collections.synchronizedList(controller.configuration.roads)
 		for (road : roads) {
 			for (coord : road.coordsList) {

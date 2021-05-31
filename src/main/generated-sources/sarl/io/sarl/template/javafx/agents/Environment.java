@@ -20,6 +20,7 @@ import io.sarl.lang.core.Scope;
 import io.sarl.lang.util.SerializableProxy;
 import io.sarl.template.javafx.Controller.Controller;
 import io.sarl.template.javafx.Model.Car;
+import io.sarl.template.javafx.Model.Configuration;
 import io.sarl.template.javafx.Model.Coordinate;
 import io.sarl.template.javafx.Model.Road;
 import io.sarl.template.javafx.agents.CarAgent;
@@ -32,6 +33,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import javax.inject.Inject;
+import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -45,32 +47,38 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public class Environment extends Agent {
   private Controller controller;
   
-  private /* Configuration */Object configuration;
+  private Configuration configuration;
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("The agent was started.");
-    this.controller = Controller.getInstance();
-    while (Objects.equal(this.controller.getConfiguration(), null)) {
-    }
-    ArrayList<Road> roads = this.controller.getConfiguration().getRoads();
-    System.out.println(("road: " + roads));
-    for (final Road road : roads) {
-      ArrayList<Coordinate> _coordsList = road.getCoordsList();
-      for (final Coordinate coord : _coordsList) {
-        ArrayList<Car> _carList = coord.getCarList();
-        for (final Car car : _carList) {
-          Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
-          DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-          _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContextWithID(CarAgent.class, car.getUUID(), _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultContext(), road);
+    try {
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("The agent was started.");
+      this.controller = Controller.getInstance();
+      while ((this.controller.getStartAgent() == false)) {
+        Thread.sleep(50);
+      }
+      Thread.sleep(50);
+      ArrayList<Road> roads = this.controller.getConfiguration().getRoads();
+      System.out.println(("road: " + roads));
+      for (final Road road : roads) {
+        ArrayList<Coordinate> _coordsList = road.getCoordsList();
+        for (final Coordinate coord : _coordsList) {
+          ArrayList<Car> _carList = coord.getCarList();
+          for (final Car car : _carList) {
+            Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
+            DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+            _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContextWithID(CarAgent.class, car.getUUID(), _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultContext(), road);
+          }
         }
       }
+      Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
+      final Procedure1<Agent> _function = (Agent it) -> {
+        this.startEnvironnement();
+      };
+      _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER.every(500, _function);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
     }
-    Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
-    final Procedure1<Agent> _function = (Agent it) -> {
-      this.startEnvironnement();
-    };
-    _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER.every(500, _function);
   }
   
   private void $behaviorUnit$ReturnPerception$1(final ReturnPerception occurrence) {

@@ -12,6 +12,7 @@ import io.sarl.template.javafx.^event.ReturnPerception
 import io.sarl.core.Schedules
 import io.sarl.template.javafx.^event.Perception
 import java.util.Collections
+import io.sarl.template.javafx.Model.Configuration
 
 /** 
  * @author Luka Lambalot
@@ -30,9 +31,11 @@ agent Environment {
 		info("The agent was started.")
 		
 		controller = Controller.getInstance
-		while (controller.configuration == null) {
+		while (controller.startAgent == false) {
+			Thread::sleep(50)
 			// Can be better imo
 		}
+		Thread::sleep(50)
 		// controller.createRandomConfiguration // for testing purpose
 		// controller.configuration.setupCars(5)
 		var roads = controller.configuration.roads
@@ -50,6 +53,7 @@ agent Environment {
 		every(500)[startEnvironnement]
 		
 	}
+	
 	
 	
 	on ReturnPerception {

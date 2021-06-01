@@ -19,7 +19,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
+import javafx.scene.control.Spinner;
+import javafx.scene.control.TextField;
 import javax.swing.text.View;
 import java.awt.*;
 import java.io.IOException;
@@ -34,11 +35,13 @@ public class ConfigCreation {
     private Button buttonNormal;
     @FXML
     private Pane cityPane;
+    @FXML
+    private TextField cityName;
 
     private boolean placeRoads = false;
     private boolean isCitySelected = false;
     private City citySelected = null;
-
+    
     private ArrayList<City> citiesNotLinked = new ArrayList<>();
 
     Controller controller = Controller.getInstance();

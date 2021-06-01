@@ -21,6 +21,7 @@ public class Car {
     private int speed;
     private int id;
     private UUID uuid;
+    private ArrayList<Coordinate> toBeDelete;
     
     //the list of roads the car has to drive on to get to its destination
     private List<Road> roadPlan;
@@ -29,6 +30,7 @@ public class Car {
     public Car(Configuration config, float energy, ViewGenerator viewGenerator, City cityFrom, int id) {
     	this.uuid = UUID.randomUUID();
         this.position = cityFrom.getPosition();
+        this.toBeDelete = new ArrayList<>();
         this.config = config;
         this.roadPlan = new ArrayList<>();
         this.energy = energy;
@@ -76,10 +78,12 @@ public class Car {
         if (this.energy >= 0 && !isInTownEvent()) {
             adaptCarSpeed(this.position);
             this.energy -= 0.01 * this.speed;
-            this.position.removeCar(this);
+            // this.position.removeCar(this);
+            this.toBeDelete.add(this.position);
+            System.out.println("JAJOUTE UN TRUC A DELETE FDP");
             this.position = position;
             this.position.addCar(this);
-            if(this.energy < 0){
+            if(this.energy <= 0){
                 System.out.println("All out of gas !");
             }
         }
@@ -237,6 +241,11 @@ public class Car {
     public void setRoadOn(Road roadOn) {
         this.roadOn = roadOn;
     }
+    
+    public ArrayList<Coordinate> getToBeDelete() {
+    	return this.toBeDelete;
+    }
+    
 
     public City getDestination() {
         return destination;

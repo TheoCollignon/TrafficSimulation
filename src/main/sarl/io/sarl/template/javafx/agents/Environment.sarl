@@ -95,6 +95,7 @@ agent Environment {
 			// insert code here 
 		
 			// then we end the current step
+			
 			endSimulationStep
 		}
 	
@@ -107,14 +108,23 @@ agent Environment {
 		var roads = Collections.synchronizedList(controller.configuration.roads)
 		var cars = controller.configuration.cars
 		for (car : cars) {
+			println("an emit has been made")
 			var perception = new Perception(car.roadOn)				
 			emit(perception)[it.UUID == car.UUID]
 		}
 	}
 	
 	def endSimulationStep {
+		println("simuEnd")
 		// we clear the list after using it
+		var cars = controller.configuration.cars
+		for(car : cars){
+			if (car.toBeDelete.size() != 0) {
+				car.toBeDelete.get(0).removeCar(car)	
+			}
+		}
 		listInfluences.clear()
+		
 		startSimulationStep // end of the loop 
 	}
 	

@@ -36,6 +36,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -110,6 +111,7 @@ public class Environment extends Agent {
     ArrayList<Car> cars = this.controller.getConfiguration().getCars();
     for (final Car car : cars) {
       {
+        InputOutput.<String>println("an emit has been made");
         Road _roadOn = car.getRoadOn();
         Perception perception = new Perception(_roadOn);
         DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
@@ -144,6 +146,14 @@ public class Environment extends Agent {
   }
   
   protected void endSimulationStep() {
+    InputOutput.<String>println("simuEnd");
+    ArrayList<Car> cars = this.controller.getConfiguration().getCars();
+    for (final Car car : cars) {
+      int _size = car.getToBeDelete().size();
+      if ((_size != 0)) {
+        car.getToBeDelete().get(0).removeCar(car);
+      }
+    }
     this.listInfluences.clear();
     this.startSimulationStep();
   }

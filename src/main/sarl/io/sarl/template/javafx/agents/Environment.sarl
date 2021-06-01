@@ -13,6 +13,7 @@ import io.sarl.template.javafx.^event.Perception
 import java.util.Collections
 import io.sarl.template.javafx.Model.Configuration
 import io.sarl.template.javafx.^event.Influence
+import io.sarl.template.javafx.^event.SetupApplication
 
 /** 
  * @author Luka Lambalot
@@ -42,16 +43,20 @@ agent Environment {
 		// controller.configuration.setupCars(5)
 		var roads = controller.configuration.roads
 		var cars = controller.configuration.cars
-		for (car : cars) {
-			spawnInContextWithID(typeof(CarAgent), car.UUID, defaultContext, car.roadOn)
-		}
-		
-		startSimulationStep
-		// every(500)[startSimulationStep]
+		var setupApplication = new SetupApplication()
+		emit(setupApplication) // have to emit, to be sure at 100% that every agent are instanciate
 		
 	}
 	
-	
+	on SetupApplication { 
+		var cars = controller.configuration.cars
+		for (car : cars) {
+			spawnInContextWithID(typeof(CarAgent), car.UUID, defaultContext, car.roadOn)
+		}
+
+		startSimulationStep
+		// every(500)[startSimulationStep]
+	}
 	
 	
 	

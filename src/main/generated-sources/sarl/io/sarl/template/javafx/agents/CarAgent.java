@@ -48,23 +48,17 @@ public class CarAgent extends Agent {
     ArrayList<Coordinate> _coordsList = this.road.getCoordsList();
     for (final Coordinate coord : _coordsList) {
       {
-        System.out.println("22");
         ArrayList<Car> _carList = coord.getCarList();
         for (final Car car : _carList) {
-          {
-            System.out.println("33");
-            UUID _uUID = car.getUUID();
-            UUID _iD = this.getID();
-            boolean _equals = Objects.equal(_uUID, _iD);
-            if (_equals) {
-              System.out.println("44");
-              int numberOfFreeCoord = this.road.perceptionFree(car, 5);
-              UUID _iD_1 = this.getID();
-              Influence influence = new Influence(i, _iD_1, numberOfFreeCoord);
-              System.out.println("aeaeaeaeaea");
-              DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-              _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(influence);
-            }
+          UUID _uUID = car.getUUID();
+          UUID _iD = this.getID();
+          boolean _equals = Objects.equal(_uUID, _iD);
+          if (_equals) {
+            int numberOfFreeCoord = this.road.perceptionFree(car, 5);
+            UUID _iD_1 = this.getID();
+            Influence influence = new Influence(i, _iD_1, numberOfFreeCoord);
+            DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+            _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(influence);
           }
         }
         i++;

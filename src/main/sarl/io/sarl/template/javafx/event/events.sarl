@@ -19,6 +19,7 @@ event Perception{
 	}
 }
 
+
 event Influence{
 	var move : boolean
 	var i : int

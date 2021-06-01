@@ -10,6 +10,7 @@ import io.sarl.core.Logging
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.template.javafx.^event.Influence
 
+
 /*
  * The main agent able to communicate with the GUI
  */
@@ -23,30 +24,26 @@ agent CarAgent {
 	on Initialize {
 		info("je suis vivant")
 	}
-	
+
 	on Perception {
 		road = occurrence.road // route sur laquel la voiture est
 		var i = 0
 		System.out.println("11")
 		for (coord : road.coordsList) { // parcours de ma route pour trouvé la voiture
-		System.out.println("22")
 				for (car : coord.carList) { // on vérifie si jamais y'a deux voitures sur la même coord, que ce soit la bonne
-				System.out.println("33")
 					if (car.UUID == this.ID) {
-					System.out.println("44")
 					// on renvoie l'indice
 						var numberOfFreeCoord = road.perceptionFree(car, 5)
 						var influence = new Influence(i, this.ID, numberOfFreeCoord)
-						System.out.println("aeaeaeaeaea")
 						emit(influence)
 					}
 				}
 				i++
-			}
-		}	
-	}
+		}
+	}	
+}
 	
 	
 	
 
-}
+

@@ -45,10 +45,13 @@ agent Environment {
 		for (car : cars) {
 			spawnInContextWithID(typeof(CarAgent), car.UUID, defaultContext, car.roadOn)
 		}
-		// every(500)[startSimulationStep]
+		
 		startSimulationStep
+		// every(500)[startSimulationStep]
 		
 	}
+	
+	
 	
 	
 	
@@ -74,22 +77,19 @@ agent Environment {
 	
 	
 	def startSimulationStep {
+		
 		var roads = Collections.synchronizedList(controller.configuration.roads)
-		for (road : roads) {
-			for (coord : road.coordsList) {
-				for (car : coord.carList) {
-					// pour chaque voiture on spawn un agent voiture
-					// apres defaultcontext on met nos arg
-					var perception = new Perception(road)
-					emit(perception)[it.UUID == car.UUID]
-				}
-			}
+		var cars = controller.configuration.cars
+		for (car : cars) {
+			println("wallah")
+			var perception = new Perception(car.roadOn)				
+			emit(perception)[it.UUID == car.UUID]
 		}
 	}
 	
 	def endSimulationStep {
-		System.out.println("salut bg")
-		
+		println("nathan est pas la comme dhab")
+		// startSimulationStep
 	}
 	
 

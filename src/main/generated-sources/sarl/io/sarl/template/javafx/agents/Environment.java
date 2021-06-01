@@ -21,7 +21,6 @@ import io.sarl.lang.util.SerializableProxy;
 import io.sarl.template.javafx.Controller.Controller;
 import io.sarl.template.javafx.Model.Car;
 import io.sarl.template.javafx.Model.Configuration;
-import io.sarl.template.javafx.Model.Coordinate;
 import io.sarl.template.javafx.Model.Road;
 import io.sarl.template.javafx.agents.CarAgent;
 import io.sarl.template.javafx.event.Influence;
@@ -35,6 +34,7 @@ import java.util.UUID;
 import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -88,48 +88,45 @@ public class Environment extends Agent {
   
   protected void startSimulationStep() {
     List<Road> roads = Collections.<Road>synchronizedList(this.controller.getConfiguration().getRoads());
-    for (final Road road : roads) {
-      ArrayList<Coordinate> _coordsList = road.getCoordsList();
-      for (final Coordinate coord : _coordsList) {
-        ArrayList<Car> _carList = coord.getCarList();
-        for (final Car car : _carList) {
-          {
-            Perception perception = new Perception(road);
-            DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-            class $SerializableClosureProxy implements Scope<Address> {
-              
-              private final UUID $_uUID;
-              
-              public $SerializableClosureProxy(final UUID $_uUID) {
-                this.$_uUID = $_uUID;
-              }
-              
-              @Override
-              public boolean matches(final Address it) {
-                UUID _uUID = it.getUUID();
-                return Objects.equal(_uUID, $_uUID);
-              }
-            }
-            final Scope<Address> _function = new Scope<Address>() {
-              @Override
-              public boolean matches(final Address it) {
-                UUID _uUID = it.getUUID();
-                UUID _uUID_1 = car.getUUID();
-                return Objects.equal(_uUID, _uUID_1);
-              }
-              private Object writeReplace() throws ObjectStreamException {
-                return new SerializableProxy($SerializableClosureProxy.class, car.getUUID());
-              }
-            };
-            _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(perception, _function);
+    ArrayList<Car> cars = this.controller.getConfiguration().getCars();
+    for (final Car car : cars) {
+      {
+        InputOutput.<String>println("wallah");
+        Road _roadOn = car.getRoadOn();
+        Perception perception = new Perception(_roadOn);
+        DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+        class $SerializableClosureProxy implements Scope<Address> {
+          
+          private final UUID $_uUID;
+          
+          public $SerializableClosureProxy(final UUID $_uUID) {
+            this.$_uUID = $_uUID;
+          }
+          
+          @Override
+          public boolean matches(final Address it) {
+            UUID _uUID = it.getUUID();
+            return Objects.equal(_uUID, $_uUID);
           }
         }
+        final Scope<Address> _function = new Scope<Address>() {
+          @Override
+          public boolean matches(final Address it) {
+            UUID _uUID = it.getUUID();
+            UUID _uUID_1 = car.getUUID();
+            return Objects.equal(_uUID, _uUID_1);
+          }
+          private Object writeReplace() throws ObjectStreamException {
+            return new SerializableProxy($SerializableClosureProxy.class, car.getUUID());
+          }
+        };
+        _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(perception, _function);
       }
     }
   }
   
-  protected void endSimulationStep() {
-    System.out.println("salut bg");
+  protected String endSimulationStep() {
+    return InputOutput.<String>println("nathan est pas la comme dhab");
   }
   
   @Extension

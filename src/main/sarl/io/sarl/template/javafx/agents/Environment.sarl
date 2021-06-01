@@ -15,6 +15,7 @@ import io.sarl.template.javafx.Model.Configuration
 import io.sarl.template.javafx.^event.Influence
 import io.sarl.template.javafx.^event.SetupApplication
 import java.util.ArrayList
+import java.util.concurrent.ConcurrentLinkedQueue
 
 /** 
  * @author Luka Lambalot
@@ -25,7 +26,8 @@ agent Environment {
 
 	var controller : Controller
 	var configuration : Configuration
-	var listInfluences = Collections.synchronizedList(new ArrayList<Influence>)
+	var listInfluences = new ConcurrentLinkedQueue<Influence>();
+
 	
 	// TOBEDONE : var influences = Collections.synchronizedList(events)
 	
@@ -64,9 +66,9 @@ agent Environment {
 	
 	
 	on Influence {
-		info("i : " + occurrence.i)
-		info("id : " + occurrence.id)
-		info("next coordinate available ?  : " + occurrence.numberOfFreeCoord)
+//		info("i : " + occurrence.i)
+//		info("id : " + occurrence.id)
+//		info("next coordinate available ?  : " + occurrence.numberOfFreeCoord)
 		// we need to know if we can move to the next coordinate
 		var move = true
 		if(occurrence.numberOfFreeCoord == 0) {
@@ -79,7 +81,16 @@ agent Environment {
 		// when we receive an influence we need to know if everyone has done his job yet
 		// tobedone
 		if (cars.size() == listInfluences.size()) {
-
+			for (influence : listInfluences) {
+				for(car : cars){
+					if(influence.id == car.UUID){
+						if(influence.numberOfFreeCoord != 0){
+							// in that case, we make the car move
+							car.getRoadOn().moveCarPosition(car);
+						}
+					}
+				}
+			}
 			// use listInfluences to update the model and the view
 			// insert code here 
 		

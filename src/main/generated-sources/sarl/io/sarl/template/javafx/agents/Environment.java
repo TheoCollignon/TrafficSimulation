@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -48,7 +49,7 @@ public class Environment extends Agent {
   
   private Configuration configuration;
   
-  private List<Influence> listInfluences = Collections.<Influence>synchronizedList(new ArrayList<Influence>());
+  private ConcurrentLinkedQueue<Influence> listInfluences = new ConcurrentLinkedQueue<Influence>();
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     try {
@@ -80,12 +81,6 @@ public class Environment extends Agent {
   }
   
   private void $behaviorUnit$Influence$2(final Influence occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("i : " + Integer.valueOf(occurrence.i)));
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("id : " + occurrence.id));
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(("next coordinate available ?  : " + Integer.valueOf(occurrence.numberOfFreeCoord)));
     boolean move = true;
     if ((occurrence.numberOfFreeCoord == 0)) {
       move = false;
@@ -95,6 +90,17 @@ public class Environment extends Agent {
     int _size = cars.size();
     int _size_1 = this.listInfluences.size();
     if ((_size == _size_1)) {
+      for (final Influence influence : this.listInfluences) {
+        for (final Car car : cars) {
+          UUID _uUID = car.getUUID();
+          boolean _equals = Objects.equal(influence.id, _uUID);
+          if (_equals) {
+            if ((influence.numberOfFreeCoord != 0)) {
+              car.getRoadOn().moveCarPosition(car);
+            }
+          }
+        }
+      }
       this.endSimulationStep();
     }
   }

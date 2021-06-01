@@ -44,7 +44,6 @@ public class CarAgent extends Agent {
   private void $behaviorUnit$Perception$1(final Perception occurrence) {
     this.road = occurrence.road;
     int i = 0;
-    System.out.println("11");
     ArrayList<Coordinate> _coordsList = this.road.getCoordsList();
     for (final Coordinate coord : _coordsList) {
       {

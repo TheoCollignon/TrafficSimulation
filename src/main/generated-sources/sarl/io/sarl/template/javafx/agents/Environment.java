@@ -133,8 +133,8 @@ public class Environment extends Agent {
     }
   }
   
-  protected String endSimulationStep() {
-    return InputOutput.<String>println("nathan est pas la comme dhab");
+  protected void endSimulationStep() {
+    this.startSimulationStep();
   }
   
   @Extension

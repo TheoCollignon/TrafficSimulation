@@ -93,8 +93,7 @@ agent Environment {
 	}
 	
 	def endSimulationStep {
-		println("nathan est pas la comme dhab")
-		// startSimulationStep
+		startSimulationStep // end of the loop 
 	}
 	
 

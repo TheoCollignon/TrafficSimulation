@@ -91,11 +91,6 @@ public class ConfigCreation {
             if (config == null) {
                 config = controller.initializeConfig();
             }
-            if (config.getCities().size() == 1) {
-                buttonHippodamian.setDisable(false);
-                buttonNormal.setDisable(false);
-
-            }
             Coordinate coords = new Coordinate((float) mouseEvent.getX(), (float) mouseEvent.getY());
             boolean isCityPossible = true;
             for (City city : config.getCities()) {
@@ -106,6 +101,10 @@ public class ConfigCreation {
             }
             if (isCityPossible) {
                 config.addCity(coords, 30, String.valueOf(config.getCities().size() + 1));
+                if (config.getCities().size() > 3) { // Min 4 cities per configuration
+                    buttonHippodamian.setDisable(false);
+                    buttonNormal.setDisable(false);
+                }
                 Circle cityCircle = new Circle(mouseEvent.getX(), mouseEvent.getY(), 30);
                 cityCircle.setId(""+config.getCities().size());
                 Text cityName = new Text(mouseEvent.getX() - 5, mouseEvent.getY() + 5, String.valueOf(config.getCities().size()));
@@ -128,7 +127,7 @@ public class ConfigCreation {
             		removeCity(cityID, deletedCity);
             	}
             }
-        } else {
+        } else { // Place Roads
             if (!isCitySelected) { // Première ville selectionnée
                 Coordinate coords = new Coordinate((float) mouseEvent.getX(), (float) mouseEvent.getY());
                 for (City city : config.getCities()) {
@@ -176,6 +175,11 @@ public class ConfigCreation {
 		cityPane.getChildren().remove(circle);
 		cityPane.getChildren().remove(text);
 		config.getCities().remove(deletedCity);
+		// Check if we need to disable buttons
+		if (config.getCities().size() < 4) {
+			buttonHippodamian.setDisable(true);
+            buttonNormal.setDisable(true);
+		}
 	}
 
 	public void validateConfig(ActionEvent event) {

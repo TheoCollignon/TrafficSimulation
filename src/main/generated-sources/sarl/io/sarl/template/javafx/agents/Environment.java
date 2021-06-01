@@ -35,7 +35,6 @@ import java.util.UUID;
 import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -48,6 +47,8 @@ public class Environment extends Agent {
   private Controller controller;
   
   private Configuration configuration;
+  
+  private List<Influence> listInfluences = Collections.<Influence>synchronizedList(new ArrayList<Influence>());
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     try {
@@ -89,7 +90,11 @@ public class Environment extends Agent {
     if ((occurrence.numberOfFreeCoord == 0)) {
       move = false;
     }
-    if (true) {
+    ArrayList<Car> cars = this.controller.getConfiguration().getCars();
+    this.listInfluences.add(occurrence);
+    int _size = cars.size();
+    int _size_1 = this.listInfluences.size();
+    if ((_size == _size_1)) {
       this.endSimulationStep();
     }
   }
@@ -99,7 +104,6 @@ public class Environment extends Agent {
     ArrayList<Car> cars = this.controller.getConfiguration().getCars();
     for (final Car car : cars) {
       {
-        InputOutput.<String>println("wallah");
         Road _roadOn = car.getRoadOn();
         Perception perception = new Perception(_roadOn);
         DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
@@ -134,6 +138,7 @@ public class Environment extends Agent {
   }
   
   protected void endSimulationStep() {
+    this.listInfluences.clear();
     this.startSimulationStep();
   }
   

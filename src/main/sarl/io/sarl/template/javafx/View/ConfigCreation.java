@@ -39,8 +39,6 @@ public class ConfigCreation {
     private TextField cityName;
     @FXML
     private TextField sizeLabel;
-    @FXML
-    private Label errorLabel;
 
     private boolean placeRoads = false;
     private boolean isCitySelected = false;
@@ -202,7 +200,7 @@ public class ConfigCreation {
 	}
 	
 	private void errorController(String error) {
-		
+		System.out.println(error);
 	}
 
 	public void validateConfig(ActionEvent event) {

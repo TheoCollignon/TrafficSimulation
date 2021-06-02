@@ -18,13 +18,14 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="48.0" prefWidth="600.0">
                <children>
-                  <Button fx:id="buttonHippodamian" disable="true" layoutX="358.0" layoutY="27.0" mnemonicParsing="false" onAction="#createHippodamianConfig" text="Hippodamian configuration" />
-                  <Button fx:id="buttonNormal" disable="true" layoutX="374.0" layoutY="74.0" mnemonicParsing="false" onAction="#createNormalConfig" text="Normal configuration" />
+                  <Button fx:id="buttonHippodamian" disable="true" layoutX="358.0" layoutY="44.0" mnemonicParsing="false" onAction="#createHippodamianConfig" text="Hippodamian configuration" />
+                  <Button fx:id="buttonNormal" disable="true" layoutX="374.0" layoutY="91.0" mnemonicParsing="false" onAction="#createNormalConfig" text="Normal configuration" />
                   <Button fx:id="validateRoads" disable="true" layoutX="273.0" layoutY="74.0" mnemonicParsing="false" onAction="#validateConfig" text="Valider" visible="false" />
-                  <TextField fx:id="cityName" layoutX="107.0" layoutY="27.0" text="Belfort" />
-                  <Label layoutX="37.0" layoutY="31.0" text="City Name" />
-                  <Label layoutX="55.0" layoutY="78.0" text="Size" />
-                  <TextField fx:id="size" layoutX="145.0" layoutY="74.0" prefHeight="25.0" prefWidth="73.0" text="30" />
+                  <TextField fx:id="cityName" layoutX="107.0" layoutY="44.0" text="Belfort" />
+                  <Label layoutX="37.0" layoutY="48.0" text="City Name" />
+                  <Label layoutX="55.0" layoutY="95.0" text="Size" />
+                  <TextField fx:id="sizeLabel" layoutX="145.0" layoutY="91.0" prefHeight="25.0" prefWidth="73.0" text="30" />
+                  <Label fx:id="errorLabel" layoutX="6.0" layoutY="14.0" prefHeight="17.0" prefWidth="576.0" textAlignment="CENTER" textFill="RED" />
                </children>
             </AnchorPane>
         </items>

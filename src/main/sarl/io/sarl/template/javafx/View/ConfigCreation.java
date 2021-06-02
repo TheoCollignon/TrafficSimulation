@@ -38,7 +38,9 @@ public class ConfigCreation {
     @FXML
     private TextField cityName;
     @FXML
-    private TextField size;
+    private TextField sizeLabel;
+    @FXML
+    private Label errorLabel;
 
     private boolean placeRoads = false;
     private boolean isCitySelected = false;
@@ -98,6 +100,14 @@ public class ConfigCreation {
                 config = controller.initializeConfig();
             }
             String nameOfTheCity = cityName.getText().toString();
+            String tempSize = sizeLabel.getText().toString();
+            int size = 0;
+            try {
+            	size = Integer.parseInt(tempSize);
+            } catch (NumberFormatException e) {
+            	size = defaultSize;
+            }
+            System.out.println(size);
             Coordinate coords = new Coordinate((float) mouseEvent.getX(), (float) mouseEvent.getY());
             boolean isCityPossible = true;
             for (City city : config.getCities()) {
@@ -108,7 +118,7 @@ public class ConfigCreation {
                 if (city.getName().equals(nameOfTheCity)) isCityPossible = false;
             }
             if (isCityPossible) {
-                addCity(coords, defaultSize, nameOfTheCity);
+                addCity(coords, size, nameOfTheCity);
             } else { // Check if we need to delete city
             	City deletedCity = null;
             	for (City city: config.getCities()) {
@@ -136,7 +146,7 @@ public class ConfigCreation {
                 for (City city : config.getCities()) {
                     if (Math.abs(city.getPosition().getX() - coords.getX()) < (city.getSize() * 2) &&
                             Math.abs(city.getPosition().getY() - coords.getY()) < (city.getSize() * 2)) {
-                        // Place roads
+                        // Place road
                         config.addRoad(citySelected.getCrossRoad(), city.getCrossRoad());
                         citiesNotLinked.remove(citySelected);
                         citiesNotLinked.remove(city);
@@ -160,8 +170,8 @@ public class ConfigCreation {
             buttonHippodamian.setDisable(false);
             buttonNormal.setDisable(false);
         }
-        Circle cityCircle = new Circle(coords.getX(), coords.getY(), 30);
-        cityCircle.setId(nameOfTheCity); // TO BE CHANGED
+        Circle cityCircle = new Circle(coords.getX(), coords.getY(), size);
+        cityCircle.setId(nameOfTheCity);
         Text cityName = new Text(coords.getX() - 10, coords.getY() + 5, nameOfTheCity);
         cityName.setId("text"+nameOfTheCity);
         cityCircle.setFill((Color.color(Math.random(), Math.random(), Math.random())));
@@ -189,6 +199,10 @@ public class ConfigCreation {
 			buttonHippodamian.setDisable(true);
             buttonNormal.setDisable(true);
 		}
+	}
+	
+	private void errorController(String error) {
+		
 	}
 
 	public void validateConfig(ActionEvent event) {

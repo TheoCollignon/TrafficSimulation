@@ -38,7 +38,7 @@ public class ConfigCreation {
     @FXML
     private TextField cityName;
     @FXML
-    private TextField sizeLabel;
+    private Spinner<Integer> sizeSpinner;
 
     private boolean placeRoads = false;
     private boolean isCitySelected = false;
@@ -98,13 +98,7 @@ public class ConfigCreation {
                 config = controller.initializeConfig();
             }
             String nameOfTheCity = cityName.getText().toString();
-            String tempSize = sizeLabel.getText().toString();
-            int size = 0;
-            try {
-            	size = Integer.parseInt(tempSize);
-            } catch (NumberFormatException e) {
-            	size = defaultSize;
-            }
+            int size = sizeSpinner.getValue();
             System.out.println(size);
             Coordinate coords = new Coordinate((float) mouseEvent.getX(), (float) mouseEvent.getY());
             boolean isCityPossible = true;
@@ -196,6 +190,7 @@ public class ConfigCreation {
     	//checks if the city to link isn't the same as the first one
     	if(cityA.equals(cityB)) {
     		System.out.println("You can't link the city to itself");
+    		isCitySelected = false;
     		return false;
     	} else {
     		//checks if both cities aren't already linked

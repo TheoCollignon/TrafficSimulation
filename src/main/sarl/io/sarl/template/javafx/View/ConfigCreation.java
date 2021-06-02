@@ -108,18 +108,7 @@ public class ConfigCreation {
                 if (city.getName().equals(nameOfTheCity)) isCityPossible = false;
             }
             if (isCityPossible) {
-                config.addCity(coords, 30, nameOfTheCity);
-                if (config.getCities().size() > 3) { // Min 4 cities per configuration
-                    buttonHippodamian.setDisable(false);
-                    buttonNormal.setDisable(false);
-                }
-                Circle cityCircle = new Circle(mouseEvent.getX(), mouseEvent.getY(), 30);
-                cityCircle.setId(nameOfTheCity); // TO BE CHANGED
-                Text cityName = new Text(mouseEvent.getX() - 10, mouseEvent.getY() + 5, nameOfTheCity);
-                cityName.setId("text"+nameOfTheCity);
-                cityCircle.setFill((Color.color(Math.random(), Math.random(), Math.random())));
-                cityPane.getChildren().add(cityCircle);
-                cityPane.getChildren().add(cityName);
+                addCity(coords, defaultSize, nameOfTheCity);
             } else { // Check if we need to delete city
             	City deletedCity = null;
             	for (City city: config.getCities()) {
@@ -165,7 +154,22 @@ public class ConfigCreation {
         }
     }
 
-    private void removeCity(City deletedCity) {
+    private void addCity(Coordinate coords, int size, String nameOfTheCity) {
+    	config.addCity(coords, size, nameOfTheCity);
+        if (config.getCities().size() > 3) { // Min 4 cities per configuration
+            buttonHippodamian.setDisable(false);
+            buttonNormal.setDisable(false);
+        }
+        Circle cityCircle = new Circle(coords.getX(), coords.getY(), 30);
+        cityCircle.setId(nameOfTheCity); // TO BE CHANGED
+        Text cityName = new Text(coords.getX() - 10, coords.getY() + 5, nameOfTheCity);
+        cityName.setId("text"+nameOfTheCity);
+        cityCircle.setFill((Color.color(Math.random(), Math.random(), Math.random())));
+        cityPane.getChildren().add(cityCircle);
+        cityPane.getChildren().add(cityName);
+	}
+
+	private void removeCity(City deletedCity) {
     	Circle circle = null;
     	Text text = null;
 		// Remove City with id

@@ -45,7 +45,8 @@ public class ConfigCreation {
     private City citySelected = null;
     private int defaultSize = 30;
     
-    private ArrayList<City> citiesNotLinked = new ArrayList<>();
+    private ArrayList<City[]> linkedCities = new ArrayList<>();
+    private ArrayList<City> citiesChecked = new ArrayList<>();
 
     Controller controller = Controller.getInstance();
     Configuration config;
@@ -79,7 +80,6 @@ public class ConfigCreation {
 //        Button close = (Button) actionEvent.getSource();
 //        Stage oldstage = (Stage) close.getScene().getWindow();
 //        oldstage.close();
-        citiesNotLinked.addAll(config.getCities());
         changeToDrawRoadView();
     }
 
@@ -143,23 +143,71 @@ public class ConfigCreation {
                 Coordinate coords = new Coordinate((float) mouseEvent.getX(), (float) mouseEvent.getY());
                 for (City city : config.getCities()) {
                     if (Math.abs(city.getPosition().getX() - coords.getX()) < (city.getSize() * 2) &&
-                            Math.abs(city.getPosition().getY() - coords.getY()) < (city.getSize() * 2)) {
+                            Math.abs(city.getPosition().getY() - coords.getY()) < (city.getSize() * 2) &&
+                            isPossibleToLink(citySelected, city)) {
                         // Place road
                         config.addRoad(citySelected.getCrossRoad(), city.getCrossRoad());
-                        citiesNotLinked.remove(citySelected);
-                        citiesNotLinked.remove(city);
                         Line line = new Line(citySelected.getPosition().getX(), citySelected.getPosition().getY(), city.getPosition().getX(), city.getPosition().getY());
                         line.setStrokeWidth(12);
                         line.setStroke(Color.BLACK);
                         cityPane.getChildren().add(line);
+                        //adding the new linked cities to the list
+                        City[] newLink = {city, citySelected};
+                        linkedCities.add(newLink);
                         isCitySelected = false;
                     }
                 }
-                if (citiesNotLinked.size() == 0) {
+                //if the configuration links all the cities together, then we can validate
+                if (isConfigValid()) {
                     validateRoads.setDisable(false);
                 }
             }
         }
+    }
+    
+    //checks if every city can reach every other city
+    private boolean isConfigValid() {
+    	lilRecursiveFunctionToCheckThroughAllTheCities(config.getCities().get(0));
+    	if(citiesChecked.size() != config.getCities().size()) {
+    		//means the cities aren't all linked for now
+    		citiesChecked.clear();
+    		return false;
+    	}
+    	return true;
+    }
+    
+    private void lilRecursiveFunctionToCheckThroughAllTheCities(City cityIn) {
+    	//adding the current city, then checking if the cities it's linked to are already stored
+    	//If they're not then we call the function with them
+    	citiesChecked.add(cityIn);
+    	for(City[] link : linkedCities) {
+    		if(link[0].equals(cityIn) && !citiesChecked.contains(link[1])) {
+    			lilRecursiveFunctionToCheckThroughAllTheCities(link[1]);
+    			
+    		} else if (link[1].equals(cityIn) && !citiesChecked.contains(link[0])) {
+    			lilRecursiveFunctionToCheckThroughAllTheCities(link[0]);
+    		}
+    	}
+    	
+    }
+    
+    //checks if two cities are "linkable"
+    private boolean isPossibleToLink(City cityA, City cityB) {
+    	//checks if the city to link isn't the same as the first one
+    	if(cityA.equals(cityB)) {
+    		System.out.println("You can't link the city to itself");
+    		return false;
+    	} else {
+    		//checks if both cities aren't already linked
+    		for (City[] link : linkedCities) {
+    			if((link[0].equals(cityA) && link[1].equals(cityB)) ||
+    					(link[0].equals(cityB) && link[1].equals(cityA))) {
+    	    		System.out.println("Cities already linked");
+    				return false;
+    			}
+    		}
+    	}
+    	return true;
     }
 
     private void addCity(Coordinate coords, int size, String nameOfTheCity) {

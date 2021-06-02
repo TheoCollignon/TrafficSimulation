@@ -18,9 +18,12 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.TextAlignment;
 import javax.swing.text.View;
 import java.awt.*;
 import java.io.IOException;
@@ -39,6 +42,8 @@ public class ConfigCreation {
     private TextField cityName;
     @FXML
     private Spinner<Integer> sizeSpinner;
+    @FXML
+    private Label errorLabel;
 
     private boolean placeRoads = false;
     private boolean isCitySelected = false;
@@ -94,20 +99,27 @@ public class ConfigCreation {
 
     public void addCityWhereMouseIs(MouseEvent mouseEvent) {
         if (!placeRoads) { // PLACE CITIES
+        	ArrayList<String> errors = new ArrayList<>();
             if (config == null) {
                 config = controller.initializeConfig();
             }
             String nameOfTheCity = cityName.getText().toString();
             int size = sizeSpinner.getValue();
-            System.out.println(size);
             Coordinate coords = new Coordinate((float) mouseEvent.getX(), (float) mouseEvent.getY());
             boolean isCityPossible = true;
             for (City city : config.getCities()) {
                 if (Math.abs(city.getPosition().getX() - coords.getX()) < (city.getSize() * 2) &&
                         Math.abs(city.getPosition().getY() - coords.getY()) < (city.getSize() * 2)) {
                     isCityPossible = false;
+                    if (!(Math.abs(city.getPosition().getX() - coords.getX()) < city.getSize() &&
+                            Math.abs(city.getPosition().getY() - coords.getY()) < city.getSize())) {
+                    	errors.add("Ville trop proche ! ");
+                    }
                 }
-                if (city.getName().equals(nameOfTheCity)) isCityPossible = false;
+                if (city.getName().equals(nameOfTheCity)) {
+                	isCityPossible = false;
+                	errors.add("Nom de ville incorrect ! ");
+                }
             }
             if (isCityPossible) {
                 addCity(coords, size, nameOfTheCity);
@@ -121,6 +133,8 @@ public class ConfigCreation {
             	}
             	if (deletedCity != null) {
             		removeCity(deletedCity);
+            	} else {
+            		errorController(errors);
             	}
             }
         } else { // Place Roads
@@ -242,8 +256,13 @@ public class ConfigCreation {
 		}
 	}
 	
-	private void errorController(String error) {
-		System.out.println(error);
+	private void errorController(ArrayList<String> error) {
+		errorLabel.setAlignment(Pos.CENTER);
+		String errorMessage = "";
+		for (String str: error) {
+			errorMessage += str;
+		}
+		errorLabel.setText(errorMessage);
 	}
 
 	public void validateConfig(ActionEvent event) {

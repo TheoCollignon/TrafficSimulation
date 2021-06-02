@@ -37,10 +37,13 @@ public class ConfigCreation {
     private Pane cityPane;
     @FXML
     private TextField cityName;
+    @FXML
+    private TextField size;
 
     private boolean placeRoads = false;
     private boolean isCitySelected = false;
     private City citySelected = null;
+    private int defaultSize = 30;
     
     private ArrayList<City> citiesNotLinked = new ArrayList<>();
 
@@ -94,6 +97,7 @@ public class ConfigCreation {
             if (config == null) {
                 config = controller.initializeConfig();
             }
+            String nameOfTheCity = cityName.getText().toString();
             Coordinate coords = new Coordinate((float) mouseEvent.getX(), (float) mouseEvent.getY());
             boolean isCityPossible = true;
             for (City city : config.getCities()) {
@@ -101,33 +105,31 @@ public class ConfigCreation {
                         Math.abs(city.getPosition().getY() - coords.getY()) < (city.getSize() * 2)) {
                     isCityPossible = false;
                 }
+                if (city.getName().equals(nameOfTheCity)) isCityPossible = false;
             }
             if (isCityPossible) {
-                config.addCity(coords, 30, String.valueOf(config.getCities().size() + 1));
+                config.addCity(coords, 30, nameOfTheCity);
                 if (config.getCities().size() > 3) { // Min 4 cities per configuration
                     buttonHippodamian.setDisable(false);
                     buttonNormal.setDisable(false);
                 }
                 Circle cityCircle = new Circle(mouseEvent.getX(), mouseEvent.getY(), 30);
-                cityCircle.setId(""+config.getCities().size());
-                Text cityName = new Text(mouseEvent.getX() - 5, mouseEvent.getY() + 5, String.valueOf(config.getCities().size()));
-                cityName.setId("text"+config.getCities().size());
+                cityCircle.setId(nameOfTheCity); // TO BE CHANGED
+                Text cityName = new Text(mouseEvent.getX() - 10, mouseEvent.getY() + 5, nameOfTheCity);
+                cityName.setId("text"+nameOfTheCity);
                 cityCircle.setFill((Color.color(Math.random(), Math.random(), Math.random())));
                 cityPane.getChildren().add(cityCircle);
                 cityPane.getChildren().add(cityName);
             } else { // Check if we need to delete city
             	City deletedCity = null;
-            	int cityID = 0;
-            	for (int i = 0; i < config.getCities().size(); i++) {
-            		City city = config.getCities().get(i);
+            	for (City city: config.getCities()) {
             		if (Math.abs(city.getPosition().getX() - coords.getX()) < city.getSize() &&
                             Math.abs(city.getPosition().getY() - coords.getY()) < city.getSize()) {
                         deletedCity = city;
-                        cityID = i+1;
                     }
             	}
             	if (deletedCity != null) {
-            		removeCity(cityID, deletedCity);
+            		removeCity(deletedCity);
             	}
             }
         } else { // Place Roads
@@ -163,15 +165,15 @@ public class ConfigCreation {
         }
     }
 
-    private void removeCity(int cityID, City deletedCity) {
+    private void removeCity(City deletedCity) {
     	Circle circle = null;
     	Text text = null;
 		// Remove City with id
     	for (Node node: cityPane.getChildren()) {
-            if (String.valueOf(cityID).equals(node.getId())) {
+            if (deletedCity.getName().equals(node.getId())) {
                 circle = (Circle) node;
             }
-            if (String.valueOf("text"+cityID).equals(node.getId())) {
+            if (("text"+deletedCity.getName()).equals(node.getId())) {
                 text = (Text) node;
             }
         }

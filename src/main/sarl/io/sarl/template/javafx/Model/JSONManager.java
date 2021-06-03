@@ -112,7 +112,7 @@ public class JSONManager {
                 configuration.addCity(coordinate, size, name);
             }
 
-            configuration.mapLayout = new MapLayout(nbCities);
+            configuration.mapLayout = new MapLayout(nbCities,configuration);
 
             if(!(boolean) jo.get("isHippodamien")) {
                 Map roads = (Map) jo.get("Roads");

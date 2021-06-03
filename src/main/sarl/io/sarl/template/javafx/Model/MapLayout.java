@@ -91,7 +91,7 @@ public class MapLayout {
         }
         List<Road> possibleRoads = currentCross.getJoinedRoads();
         for (Road road : possibleRoads){
-            if(!pathUntilNow.contains(road)){
+            if(!pathUntilNow.contains(road) && isRoadInteresting(currentCross, road, goal.getCity())){
                 pathUntilNow.add(road);
                 Crossroad next;
                 if(road.getCrossroadStart().equals(currentCross)){
@@ -108,7 +108,7 @@ public class MapLayout {
     //Calculates the logically minimum distance between two cities in a hippodamian config
     int getDistance(City cityA, City cityB) {
     	//if the config isn't hippodamian, we return a 0 value so the djikstra doesn't stop
-    	if(sortedCitiesX.size() == 0) {
+    	if(!config.isHippodamien) {
     		return 0;
     	}
     	//if it is hippodamian, we check the distance between the cities in the sorted lists (by position)
@@ -116,6 +116,32 @@ public class MapLayout {
     	minimumDistance += Math.abs(sortedCitiesX.indexOf(cityA) - sortedCitiesX.indexOf(cityB));
     	minimumDistance += Math.abs(sortedCitiesY.indexOf(cityA) - sortedCitiesY.indexOf(cityB));
     	return minimumDistance;
+    }
+    
+    //if the config is hippodamian, checks if the road gets us closer to the city. If not, we ignore it
+    private boolean isRoadInteresting(Crossroad currentCrossroad, Road roadToTake, City goal) {
+    	Crossroad eventualDestination;
+    	if(config.isHippodamien) {
+    		//getting the crossroad the the road would lead us to
+    		if(roadToTake.getCrossroadStart().equals(currentCrossroad)) {
+    			eventualDestination = roadToTake.getCrossroadEnd();
+    		} else {
+    			eventualDestination = roadToTake.getCrossroadStart();
+    		}
+    		//If that crossroad isn't closer to the goal city, we ignore it
+    		if(Math.abs(eventualDestination.getCoords().getX() - goal.getPosition().getX()) >
+    			Math.abs(currentCrossroad.getCoords().getX() - goal.getPosition().getX())) {
+    			return false;
+    		} else if (Math.abs(eventualDestination.getCoords().getY() - goal.getPosition().getY()) >
+    			Math.abs(currentCrossroad.getCoords().getY() - goal.getPosition().getY())) {
+    			return false;
+    		}else {
+    			//if it's closer, we continue with it
+    			return true;
+    		}
+    	} else {
+    		return true;
+    	}
     }
 
     double getPathWeight(List<Road> path){

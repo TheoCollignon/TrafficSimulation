@@ -26,14 +26,13 @@ public class Controller {
         return configuration;
     }
 
-    public void initializeSimulation(ViewGenerator viewGenerator){
+    public void initializeSimulation(ViewGenerator viewGenerator, int originalEnergy){
         this.viewGenerator = viewGenerator;
         jsonManager = new JSONManager();
-        ArrayList<Car> cars = configuration.setupCars(configuration.getCities().size());
+        ArrayList<Car> cars = configuration.setupCars(configuration.getCities().size(), originalEnergy);
         jsonManager.saveJSONFile(configuration, "test");
         CarManager cm = new CarManager(cars);
         startAgent = true;
-        System.out.println(this.startAgent);
         viewGenerator.updateView(cars);
         viewGenerator.drawConfiguration(configuration);
         

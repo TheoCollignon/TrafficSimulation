@@ -151,7 +151,7 @@ public class Configuration {
         return newRoad;
     }
 
-    public ArrayList<Car> setupCars(int numberCars) {
+    public ArrayList<Car> setupCars(int numberCars, int energy) {
         int id = 0;
         // init the cars
         for (int j = 0; j < numberCars; j++ ) {
@@ -159,7 +159,7 @@ public class Configuration {
             City startCity = cities.get(j);
             // create the car
             id++;
-            Car car = new Car(this,100, viewGenerator,startCity,id);
+            Car car = new Car(this, energy, viewGenerator,startCity,id);
             // put it in the list
             cars.add(car);
         }

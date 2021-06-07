@@ -26,7 +26,9 @@
                   <Label layoutX="37.0" layoutY="48.0" text="City Name" />
                   <Label layoutX="55.0" layoutY="95.0" text="Size" />
                   <Label fx:id="errorLabel" layoutX="6.0" layoutY="14.0" prefHeight="17.0" prefWidth="576.0" textAlignment="CENTER" textFill="RED" />
-                  <Spinner fx:id="sizeSpinner" editable="true" layoutX="107.0" layoutY="91.0" min="10" max="50"/>
+                  <Spinner fx:id="sizeSpinner" editable="true" layoutX="107.0" layoutY="91.0" max="50" min="10" />
+                  <Spinner fx:id="carEnergySpinner" disable="true" editable="true" layoutX="365.0" layoutY="62.0" max="300" min="10" visible="false" />
+                  <Label fx:id="energyLabel" layoutX="361.0" layoutY="36.0" text="Chose the car's initial energy :" />
                </children>
             </AnchorPane>
         </items>

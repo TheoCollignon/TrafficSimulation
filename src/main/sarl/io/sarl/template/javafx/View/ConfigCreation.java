@@ -44,6 +44,10 @@ public class ConfigCreation {
     private Spinner<Integer> sizeSpinner;
     @FXML
     private Label errorLabel;
+    @FXML
+    private Spinner<Integer> carEnergySpinner;
+    @FXML
+    private Label energyLabel;
 
     private boolean placeRoads = false;
     private boolean isCitySelected = false;
@@ -56,6 +60,7 @@ public class ConfigCreation {
     Controller controller = Controller.getInstance();
     Configuration config;
     ViewGenerator viewGenerator = new ViewGenerator();
+    int chosenEnergy = 100;
 
     public void createConfig(boolean isHippo){
         try {
@@ -64,7 +69,7 @@ public class ConfigCreation {
             Parent root = loader.load();
             viewGenerator.setMainPane((Pane) loader.getNamespace().get("mainPane"));
             config.addElements(isHippo);
-            controller.initializeSimulation(viewGenerator);
+            controller.initializeSimulation(viewGenerator, chosenEnergy);
             stage.setScene(new Scene(root, 600, 600));
             stage.setTitle("Simulation Viewer");
             stage.show();
@@ -94,6 +99,8 @@ public class ConfigCreation {
         buttonNormal.setDisable(true);
         buttonNormal.setVisible(false);
         validateRoads.setVisible(true);
+        carEnergySpinner.setVisible(true);
+        energyLabel.setVisible(true);
         placeRoads = true;
     }
 
@@ -168,6 +175,8 @@ public class ConfigCreation {
                 //if the configuration links all the cities together, then we can validate
                 if (isConfigValid()) {
                     validateRoads.setDisable(false);
+                    carEnergySpinner.setDisable(false);
+                    
                 }
             }
         }
@@ -266,6 +275,7 @@ public class ConfigCreation {
 	}
 
 	public void validateConfig(ActionEvent event) {
+		chosenEnergy = carEnergySpinner.getValue();
         Button close = (Button) event.getSource();
         Stage oldstage = (Stage) close.getScene().getWindow();
         oldstage.close();

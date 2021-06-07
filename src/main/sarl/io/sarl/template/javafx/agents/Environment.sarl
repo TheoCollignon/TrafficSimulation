@@ -34,7 +34,6 @@ agent Environment {
 	on Initialize {
 		// Event trigger before the agent begin to live or to be used.
 		// You should put all the initialization statements in this block of code.
-		info("The agent was started.")
 		
 		controller = Controller.getInstance
 		while (controller.startAgent == false) {
@@ -64,9 +63,9 @@ agent Environment {
 	
 	
 	on Influence {
-		info("i : " + occurrence.i)
-		info("id : " + occurrence.id)
-		info("next coordinate available ?  : " + occurrence.numberOfFreeCoord)
+		//info("i : " + occurrence.i)
+		//info("id : " + occurrence.id)
+		//info("next coordinate available ?  : " + occurrence.numberOfFreeCoord)
 		// we need to know if we can move to the next coordinate
 		var move = true
 		if(occurrence.numberOfFreeCoord == 0) {

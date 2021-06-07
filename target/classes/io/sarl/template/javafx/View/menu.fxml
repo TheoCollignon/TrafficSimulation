@@ -6,8 +6,9 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.sarl.template.javafx.View.ViewMenu">
     <VBox id="button-margin" />
-     <Button fx:id="buttonAlert" layoutX="224.0" layoutY="102.0" mnemonicParsing="false" onAction="#loadRandomConfiguration" prefHeight="50.0" prefWidth="152.0" text="Random Configuration" />
-   <Button fx:id="buttonAlert1" layoutX="224.0" layoutY="175.0" mnemonicParsing="false" onAction="#loadConfigCreationWindow" prefHeight="50.0" prefWidth="152.0" text="Create Configuration" />
-   <Button fx:id="buttonAlert11" layoutX="224.0" layoutY="249.0" mnemonicParsing="false" onAction="#loadConfigSelectorWindow" prefHeight="50.0" prefWidth="152.0" text="Load Configuration" />
+   <Button fx:id="buttonRandomH" layoutX="196.0" layoutY="54.0" mnemonicParsing="false" onAction="#loadRandomHippo" prefHeight="50.0" prefWidth="209.0" text="Random hippodamian configuration" />
+     <Button fx:id="buttonAlert" layoutX="196.0" layoutY="125.0" mnemonicParsing="false" onAction="#loadRandomNormal" prefHeight="50.0" prefWidth="209.0" text="Random normal configuration" />
+   <Button fx:id="buttonAlert1" layoutX="196.0" layoutY="197.0" mnemonicParsing="false" onAction="#loadConfigCreationWindow" prefHeight="50.0" prefWidth="209.0" text="Create Configuration" />
+   <Button fx:id="buttonAlert11" layoutX="196.0" layoutY="266.0" mnemonicParsing="false" onAction="#loadConfigSelectorWindow" prefHeight="50.0" prefWidth="209.0" text="Load Configuration" />
 
 </AnchorPane>

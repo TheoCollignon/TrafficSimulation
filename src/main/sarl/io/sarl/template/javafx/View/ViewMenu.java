@@ -32,18 +32,30 @@ public class ViewMenu extends Application {
         stage.setTitle("Menu");
         stage.show();
     }
-
+    
     @FXML
-    public void loadRandomConfiguration(ActionEvent event) {
+    public void loadRandomHippo(ActionEvent event) {
         Button close = (Button) event.getSource();
         Stage oldstage = (Stage) close.getScene().getWindow();
         oldstage.close();
+        loadRandomConfiguration(true);
+    }
+    
+    @FXML
+    public void loadRandomNormal(ActionEvent event) {
+        Button close = (Button) event.getSource();
+        Stage oldstage = (Stage) close.getScene().getWindow();
+        oldstage.close();
+        loadRandomConfiguration(false);
+    }
+    
+    public void loadRandomConfiguration(boolean isHippo) {
         try {
             Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("simulationViewer.fxml"));
             Parent root = loader.load();
             viewGenerator.setMainPane((Pane) loader.getNamespace().get("mainPane"));
-            Controller.getInstance().createRandomConfiguration();
+            Controller.getInstance().createRandomConfiguration(isHippo);
             Controller.getInstance().initializeSimulation(viewGenerator);
             stage.setScene(new Scene(root, 600, 600));
             stage.setTitle("Simulation Viewer");

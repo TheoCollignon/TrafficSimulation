@@ -38,9 +38,9 @@ public class Controller {
         viewGenerator.drawConfiguration(configuration);
         
     }
-    public void createRandomConfiguration() {
+    public void createRandomConfiguration(boolean isHippo) {
         initializeConfig();
-        configuration.addRandomElements(5,false);
+        configuration.addRandomElements(5, isHippo);
         startAgent = true;
     }
 

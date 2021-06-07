@@ -97,7 +97,7 @@ public class ConfigCreation {
         placeRoads = true;
     }
 
-    public void addCityWhereMouseIs(MouseEvent mouseEvent) {
+    public void addSomethingWhereMouseIs(MouseEvent mouseEvent) {
         if (!placeRoads) { // PLACE CITIES
         	ArrayList<String> errors = new ArrayList<>();
             if (config == null) {

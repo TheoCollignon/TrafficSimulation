@@ -81,11 +81,8 @@ public class Environment extends Agent {
   
   private void $behaviorUnit$Influence$2(final Influence occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("i : " + Integer.valueOf(occurrence.i)));
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("id : " + occurrence.id));
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(("next coordinate available ?  : " + Integer.valueOf(occurrence.numberOfFreeCoord)));
     boolean move = true;
     if ((occurrence.numberOfFreeCoord == 0)) {
       move = false;

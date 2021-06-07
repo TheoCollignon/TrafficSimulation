@@ -38,13 +38,11 @@ public class CarAgent extends Agent {
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("je suis vivant");
   }
   
   private void $behaviorUnit$Perception$1(final Perception occurrence) {
     this.road = occurrence.road;
     int i = 0;
-    System.out.println("11");
     ArrayList<Coordinate> _coordsList = this.road.getCoordsList();
     for (final Coordinate coord : _coordsList) {
       {

@@ -22,13 +22,11 @@ agent CarAgent {
 	var road : Road
 	
 	on Initialize {
-		info("je suis vivant")
 	}
 
 	on Perception {
 		road = occurrence.road // route sur laquel la voiture est
 		var i = 0
-		System.out.println("11")
 		for (coord : road.coordsList) { // parcours de ma route pour trouvé la voiture
 				for (car : coord.carList) { // on vérifie si jamais y'a deux voitures sur la même coord, que ce soit la bonne
 					if (car.UUID == this.ID) {

@@ -14,7 +14,7 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="561.0" prefWidth="600.0">
                <children>
-                  <Pane fx:id="cityPane" onMouseClicked="#addCityWhereMouseIs" prefHeight="600.0" prefWidth="600.0" />
+                  <Pane fx:id="cityPane" onMouseClicked="#addSomethingWhereMouseIs" prefHeight="600.0" prefWidth="600.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="48.0" prefWidth="600.0">

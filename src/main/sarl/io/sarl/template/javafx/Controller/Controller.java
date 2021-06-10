@@ -32,13 +32,14 @@ public class Controller {
         ArrayList<Car> cars = configuration.setupCars(configuration.getCities().size(), originalEnergy);
         CarManager cm = new CarManager(cars);
         startAgent = true;
+        System.out.println(this.startAgent);
         viewGenerator.updateView(cars);
         viewGenerator.drawConfiguration(configuration);
         
     }
     public void createRandomConfiguration(boolean isHippo) {
         initializeConfig();
-        configuration.addRandomElements(5, isHippo);
+        configuration.addRandomElements(5,isHippo);
         startAgent = true;
     }
 
@@ -60,10 +61,9 @@ public class Controller {
     public boolean getStartAgent() {
     	return startAgent;
     }
-    
+
     public JSONManager getJSONManager() {
     	return this.jsonManager;
     }
-
 	
 }

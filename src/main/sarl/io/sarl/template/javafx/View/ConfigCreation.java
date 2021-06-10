@@ -99,9 +99,9 @@ public class ConfigCreation {
         buttonNormal.setDisable(true);
         buttonNormal.setVisible(false);
         validateRoads.setVisible(true);
+        placeRoads = true;
         carEnergySpinner.setVisible(true);
         energyLabel.setVisible(true);
-        placeRoads = true;
     }
 
     public void addSomethingWhereMouseIs(MouseEvent mouseEvent) {
@@ -178,7 +178,6 @@ public class ConfigCreation {
                 if (isConfigValid()) {
                     validateRoads.setDisable(false);
                     carEnergySpinner.setDisable(false);
-                    
                 }
             }
         }
@@ -193,8 +192,8 @@ public class ConfigCreation {
         }
 		circle.setFill(color);
 	}
-
-	//checks if every city can reach every other city
+    
+    //checks if every city can reach every other city
     private boolean isConfigValid() {
     	lilRecursiveFunctionToCheckThroughAllTheCities(config.getCities().get(0));
     	if(citiesChecked.size() != config.getCities().size()) {

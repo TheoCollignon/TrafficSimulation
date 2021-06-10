@@ -1,57 +1,47 @@
 {
 	"isHippodamien":true,
 	"Cities":{
-		"1":{
-			"Size":23,
-			"Coords":[242.0,319.0]
-		},
-		"2":{
-			"Size":29,
-			"Coords":[151.0,435.0]
-		},
-		"3":{
-			"Size":16,
-			"Coords":[382.0,208.0]
-		},
-		"4":{
-			"Size":29,
-			"Coords":[53.0,89.0]
-		},
-		"5":{
+		"Belfort":{
 			"Size":10,
-			"Coords":[475.0,532.0]
+			"Coords":[201.0,268.0]
+		},
+		"Belf":{
+			"Size":10,
+			"Coords":[386.0,401.0]
+		},
+		"Bel":{
+			"Size":10,
+			"Coords":[309.0,436.0]
+		},
+		"Be":{
+			"Size":10,
+			"Coords":[111.0,427.0]
 		}
 	},
 	"Cars":{
-		"Car3":{
-			"Energy":92.160034,
-			"CityFrom":"3",
-			"Destination":"1",
-			"Speed":49
+		"Car1":{
+			"Energy":91.91997,
+			"CityFrom":"Belfort",
+			"Destination":"Belf",
+			"Speed":65
 		},
 		"Car2":{
-			"Energy":91.659966,
-			"CityFrom":"2",
-			"Destination":"3",
-			"Speed":35
+			"Energy":91.950035,
+			"CityFrom":"Belf",
+			"Destination":"Belfort",
+			"Speed":49
 		},
-		"Car1":{
-			"Energy":89.97007,
-			"CityFrom":"1",
-			"Destination":"2",
-			"Speed":53
-		},
-		"Car5":{
-			"Energy":94.76001,
-			"CityFrom":"5",
-			"Destination":"4",
-			"Speed":39
+		"Car3":{
+			"Energy":92.810005,
+			"CityFrom":"Bel",
+			"Destination":"Be",
+			"Speed":42
 		},
 		"Car4":{
-			"Energy":91.10002,
-			"CityFrom":"4",
-			"Destination":"2",
-			"Speed":47
+			"Energy":94.09999,
+			"CityFrom":"Be",
+			"Destination":"Bel",
+			"Speed":37
 		}
 	}
 }

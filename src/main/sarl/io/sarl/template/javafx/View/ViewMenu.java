@@ -32,7 +32,7 @@ public class ViewMenu extends Application {
         stage.setTitle("Menu");
         stage.show();
     }
-    
+
     @FXML
     public void loadRandomHippo(ActionEvent event) {
         Button close = (Button) event.getSource();

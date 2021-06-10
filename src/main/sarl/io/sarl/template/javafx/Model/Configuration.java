@@ -159,7 +159,7 @@ public class Configuration {
             City startCity = cities.get(j);
             // create the car
             id++;
-            Car car = new Car(this, energy, viewGenerator,startCity,id);
+            Car car = new Car(this,energy, viewGenerator,startCity,id);
             // put it in the list
             cars.add(car);
         }

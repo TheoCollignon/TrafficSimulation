@@ -70,7 +70,7 @@ public class ConfigCreation {
             viewGenerator.setMainPane((Pane) loader.getNamespace().get("mainPane"));
             config.addElements(isHippo);
             controller.initializeSimulation(viewGenerator, chosenEnergy);
-            stage.setScene(new Scene(root, 600, 600));
+            stage.setScene(new Scene(root, 600, 650));
             stage.setTitle("Simulation Viewer");
             stage.show();
         } catch (IOException e) {

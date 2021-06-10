@@ -20,7 +20,6 @@ public class JSONManager {
     public void saveJSONFile(Configuration configuration, String fileName) {
         try {
         	URL location = getClass().getResource("../configurationFiles/"+fileName+".json");
-        	System.out.println(location.toString());
         	String jsonFile = location.toString();
         	jsonFile = jsonFile.substring(6);
             FileWriter file = new FileWriter(jsonFile);
@@ -55,9 +54,9 @@ public class JSONManager {
                     }
                     file.write("],\n\t\t\t\"Width\":"+road.getRoadWidth()+",");
                     if (road.getStart()==null) file.write("\n\t\t\t\"StartCity\":null,");
-                    else file.write("\n\t\t\t\"StartCity\":"+road.getStart().getName()+",");
+                    else file.write("\n\t\t\t\"StartCity\":\""+road.getStart().getName()+"\",");
                     if (road.getEnd()==null) file.write("\n\t\t\t\"EndCity\":null");
-                    else file.write("\n\t\t\t\"EndCity\":"+road.getEnd().getName());
+                    else file.write("\n\t\t\t\"EndCity\":\""+road.getEnd().getName()+"\"");
                     file.write("\n\t\t}");
                     if (i!=configuration.getRoads().size()-1) {
                         file.write(",");
@@ -71,8 +70,8 @@ public class JSONManager {
                 Car car = configuration.getCars().get(i);
                 file.write("\n\t\t\"Car"+car.getId()+"\":{");
                 file.write("\n\t\t\t\"Energy\":"+car.getEnergy()+",");
-                file.write("\n\t\t\t\"CityFrom\":"+car.getCityFrom().getName()+",");
-                file.write("\n\t\t\t\"Destination\":"+car.getDestination().getName()+",");
+                file.write("\n\t\t\t\"CityFrom\":\""+car.getCityFrom().getName()+"\",");
+                file.write("\n\t\t\t\"Destination\":\""+car.getDestination().getName()+"\",");
                 file.write("\n\t\t\t\"Speed\":"+car.getSpeed());
                 file.write("\n\t\t}");
                 if (i!=configuration.getCars().size()-1) {

@@ -30,7 +30,6 @@ public class Controller {
         this.viewGenerator = viewGenerator;
         jsonManager = new JSONManager();
         ArrayList<Car> cars = configuration.setupCars(configuration.getCities().size(), originalEnergy);
-        jsonManager.saveJSONFile(configuration, "test");
         CarManager cm = new CarManager(cars);
         startAgent = true;
         viewGenerator.updateView(cars);
@@ -60,6 +59,10 @@ public class Controller {
     
     public boolean getStartAgent() {
     	return startAgent;
+    }
+    
+    public JSONManager getJSONManager() {
+    	return this.jsonManager;
     }
 
 	

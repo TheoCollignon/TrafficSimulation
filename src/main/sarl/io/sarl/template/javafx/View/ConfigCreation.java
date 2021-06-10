@@ -151,6 +151,7 @@ public class ConfigCreation {
                     if (Math.abs(city.getPosition().getX() - coords.getX()) < (city.getSize() * 2) &&
                             Math.abs(city.getPosition().getY() - coords.getY()) < (city.getSize() * 2)) {
                         citySelected = city;
+                        changeCircleColor(city, Color.RED);
                         isCitySelected = true;
                     }
                 }
@@ -170,6 +171,7 @@ public class ConfigCreation {
                         City[] newLink = {city, citySelected};
                         linkedCities.add(newLink);
                         isCitySelected = false;
+                        changeCircleColor(citySelected, Color.BLUE);
                     }
                 }
                 //if the configuration links all the cities together, then we can validate
@@ -182,7 +184,17 @@ public class ConfigCreation {
         }
     }
     
-    //checks if every city can reach every other city
+    private void changeCircleColor(City city, Color color) {
+    	Circle circle = null;
+    	for (Node node: cityPane.getChildren()) {
+            if (city.getName().equals(node.getId())) {
+                circle = (Circle) node;
+            }
+        }
+		circle.setFill(color);
+	}
+
+	//checks if every city can reach every other city
     private boolean isConfigValid() {
     	lilRecursiveFunctionToCheckThroughAllTheCities(config.getCities().get(0));
     	if(citiesChecked.size() != config.getCities().size()) {
@@ -214,6 +226,7 @@ public class ConfigCreation {
     	if(cityA.equals(cityB)) {
     		System.out.println("You can't link the city to itself");
     		isCitySelected = false;
+    		changeCircleColor(cityA, Color.BLUE);
     		return false;
     	} else {
     		//checks if both cities aren't already linked
@@ -238,7 +251,7 @@ public class ConfigCreation {
         cityCircle.setId(nameOfTheCity);
         Text cityName = new Text(coords.getX() - 10, coords.getY() + 5, nameOfTheCity);
         cityName.setId("text"+nameOfTheCity);
-        cityCircle.setFill((Color.color(Math.random(), Math.random(), Math.random())));
+        cityCircle.setFill(Color.BLUE);
         cityPane.getChildren().add(cityCircle);
         cityPane.getChildren().add(cityName);
 	}

@@ -52,8 +52,6 @@ public class Environment extends Agent {
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     try {
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("The agent was started.");
       this.controller = Controller.getInstance();
       while ((this.controller.getStartAgent() == false)) {
         Thread.sleep(50);
@@ -80,9 +78,6 @@ public class Environment extends Agent {
   }
   
   private void $behaviorUnit$Influence$2(final Influence occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     boolean move = true;
     if ((occurrence.numberOfFreeCoord == 0)) {
       move = false;

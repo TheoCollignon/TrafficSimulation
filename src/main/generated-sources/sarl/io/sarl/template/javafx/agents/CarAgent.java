@@ -37,7 +37,6 @@ public class CarAgent extends Agent {
   private Road road;
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
   }
   
   private void $behaviorUnit$Perception$1(final Perception occurrence) {

@@ -21,6 +21,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 
 import java.util.ArrayList;
 
@@ -30,11 +31,14 @@ public class ViewGenerator {
     private Pane mainPane;
     @FXML
     private Button saveConfig;
+    @FXML
+    private TextField jsonfileName;
     Controller controller = Controller.getInstance();
     
     @FXML
     public void saveConfig(ActionEvent event) {
-    	controller.getJSONManager().saveJSONFile(controller.getConfiguration(), "test");
+    	String JSONFile = jsonfileName.getText().toString();
+    	controller.getJSONManager().saveJSONFile(controller.getConfiguration(), JSONFile);
     }
 
     public void drawConfiguration(Configuration configuration) {

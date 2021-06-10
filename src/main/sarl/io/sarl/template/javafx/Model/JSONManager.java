@@ -19,9 +19,11 @@ public class JSONManager {
 
     public void saveJSONFile(Configuration configuration, String fileName) {
         try {
-        	URL location = getClass().getResource("../configurationFiles/"+fileName+".json");
+        	URL location = getClass().getResource("../configurationFiles");
         	String jsonFile = location.toString();
         	jsonFile = jsonFile.substring(6);
+        	jsonFile += "/"+fileName+".json";
+        	System.out.println(jsonFile);
             FileWriter file = new FileWriter(jsonFile);
             file.write("{");
             // Stock cities in JSON file

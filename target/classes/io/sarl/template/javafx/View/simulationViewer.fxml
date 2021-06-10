@@ -2,10 +2,11 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<SplitPane fx:controller="io.sarl.template.javafx.View.ViewGenerator" dividerPositions="0.8987341772151899" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="1000.0" prefWidth="994.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<SplitPane dividerPositions="0.8987341772151899" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="1000.0" prefWidth="994.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.sarl.template.javafx.View.ViewGenerator">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1000.0" prefWidth="994.0">
          <children>
@@ -13,7 +14,8 @@
          </children></AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
          <children>
-            <Button fx:id="saveConfig" layoutX="300" layoutY="23.0" mnemonicParsing="false" onAction="#saveConfig" text="Save Config" />
+            <Button fx:id="saveConfig" layoutX="200.0" layoutY="24.0" mnemonicParsing="false" onAction="#saveConfig" text="Save Config" />
+            <TextField fx:id="jsonfileName" layoutX="75.0" layoutY="24.0" prefHeight="25.0" prefWidth="106.0" text="test" />
          </children></AnchorPane>
   </items>
 </SplitPane>

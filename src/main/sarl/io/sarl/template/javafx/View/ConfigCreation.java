@@ -18,9 +18,12 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.TextAlignment;
 import javax.swing.text.View;
 import java.awt.*;
 import java.io.IOException;
@@ -37,16 +40,27 @@ public class ConfigCreation {
     private Pane cityPane;
     @FXML
     private TextField cityName;
+    @FXML
+    private Spinner<Integer> sizeSpinner;
+    @FXML
+    private Label errorLabel;
+    @FXML
+    private Spinner<Integer> carEnergySpinner;
+    @FXML
+    private Label energyLabel;
 
     private boolean placeRoads = false;
     private boolean isCitySelected = false;
     private City citySelected = null;
+    private int defaultSize = 30;
     
-    private ArrayList<City> citiesNotLinked = new ArrayList<>();
+    private ArrayList<City[]> linkedCities = new ArrayList<>();
+    private ArrayList<City> citiesChecked = new ArrayList<>();
 
     Controller controller = Controller.getInstance();
     Configuration config;
     ViewGenerator viewGenerator = new ViewGenerator();
+    int chosenEnergy = 100;
 
     public void createConfig(boolean isHippo){
         try {
@@ -55,8 +69,8 @@ public class ConfigCreation {
             Parent root = loader.load();
             viewGenerator.setMainPane((Pane) loader.getNamespace().get("mainPane"));
             config.addElements(isHippo);
-            controller.initializeSimulation(viewGenerator);
-            stage.setScene(new Scene(root, 600, 600));
+            controller.initializeSimulation(viewGenerator, chosenEnergy);
+            stage.setScene(new Scene(root, 600, 650));
             stage.setTitle("Simulation Viewer");
             stage.show();
         } catch (IOException e) {
@@ -76,7 +90,6 @@ public class ConfigCreation {
 //        Button close = (Button) actionEvent.getSource();
 //        Stage oldstage = (Stage) close.getScene().getWindow();
 //        oldstage.close();
-        citiesNotLinked.addAll(config.getCities());
         changeToDrawRoadView();
     }
 
@@ -86,48 +99,49 @@ public class ConfigCreation {
         buttonNormal.setDisable(true);
         buttonNormal.setVisible(false);
         validateRoads.setVisible(true);
+        carEnergySpinner.setVisible(true);
+        energyLabel.setVisible(true);
         placeRoads = true;
     }
 
-    public void addCityWhereMouseIs(MouseEvent mouseEvent) {
+    public void addSomethingWhereMouseIs(MouseEvent mouseEvent) {
         if (!placeRoads) { // PLACE CITIES
+        	ArrayList<String> errors = new ArrayList<>();
             if (config == null) {
                 config = controller.initializeConfig();
             }
+            String nameOfTheCity = cityName.getText().toString();
+            int size = sizeSpinner.getValue();
             Coordinate coords = new Coordinate((float) mouseEvent.getX(), (float) mouseEvent.getY());
             boolean isCityPossible = true;
             for (City city : config.getCities()) {
                 if (Math.abs(city.getPosition().getX() - coords.getX()) < (city.getSize() * 2) &&
                         Math.abs(city.getPosition().getY() - coords.getY()) < (city.getSize() * 2)) {
                     isCityPossible = false;
+                    if (!(Math.abs(city.getPosition().getX() - coords.getX()) < city.getSize() &&
+                            Math.abs(city.getPosition().getY() - coords.getY()) < city.getSize())) {
+                    	errors.add("Ville trop proche ! ");
+                    }
+                }
+                if (city.getName().equals(nameOfTheCity)) {
+                	isCityPossible = false;
+                	errors.add("Nom de ville incorrect ! ");
                 }
             }
             if (isCityPossible) {
-                config.addCity(coords, 30, String.valueOf(config.getCities().size() + 1));
-                if (config.getCities().size() > 3) { // Min 4 cities per configuration
-                    buttonHippodamian.setDisable(false);
-                    buttonNormal.setDisable(false);
-                }
-                Circle cityCircle = new Circle(mouseEvent.getX(), mouseEvent.getY(), 30);
-                cityCircle.setId(""+config.getCities().size());
-                Text cityName = new Text(mouseEvent.getX() - 5, mouseEvent.getY() + 5, String.valueOf(config.getCities().size()));
-                cityName.setId("text"+config.getCities().size());
-                cityCircle.setFill((Color.color(Math.random(), Math.random(), Math.random())));
-                cityPane.getChildren().add(cityCircle);
-                cityPane.getChildren().add(cityName);
+                addCity(coords, size, nameOfTheCity);
             } else { // Check if we need to delete city
             	City deletedCity = null;
-            	int cityID = 0;
-            	for (int i = 0; i < config.getCities().size(); i++) {
-            		City city = config.getCities().get(i);
+            	for (City city: config.getCities()) {
             		if (Math.abs(city.getPosition().getX() - coords.getX()) < city.getSize() &&
                             Math.abs(city.getPosition().getY() - coords.getY()) < city.getSize()) {
                         deletedCity = city;
-                        cityID = i+1;
                     }
             	}
             	if (deletedCity != null) {
-            		removeCity(cityID, deletedCity);
+            		removeCity(deletedCity);
+            	} else {
+            		errorController(errors);
             	}
             }
         } else { // Place Roads
@@ -137,6 +151,7 @@ public class ConfigCreation {
                     if (Math.abs(city.getPosition().getX() - coords.getX()) < (city.getSize() * 2) &&
                             Math.abs(city.getPosition().getY() - coords.getY()) < (city.getSize() * 2)) {
                         citySelected = city;
+                        changeCircleColor(city, Color.RED);
                         isCitySelected = true;
                     }
                 }
@@ -144,34 +159,112 @@ public class ConfigCreation {
                 Coordinate coords = new Coordinate((float) mouseEvent.getX(), (float) mouseEvent.getY());
                 for (City city : config.getCities()) {
                     if (Math.abs(city.getPosition().getX() - coords.getX()) < (city.getSize() * 2) &&
-                            Math.abs(city.getPosition().getY() - coords.getY()) < (city.getSize() * 2)) {
-                        // Place roads
+                            Math.abs(city.getPosition().getY() - coords.getY()) < (city.getSize() * 2) &&
+                            isPossibleToLink(citySelected, city)) {
+                        // Place road
                         config.addRoad(citySelected.getCrossRoad(), city.getCrossRoad());
-                        citiesNotLinked.remove(citySelected);
-                        citiesNotLinked.remove(city);
                         Line line = new Line(citySelected.getPosition().getX(), citySelected.getPosition().getY(), city.getPosition().getX(), city.getPosition().getY());
                         line.setStrokeWidth(12);
                         line.setStroke(Color.BLACK);
                         cityPane.getChildren().add(line);
+                        //adding the new linked cities to the list
+                        City[] newLink = {city, citySelected};
+                        linkedCities.add(newLink);
                         isCitySelected = false;
+                        changeCircleColor(citySelected, Color.BLUE);
                     }
                 }
-                if (citiesNotLinked.size() == 0) {
+                //if the configuration links all the cities together, then we can validate
+                if (isConfigValid()) {
                     validateRoads.setDisable(false);
+                    carEnergySpinner.setDisable(false);
+                    
                 }
             }
         }
     }
+    
+    private void changeCircleColor(City city, Color color) {
+    	Circle circle = null;
+    	for (Node node: cityPane.getChildren()) {
+            if (city.getName().equals(node.getId())) {
+                circle = (Circle) node;
+            }
+        }
+		circle.setFill(color);
+	}
 
-    private void removeCity(int cityID, City deletedCity) {
+	//checks if every city can reach every other city
+    private boolean isConfigValid() {
+    	lilRecursiveFunctionToCheckThroughAllTheCities(config.getCities().get(0));
+    	if(citiesChecked.size() != config.getCities().size()) {
+    		//means the cities aren't all linked for now
+    		citiesChecked.clear();
+    		return false;
+    	}
+    	return true;
+    }
+    
+    private void lilRecursiveFunctionToCheckThroughAllTheCities(City cityIn) {
+    	//adding the current city, then checking if the cities it's linked to are already stored
+    	//If they're not then we call the function with them
+    	citiesChecked.add(cityIn);
+    	for(City[] link : linkedCities) {
+    		if(link[0].equals(cityIn) && !citiesChecked.contains(link[1])) {
+    			lilRecursiveFunctionToCheckThroughAllTheCities(link[1]);
+    			
+    		} else if (link[1].equals(cityIn) && !citiesChecked.contains(link[0])) {
+    			lilRecursiveFunctionToCheckThroughAllTheCities(link[0]);
+    		}
+    	}
+    	
+    }
+    
+    //checks if two cities are "linkable"
+    private boolean isPossibleToLink(City cityA, City cityB) {
+    	//checks if the city to link isn't the same as the first one
+    	if(cityA.equals(cityB)) {
+    		System.out.println("You can't link the city to itself");
+    		isCitySelected = false;
+    		changeCircleColor(cityA, Color.BLUE);
+    		return false;
+    	} else {
+    		//checks if both cities aren't already linked
+    		for (City[] link : linkedCities) {
+    			if((link[0].equals(cityA) && link[1].equals(cityB)) ||
+    					(link[0].equals(cityB) && link[1].equals(cityA))) {
+    	    		System.out.println("Cities already linked");
+    				return false;
+    			}
+    		}
+    	}
+    	return true;
+    }
+
+    private void addCity(Coordinate coords, int size, String nameOfTheCity) {
+    	config.addCity(coords, size, nameOfTheCity);
+        if (config.getCities().size() > 3) { // Min 4 cities per configuration
+            buttonHippodamian.setDisable(false);
+            buttonNormal.setDisable(false);
+        }
+        Circle cityCircle = new Circle(coords.getX(), coords.getY(), size);
+        cityCircle.setId(nameOfTheCity);
+        Text cityName = new Text(coords.getX() - 10, coords.getY() + 5, nameOfTheCity);
+        cityName.setId("text"+nameOfTheCity);
+        cityCircle.setFill(Color.BLUE);
+        cityPane.getChildren().add(cityCircle);
+        cityPane.getChildren().add(cityName);
+	}
+
+	private void removeCity(City deletedCity) {
     	Circle circle = null;
     	Text text = null;
 		// Remove City with id
     	for (Node node: cityPane.getChildren()) {
-            if (String.valueOf(cityID).equals(node.getId())) {
+            if (deletedCity.getName().equals(node.getId())) {
                 circle = (Circle) node;
             }
-            if (String.valueOf("text"+cityID).equals(node.getId())) {
+            if (("text"+deletedCity.getName()).equals(node.getId())) {
                 text = (Text) node;
             }
         }
@@ -184,8 +277,18 @@ public class ConfigCreation {
             buttonNormal.setDisable(true);
 		}
 	}
+	
+	private void errorController(ArrayList<String> error) {
+		errorLabel.setAlignment(Pos.CENTER);
+		String errorMessage = "";
+		for (String str: error) {
+			errorMessage += str;
+		}
+		errorLabel.setText(errorMessage);
+	}
 
 	public void validateConfig(ActionEvent event) {
+		chosenEnergy = carEnergySpinner.getValue();
         Button close = (Button) event.getSource();
         Stage oldstage = (Stage) close.getScene().getWindow();
         oldstage.close();

@@ -29,10 +29,8 @@ public class Configuration {
 
     public void addElements(boolean isHippo){
         this.isHippodamien = isHippo;
-        System.out.println(isHippo);
-        System.out.println(isHippodamien);
         //creating the map layout
-        this.mapLayout = new MapLayout(getCities().size());
+        this.mapLayout = new MapLayout(getCities().size(), this);
         //generating the hippodamian grid in case the configuration is hippodamian
         if(isHippodamien){
             generateHippodamianRoads();
@@ -84,9 +82,10 @@ public class Configuration {
             listCityCoordsX[i] = cities.get(i).getPosition().getX();
             listCityCoordsY[i] = cities.get(i).getPosition().getY();
         }
-        //sorting the city coordinates list so it ranges correctly
+        //sorting the city coordinates list so it ranges correctly, then passing the list to MapLayout
         Arrays.sort(listCityCoordsY);
         Arrays.sort(listCityCoordsX);
+        mapLayout.sortCities(listCityCoordsX, listCityCoordsY);
         //giving coordinates to every point in the plan
         for(int i = 0; i < nbCities; i++) {
             for(int j = 0; j < nbCities; j++){
@@ -152,7 +151,7 @@ public class Configuration {
         return newRoad;
     }
 
-    public ArrayList<Car> setupCars(int numberCars) {
+    public ArrayList<Car> setupCars(int numberCars, int energy) {
         int id = 0;
         // init the cars
         for (int j = 0; j < numberCars; j++ ) {
@@ -160,7 +159,7 @@ public class Configuration {
             City startCity = cities.get(j);
             // create the car
             id++;
-            Car car = new Car(this,100, viewGenerator,startCity,id);
+            Car car = new Car(this, energy, viewGenerator,startCity,id);
             // put it in the list
             cars.add(car);
         }

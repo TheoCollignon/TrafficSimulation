@@ -26,21 +26,19 @@ public class Controller {
         return configuration;
     }
 
-    public void initializeSimulation(ViewGenerator viewGenerator){
+    public void initializeSimulation(ViewGenerator viewGenerator, int originalEnergy){
         this.viewGenerator = viewGenerator;
         jsonManager = new JSONManager();
-        ArrayList<Car> cars = configuration.setupCars(configuration.getCities().size());
-        jsonManager.saveJSONFile(configuration, "test");
+        ArrayList<Car> cars = configuration.setupCars(configuration.getCities().size(), originalEnergy);
         CarManager cm = new CarManager(cars);
         startAgent = true;
-        System.out.println(this.startAgent);
         viewGenerator.updateView(cars);
         viewGenerator.drawConfiguration(configuration);
         
     }
-    public void createRandomConfiguration() {
+    public void createRandomConfiguration(boolean isHippo) {
         initializeConfig();
-        configuration.addRandomElements(5,false);
+        configuration.addRandomElements(5, isHippo);
         startAgent = true;
     }
 
@@ -61,6 +59,10 @@ public class Controller {
     
     public boolean getStartAgent() {
     	return startAgent;
+    }
+    
+    public JSONManager getJSONManager() {
+    	return this.jsonManager;
     }
 
 	

@@ -30,7 +30,7 @@ public class Controller {
         this.viewGenerator = viewGenerator;
         jsonManager = new JSONManager();
         ArrayList<Car> cars = configuration.setupCars(configuration.getCities().size(), originalEnergy);
-        CarManager cm = new CarManager(cars);
+        // CarManager cm = new CarManager(cars);
         startAgent = true;
         System.out.println(this.startAgent);
         viewGenerator.updateView(cars);
@@ -47,7 +47,7 @@ public class Controller {
         this.viewGenerator = viewGenerator;
         jsonManager = new JSONManager();
         configuration = jsonManager.readJSONFile(viewGenerator,fileName);
-        CarManager cm = new CarManager(configuration.getCars());
+        // CarManager cm = new CarManager(configuration.getCars());
         startAgent = true;
         viewGenerator.updateView(configuration.getCars());
         viewGenerator.drawConfiguration(configuration);

@@ -31,7 +31,6 @@ agent CarAgent {
 		for (coord : road.coordsList) { // parcours de ma route pour trouvé la voiture
 			for (car : coord.carList) { // on vérifie si jamais y'a deux voitures sur la même coord, que ce soit la bonne
 					if (car.UUID == this.ID) {
-						println("if")
 					// on renvoie l'indice
 						var numberOfFreeCoord = road.perceptionFree(car, 5)
 						var influence = new Influence(i, this.ID, numberOfFreeCoord)

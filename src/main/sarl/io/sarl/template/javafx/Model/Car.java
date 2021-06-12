@@ -81,10 +81,11 @@ public class Car {
         // if (this.energy >= 0 && !isInTownEvent()) {
         if (this.energy >= 0) {
             adaptCarSpeed(this.position);
-            this.energy -= 0.01 * this.speed;
+            // this.energy -= 0.0001 * this.speed;
+            this.energy -= 0.1;
             // this.position.removeCar(this);
             try {
-				Thread.sleep(50);
+				Thread.sleep(5);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

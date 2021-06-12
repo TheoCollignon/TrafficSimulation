@@ -36,7 +36,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -92,16 +91,8 @@ public class Environment extends Agent {
     int _size = cars.size();
     int _size_1 = this.listInfluences.size();
     if ((_size == _size_1)) {
-      String TexteId = "";
-      for (final Influence occurence : this.listInfluences) {
-        {
-          TexteId = (TexteId + (occurence.id == null ? null : occurence.id.toString()));
-          TexteId = (TexteId + " - ");
-        }
-      }
-      System.out.println(TexteId);
       boolean move = true;
-      for (final Influence occurence_1 : this.listInfluences) {
+      for (final Influence occurence : this.listInfluences) {
         {
           if ((occurrence.numberOfFreeCoord == 0)) {
             move = false;
@@ -109,7 +100,7 @@ public class Environment extends Agent {
           if (move) {
             for (final Car car : cars) {
               UUID _uUID = car.getUUID();
-              boolean _equals = Objects.equal(_uUID, occurence_1.id);
+              boolean _equals = Objects.equal(_uUID, occurence.id);
               if (_equals) {
                 car.getRoadOn().moveCarPosition(car);
               }
@@ -122,7 +113,6 @@ public class Environment extends Agent {
   }
   
   protected synchronized void startSimulationStep() {
-    InputOutput.<String>println("StartSimulationStep");
     List<Road> roads = Collections.<Road>synchronizedList(this.controller.getConfiguration().getRoads());
     ArrayList<Car> cars = this.controller.getConfiguration().getCars();
     for (final Car car : cars) {

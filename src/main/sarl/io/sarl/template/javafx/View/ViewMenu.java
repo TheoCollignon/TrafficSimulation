@@ -56,7 +56,7 @@ public class ViewMenu extends Application {
             Parent root = loader.load();
             viewGenerator.setMainPane((Pane) loader.getNamespace().get("mainPane"));
             Controller.getInstance().createRandomConfiguration(isHippo);
-            Controller.getInstance().initializeSimulation(viewGenerator, 100);
+            Controller.getInstance().initializeSimulation(viewGenerator, 10000000);
             stage.setScene(new Scene(root, 600, 650));
             stage.setTitle("Simulation Viewer");
             stage.show();

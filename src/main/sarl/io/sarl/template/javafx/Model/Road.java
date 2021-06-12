@@ -65,7 +65,7 @@ public class Road {
         Coordinate pointB = this.getCoordsList().get(getCoordsList().size()-1);
         double distance = Math.sqrt(Math.pow(pointB.getX() - pointA.getX(),2) + Math.pow(pointB.getY() - pointA.getY(),2));
         this.roadLength += distance;
-        this.pointNum = (int)(distance / 10);
+        this.pointNum = (int)(distance*2);
         // we clear once
         coordsList.clear();
         // we had the first city

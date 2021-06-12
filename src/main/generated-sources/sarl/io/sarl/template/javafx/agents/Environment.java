@@ -82,18 +82,18 @@ public class Environment extends Agent {
   
   private void $behaviorUnit$Influence$2(final Influence occurrence) {
     ArrayList<Car> cars = this.controller.getConfiguration().getCars();
-    this.listInfluences.add(occurrence);
-    String TexteId = "";
-    for (final Influence occurence : this.listInfluences) {
-      {
-        TexteId = (TexteId + (occurence.id == null ? null : occurence.id.toString()));
-        TexteId = (TexteId + " - ");
-      }
-    }
-    System.out.println(TexteId);
     int _size = cars.size();
     int _size_1 = this.listInfluences.size();
     if ((_size == _size_1)) {
+      this.listInfluences.add(occurrence);
+      String TexteId = "";
+      for (final Influence occurence : this.listInfluences) {
+        {
+          TexteId = (TexteId + (occurence.id == null ? null : occurence.id.toString()));
+          TexteId = (TexteId + " - ");
+        }
+      }
+      System.out.println(TexteId);
       boolean move = true;
       for (final Influence occurence_1 : this.listInfluences) {
         {

@@ -67,19 +67,19 @@ agent Environment {
 	on Influence {
 //		info("i : " + occurrence.i)
 //		info("id : " + occurrence.id)
-//		info("next coordinate available ?  : " + occurrence.numberOfFreeCoord)
-			
+		// info("next coordinate available ?  : " + occurrence.numberOfFreeCoord)
 		var cars = controller.configuration.cars
-		listInfluences.add(occurrence)
-		var TexteId = ""
-		for (occurence : listInfluences) {
-			TexteId += occurence.id as String
-			TexteId += " - "
-			}
-		System.out.println(TexteId)
+	
 		// when we receive an influence we need to know if everyone has done his job yet
 		// tobedone
 		if (cars.size() == listInfluences.size()) {
+			listInfluences.add(occurrence)
+			var TexteId = ""
+			for (occurence : listInfluences) {
+				TexteId += occurence.id as String
+				TexteId += " - "
+			}
+			System.out.println(TexteId)
 			
 
 			// use listInfluences to update the model and the view

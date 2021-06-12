@@ -7,8 +7,7 @@ import io.sarl.template.javafx.View.ViewMenu;
 import io.sarl.template.javafx.agents.Environment;
 
 public class Main {
-    public static void main(String[] args) {
-    	
+    public static void main(String[] args) {    	
     	// Implementing SARL : 
     	SREBootstrap bootstrap = SRE.getBootstrap();
         Controller controller = Controller.getInstance();

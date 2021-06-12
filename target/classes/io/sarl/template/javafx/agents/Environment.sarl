@@ -14,8 +14,7 @@ import java.util.Collections
 import io.sarl.template.javafx.Model.Configuration
 import io.sarl.template.javafx.^event.Influence
 import io.sarl.template.javafx.^event.SetupApplication
-import java.util.ArrayList
-
+import java.util.concurrent.CopyOnWriteArrayList
 
 /** 
  * @author Luka Lambalot
@@ -26,7 +25,7 @@ agent Environment {
 
 	var controller : Controller
 	var configuration : Configuration
-	var listInfluences = Collections.synchronizedList(new ArrayList<Influence>)
+	var listInfluences = new CopyOnWriteArrayList<Influence>
 	
 	// TOBEDONE : var influences = Collections.synchronizedList(events)
 	
@@ -57,7 +56,8 @@ agent Environment {
 		for (car : cars) {
 			spawnInContextWithID(typeof(CarAgent), car.UUID, defaultContext, car.roadOn)
 		}
-
+		Thread::sleep(50)
+		
 		startSimulationStep
 		// every(500)[startSimulationStep]
 	}
@@ -72,8 +72,9 @@ agent Environment {
 	
 		// when we receive an influence we need to know if everyone has done his job yet
 		// tobedone
+		listInfluences.add(occurrence)
+		
 		if (cars.size() == listInfluences.size()) {
-			listInfluences.add(occurrence)
 			var TexteId = ""
 			for (occurence : listInfluences) {
 				TexteId += occurence.id as String

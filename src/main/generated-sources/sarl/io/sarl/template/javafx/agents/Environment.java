@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -49,7 +50,7 @@ public class Environment extends Agent {
   
   private Configuration configuration;
   
-  private List<Influence> listInfluences = Collections.<Influence>synchronizedList(new ArrayList<Influence>());
+  private CopyOnWriteArrayList<Influence> listInfluences = new CopyOnWriteArrayList<Influence>();
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     try {
@@ -71,21 +72,26 @@ public class Environment extends Agent {
   }
   
   private void $behaviorUnit$SetupApplication$1(final SetupApplication occurrence) {
-    ArrayList<Car> cars = this.controller.getConfiguration().getCars();
-    for (final Car car : cars) {
-      Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
-      DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContextWithID(CarAgent.class, car.getUUID(), _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultContext(), car.getRoadOn());
+    try {
+      ArrayList<Car> cars = this.controller.getConfiguration().getCars();
+      for (final Car car : cars) {
+        Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
+        DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+        _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContextWithID(CarAgent.class, car.getUUID(), _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultContext(), car.getRoadOn());
+      }
+      Thread.sleep(50);
+      this.startSimulationStep();
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
     }
-    this.startSimulationStep();
   }
   
   private void $behaviorUnit$Influence$2(final Influence occurrence) {
     ArrayList<Car> cars = this.controller.getConfiguration().getCars();
+    this.listInfluences.add(occurrence);
     int _size = cars.size();
     int _size_1 = this.listInfluences.size();
     if ((_size == _size_1)) {
-      this.listInfluences.add(occurrence);
       String TexteId = "";
       for (final Influence occurence : this.listInfluences) {
         {

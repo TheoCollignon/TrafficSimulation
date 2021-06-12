@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.UUID;
 import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -53,6 +54,7 @@ public class CarAgent extends Agent {
           UUID _iD = this.getID();
           boolean _equals = Objects.equal(_uUID, _iD);
           if (_equals) {
+            InputOutput.<String>println("if");
             int numberOfFreeCoord = this.road.perceptionFree(car, 5);
             UUID _iD_1 = this.getID();
             Influence influence = new Influence(i, _iD_1, numberOfFreeCoord);

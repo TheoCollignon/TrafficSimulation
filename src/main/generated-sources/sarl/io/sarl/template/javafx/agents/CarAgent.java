@@ -25,7 +25,6 @@ import java.util.Collection;
 import java.util.UUID;
 import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -45,25 +44,20 @@ public class CarAgent extends Agent {
   private void $behaviorUnit$Perception$1(final Perception occurrence) {
     this.road = occurrence.road;
     int i = 0;
-    System.out.println("11");
     ArrayList<Coordinate> _coordsList = this.road.getCoordsList();
     for (final Coordinate coord : _coordsList) {
       {
         ArrayList<Car> _carList = coord.getCarList();
         for (final Car car : _carList) {
-          {
-            InputOutput.<String>println("for car");
-            UUID _uUID = car.getUUID();
-            UUID _iD = this.getID();
-            boolean _equals = Objects.equal(_uUID, _iD);
-            if (_equals) {
-              InputOutput.<String>println("if");
-              int numberOfFreeCoord = this.road.perceptionFree(car, 5);
-              UUID _iD_1 = this.getID();
-              Influence influence = new Influence(i, _iD_1, numberOfFreeCoord);
-              DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-              _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(influence);
-            }
+          UUID _uUID = car.getUUID();
+          UUID _iD = this.getID();
+          boolean _equals = Objects.equal(_uUID, _iD);
+          if (_equals) {
+            int numberOfFreeCoord = this.road.perceptionFree(car, 5);
+            UUID _iD_1 = this.getID();
+            Influence influence = new Influence(i, _iD_1, numberOfFreeCoord);
+            DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+            _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(influence);
           }
         }
         i++;

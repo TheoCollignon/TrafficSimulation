@@ -16,6 +16,7 @@ import io.sarl.template.javafx.^event.Influence
 import io.sarl.template.javafx.^event.SetupApplication
 import java.util.ArrayList
 
+
 /** 
  * @author Luka Lambalot
  * 
@@ -64,25 +65,42 @@ agent Environment {
 	
 	
 	on Influence {
-		info("i : " + occurrence.i)
-		info("id : " + occurrence.id)
-		info("next coordinate available ?  : " + occurrence.numberOfFreeCoord)
-		// we need to know if we can move to the next coordinate
-		var move = true
-		if(occurrence.numberOfFreeCoord == 0) {
-			move = false;
-		}
-		
-		
+//		info("i : " + occurrence.i)
+//		info("id : " + occurrence.id)
+//		info("next coordinate available ?  : " + occurrence.numberOfFreeCoord)
+			
 		var cars = controller.configuration.cars
 		listInfluences.add(occurrence)
+		var TexteId = ""
+		for (occurence : listInfluences) {
+			TexteId += occurence.id as String
+			TexteId += " - "
+			}
+		System.out.println(TexteId)
 		// when we receive an influence we need to know if everyone has done his job yet
 		// tobedone
 		if (cars.size() == listInfluences.size()) {
+			
 
 			// use listInfluences to update the model and the view
-			// insert code here 
-		
+			// we need to know if we can move to the next coordinate
+			var move = true
+			for (occurence : listInfluences) {
+				// println(occurence.id)
+				
+				if (occurrence.numberOfFreeCoord == 0) {
+					move = false;
+				}
+				// insert code here
+				if (move) {
+					for (car : cars) {
+						if (car.UUID == occurence.id) {
+							car.getRoadOn.moveCarPosition(car)
+						}	
+					}		
+				}
+					
+			}
 			// then we end the current step
 			endSimulationStep
 		}
@@ -91,8 +109,8 @@ agent Environment {
 	}
 	
 	
-	def startSimulationStep {
-		
+	synchronized def startSimulationStep  {
+		println("StartSimulationStep")		
 		var roads = Collections.synchronizedList(controller.configuration.roads)
 		var cars = controller.configuration.cars
 		for (car : cars) {
@@ -100,11 +118,22 @@ agent Environment {
 			emit(perception)[it.UUID == car.UUID]
 		}
 	}
-	
-	def endSimulationStep {
+
+	synchronized def endSimulationStep {
 		// we clear the list after using it
+		var cars = controller.configuration.cars
+		for (car : cars) {
+			if (car.toBeDelete.size() != 0) {
+				car.toBeDelete.get(0).removeCar(car)
+			}
+		}
+
+		
 		listInfluences.clear()
-		startSimulationStep // end of the loop 
+		startSimulationStep 	// end of the loop
+		
+		
+		
 	}
 	
 

@@ -35,6 +35,7 @@ import java.util.UUID;
 import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -80,26 +81,42 @@ public class Environment extends Agent {
   }
   
   private void $behaviorUnit$Influence$2(final Influence occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("i : " + Integer.valueOf(occurrence.i)));
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("id : " + occurrence.id));
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(("next coordinate available ?  : " + Integer.valueOf(occurrence.numberOfFreeCoord)));
-    boolean move = true;
-    if ((occurrence.numberOfFreeCoord == 0)) {
-      move = false;
-    }
     ArrayList<Car> cars = this.controller.getConfiguration().getCars();
     this.listInfluences.add(occurrence);
+    String TexteId = "";
+    for (final Influence occurence : this.listInfluences) {
+      {
+        TexteId = (TexteId + (occurence.id == null ? null : occurence.id.toString()));
+        TexteId = (TexteId + " - ");
+      }
+    }
+    System.out.println(TexteId);
     int _size = cars.size();
     int _size_1 = this.listInfluences.size();
     if ((_size == _size_1)) {
+      boolean move = true;
+      for (final Influence occurence_1 : this.listInfluences) {
+        {
+          if ((occurrence.numberOfFreeCoord == 0)) {
+            move = false;
+          }
+          if (move) {
+            for (final Car car : cars) {
+              UUID _uUID = car.getUUID();
+              boolean _equals = Objects.equal(_uUID, occurence_1.id);
+              if (_equals) {
+                car.getRoadOn().moveCarPosition(car);
+              }
+            }
+          }
+        }
+      }
       this.endSimulationStep();
     }
   }
   
-  protected void startSimulationStep() {
+  protected synchronized void startSimulationStep() {
+    InputOutput.<String>println("StartSimulationStep");
     List<Road> roads = Collections.<Road>synchronizedList(this.controller.getConfiguration().getRoads());
     ArrayList<Car> cars = this.controller.getConfiguration().getCars();
     for (final Car car : cars) {
@@ -137,7 +154,14 @@ public class Environment extends Agent {
     }
   }
   
-  protected void endSimulationStep() {
+  protected synchronized void endSimulationStep() {
+    ArrayList<Car> cars = this.controller.getConfiguration().getCars();
+    for (final Car car : cars) {
+      int _size = car.getToBeDelete().size();
+      if ((_size != 0)) {
+        car.getToBeDelete().get(0).removeCar(car);
+      }
+    }
     this.listInfluences.clear();
     this.startSimulationStep();
   }

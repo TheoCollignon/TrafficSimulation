@@ -28,12 +28,9 @@ agent CarAgent {
 	on Perception {
 		road = occurrence.road // route sur laquel la voiture est
 		var i = 0
-		System.out.println("11")
 		for (coord : road.coordsList) { // parcours de ma route pour trouvé la voiture
 			for (car : coord.carList) { // on vérifie si jamais y'a deux voitures sur la même coord, que ce soit la bonne
-				println("for car")
 					if (car.UUID == this.ID) {
-						println("if")
 					// on renvoie l'indice
 						var numberOfFreeCoord = road.perceptionFree(car, 5)
 						var influence = new Influence(i, this.ID, numberOfFreeCoord)

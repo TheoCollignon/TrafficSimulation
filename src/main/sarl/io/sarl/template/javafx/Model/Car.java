@@ -3,7 +3,10 @@ package io.sarl.template.javafx.Model;
 import io.sarl.template.javafx.View.ViewGenerator;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -73,14 +76,37 @@ public class Car {
         }
     }
 
-    public void changeCoordinate(Coordinate position) {
+    public synchronized void changeCoordinate(Coordinate position) {
         // if there is enough energy, we move the car
-        if (this.energy >= 0 && !isInTownEvent()) {
+        // if (this.energy >= 0 && !isInTownEvent()) {
+        if (this.energy >= 0) {
             adaptCarSpeed(this.position);
             this.energy -= 0.01 * this.speed;
             // this.position.removeCar(this);
-            this.toBeDelete.add(this.position);
-            System.out.println("JAJOUTE UN TRUC A DELETE FDP");
+            try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            // System.out.println("HELLO LES MAIIIIIIIIIIIIIIII");
+            Iterator<Car> i = this.position.getCar().iterator();
+            while (i.hasNext()) {
+               Car car = (Car) i.next();
+               if (car.equals(this)) {
+            	  try {
+            		  i.remove();
+            	  } catch (ConcurrentModificationException e) {
+      				// TODO Auto-generated catch block
+      				e.printStackTrace();
+      			}
+                  // System.out.println("\n the car is removed");
+                  break;
+               }
+            } 
+            
+//            this.toBeDelete.add(this.position);
+//            System.out.println("JAJOUTE UN TRUC A DELETE FDP");
             this.position = position;
             this.position.addCar(this);
             if(this.energy <= 0){

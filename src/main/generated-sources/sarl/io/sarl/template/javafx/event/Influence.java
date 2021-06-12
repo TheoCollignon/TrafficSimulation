@@ -13,8 +13,6 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SarlElementType(15)
 @SuppressWarnings("all")
 public class Influence extends Event {
-  public boolean move;
-  
   public int i;
   
   public UUID id;
@@ -38,8 +36,6 @@ public class Influence extends Event {
     if (getClass() != obj.getClass())
       return false;
     Influence other = (Influence) obj;
-    if (other.move != this.move)
-      return false;
     if (other.i != this.i)
       return false;
     if (!Objects.equals(this.id, other.id))
@@ -55,7 +51,6 @@ public class Influence extends Event {
   public int hashCode() {
     int result = super.hashCode();
     final int prime = 31;
-    result = prime * result + Boolean.hashCode(this.move);
     result = prime * result + Integer.hashCode(this.i);
     result = prime * result + Objects.hashCode(this.id);
     result = prime * result + Integer.hashCode(this.numberOfFreeCoord);
@@ -69,12 +64,11 @@ public class Influence extends Event {
   @Pure
   protected void toString(final ToStringBuilder builder) {
     super.toString(builder);
-    builder.add("move", this.move);
     builder.add("i", this.i);
     builder.add("id", this.id);
     builder.add("numberOfFreeCoord", this.numberOfFreeCoord);
   }
   
   @SyntheticMember
-  private static final long serialVersionUID = -2921440223L;
+  private static final long serialVersionUID = -2989509592L;
 }

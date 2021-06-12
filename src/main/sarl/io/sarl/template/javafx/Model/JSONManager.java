@@ -23,7 +23,6 @@ public class JSONManager {
         	String jsonFile = location.toString();
         	jsonFile = jsonFile.substring(6);
         	jsonFile += "/"+fileName+".json";
-        	System.out.println(jsonFile);
             FileWriter file = new FileWriter(jsonFile);
             file.write("{");
             // Stock cities in JSON file

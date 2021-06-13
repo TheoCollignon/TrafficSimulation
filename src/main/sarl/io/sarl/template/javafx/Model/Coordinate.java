@@ -1,26 +1,27 @@
 package io.sarl.template.javafx.Model;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Coordinate {
     private float x;
     private float y;
-    private ArrayList<Car> carList;
+    private CopyOnWriteArrayList<Car> carList;
     private City city;
 
     public Coordinate(float x, float y) {
         this.x = x;
         this.y = y;
-        this.carList = new ArrayList<>();
+        this.carList = new CopyOnWriteArrayList<>();
     }
 
-    public Coordinate(float x, float y, ArrayList<Car> carList) {
+    public Coordinate(float x, float y, CopyOnWriteArrayList<Car> carList) {
         this.x = x;
         this.y = y;
         this.carList = carList;
     }
 
-    public Coordinate(float x, float y, ArrayList<Car> carList, City city) {
+    public Coordinate(float x, float y, CopyOnWriteArrayList<Car> carList, City city) {
         this.x = x;
         this.y = y;
         this.carList = carList;
@@ -35,7 +36,7 @@ public class Coordinate {
         this.carList.add(car);
     }
     
-    public ArrayList<Car> getCarList(){
+    public CopyOnWriteArrayList<Car> getCarList(){
     	return this.carList;
     }
 
@@ -69,13 +70,13 @@ public class Coordinate {
         this.y = y;
     }
 
-    public ArrayList<Car> getCar() {
+    public CopyOnWriteArrayList<Car> getCar() {
         return carList;
     }
 
     public boolean isCar() { return carList != null; }
 
-    public void setCar(ArrayList<Car> car) {
+    public void setCar(CopyOnWriteArrayList<Car> car) {
         this.carList = car;
     }
 

@@ -83,28 +83,29 @@ public class Car {
             adaptCarSpeed(this.position);
             // this.energy -= 0.0001 * this.speed;
             this.energy -= 0.1;
-            // this.position.removeCar(this);
+           
             try {
 				Thread.sleep(5);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+            this.position.removeCar(this);
             // System.out.println("HELLO LES MAIIIIIIIIIIIIIIII");
-            Iterator<Car> i = this.position.getCar().iterator();
-            while (i.hasNext()) {
-               Car car = (Car) i.next();
-               if (car.equals(this)) {
-            	  try {
-            		  i.remove();
-            	  } catch (ConcurrentModificationException e) {
-      				// TODO Auto-generated catch block
-      				e.printStackTrace();
-      			}
-                  // System.out.println("\n the car is removed");
-                  break;
-               }
-            } 
+//            Iterator<Car> i = this.position.getCar().iterator();
+//            while (i.hasNext()) {
+//               Car car = (Car) i.next();
+//               if (car.equals(this)) {
+//            	  try {
+//            		  i.remove();
+//            	  } catch (ConcurrentModificationException e) {
+//      				// TODO Auto-generated catch block
+//      				e.printStackTrace();
+//      			}
+//                  // System.out.println("\n the car is removed");
+//                  break;
+//               }
+//            } 
             
 //            this.toBeDelete.add(this.position);
 //            System.out.println("JAJOUTE UN TRUC A DELETE FDP");

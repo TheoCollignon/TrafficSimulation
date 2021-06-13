@@ -23,6 +23,7 @@ import io.sarl.template.javafx.event.Perception;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -47,7 +48,7 @@ public class CarAgent extends Agent {
     ArrayList<Coordinate> _coordsList = this.road.getCoordsList();
     for (final Coordinate coord : _coordsList) {
       {
-        ArrayList<Car> _carList = coord.getCarList();
+        CopyOnWriteArrayList<Car> _carList = coord.getCarList();
         for (final Car car : _carList) {
           UUID _uUID = car.getUUID();
           UUID _iD = this.getID();

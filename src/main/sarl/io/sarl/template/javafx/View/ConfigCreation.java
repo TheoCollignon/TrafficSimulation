@@ -171,7 +171,7 @@ public class ConfigCreation {
                         City[] newLink = {city, citySelected};
                         linkedCities.add(newLink);
                         isCitySelected = false;
-                        changeCircleColor(citySelected, Color.BLUE);
+                        changeCircleColor(citySelected, Color.LIGHTBLUE);
                     }
                 }
                 //if the configuration links all the cities together, then we can validate
@@ -225,7 +225,7 @@ public class ConfigCreation {
     	if(cityA.equals(cityB)) {
     		System.out.println("You can't link the city to itself");
     		isCitySelected = false;
-    		changeCircleColor(cityA, Color.BLUE);
+    		changeCircleColor(cityA, Color.LIGHTBLUE);
     		return false;
     	} else {
     		//checks if both cities aren't already linked
@@ -250,7 +250,7 @@ public class ConfigCreation {
         cityCircle.setId(nameOfTheCity);
         Text cityName = new Text(coords.getX() - 10, coords.getY() + 5, nameOfTheCity);
         cityName.setId("text"+nameOfTheCity);
-        cityCircle.setFill(Color.BLUE);
+        cityCircle.setFill(Color.LIGHTBLUE);
         cityPane.getChildren().add(cityCircle);
         cityPane.getChildren().add(cityName);
 	}

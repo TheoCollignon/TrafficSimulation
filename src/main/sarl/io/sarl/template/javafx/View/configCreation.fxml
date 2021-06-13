@@ -21,7 +21,7 @@
                <children>
                   <Button fx:id="buttonHippodamian" disable="true" layoutX="358.0" layoutY="44.0" mnemonicParsing="false" onAction="#createHippodamianConfig" text="Hippodamian configuration" />
                   <Button fx:id="buttonNormal" disable="true" layoutX="374.0" layoutY="91.0" mnemonicParsing="false" onAction="#createNormalConfig" text="Normal configuration" />
-                  <Button fx:id="validateRoads" disable="true" layoutX="273.0" layoutY="74.0" mnemonicParsing="false" onAction="#validateConfig" text="Valider" visible="false" />
+                  <Button fx:id="validateRoads" disable="true" layoutX="273.0" layoutY="74.0" mnemonicParsing="false" onAction="#validateConfig" text="Validate" visible="false" />
                   <TextField fx:id="cityName" layoutX="107.0" layoutY="44.0" text="Belfort" />
                   <Label layoutX="37.0" layoutY="48.0" text="City Name" />
                   <Label layoutX="55.0" layoutY="95.0" text="Size" />

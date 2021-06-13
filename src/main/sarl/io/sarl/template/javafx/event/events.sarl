@@ -5,6 +5,7 @@ package io.sarl.template.javafx.^event
 
 import io.sarl.template.javafx.Model.Road
 import java.util.UUID
+import io.sarl.template.javafx.Model.Car
 
 /** 
  * @author Luka Lambalot
@@ -38,3 +39,14 @@ event SetupApplication {
 		
 	}
 }
+
+
+event MoveCarPosition{
+	var car : Car
+	
+	new (car : Car){
+		this.car = car
+	}
+}
+
+

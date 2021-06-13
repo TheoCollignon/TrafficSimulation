@@ -15,6 +15,7 @@ import io.sarl.template.javafx.Model.Configuration
 import io.sarl.template.javafx.^event.Influence
 import io.sarl.template.javafx.^event.SetupApplication
 import java.util.concurrent.CopyOnWriteArrayList
+import io.sarl.template.javafx.^event.MoveCarPosition
 
 /** 
  * @author Luka Lambalot
@@ -35,19 +36,36 @@ agent Environment {
 		// Event trigger before the agent begin to live or to be used.
 		// You should put all the initialization statements in this block of code.
 		info("The agent was started.")
-		
 		controller = Controller.getInstance
-		while (controller.startAgent == false) {
-			Thread::sleep(50)
-			// Can be better imo
-		}
-		Thread::sleep(50)
-		// controller.createRandomConfiguration // for testing purpose
-		// controller.configuration.setupCars(5)
-		var roads = controller.configuration.roads
-		var cars = controller.configuration.cars
-		var setupApplication = new SetupApplication()
-		emit(setupApplication) // have to emit, to be sure at 100% that every agent are instanciate
+
+		val task = task("begin")
+		task.every(100) [
+			if (controller.startAgent == true) {
+				// controller.createRandomConfiguration // for testing purpose
+				// controller.configuration.setupCars(5)
+				var roads = controller.configuration.roads
+				var cars = controller.configuration.cars
+				var setupApplication = new SetupApplication()
+				emit(setupApplication) // have to emit, to be sure at 100% that every agent are instanciate
+				task.cancel
+			}
+		]
+		
+		
+		
+		
+		
+//		while (controller.startAgent == false) {
+//			Thread::sleep(50)
+//			// Can be better imo
+//		}
+//		Thread::sleep(50)
+//		// controller.createRandomConfiguration // for testing purpose
+//		// controller.configuration.setupCars(5)
+//		var roads = controller.configuration.roads
+//		var cars = controller.configuration.cars
+//		var setupApplication = new SetupApplication()
+//		emit(setupApplication) // have to emit, to be sure at 100% that every agent are instanciate
 		
 	}
 	
@@ -91,12 +109,16 @@ agent Environment {
 				if (move) {
 					for (car : cars) {
 						if (car.UUID == occurence.id) {
+//							var moveCar = new MoveCarPosition(car)
+//							emit(moveCar)[it.UUID == car.UUID]
 							car.getRoadOn.moveCarPosition(car)
 						}	
 					}		
 				}
 					
 			}
+			// Thread::sleep(100)
+			
 			// then we end the current step
 			endSimulationStep
 		}

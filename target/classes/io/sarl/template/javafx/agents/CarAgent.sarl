@@ -9,14 +9,15 @@ import io.sarl.template.javafx.^event.Perception
 import io.sarl.core.Logging
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.template.javafx.^event.Influence
-
+import io.sarl.template.javafx.^event.MoveCarPosition
+import io.sarl.core.Schedules
 
 /*
  * The main agent able to communicate with the GUI
  */
 agent CarAgent {
 
-	uses Behaviors, ExternalContextAccess, Logging, DefaultContextInteractions
+	uses Behaviors, ExternalContextAccess, Logging, DefaultContextInteractions, Schedules
 
 
 	var road : Road
@@ -39,6 +40,12 @@ agent CarAgent {
 				}
 				i++
 		}
+	}
+	
+	on MoveCarPosition {
+		var car = occurrence.car
+		car.getRoadOn.moveCarPosition(car)
+		
 	}	
 }
 	

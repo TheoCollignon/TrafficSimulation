@@ -91,6 +91,7 @@ public class Car {
 				e.printStackTrace();
 			}
             this.position.removeCar(this);
+    
             // System.out.println("HELLO LES MAIIIIIIIIIIIIIIII");
 //            Iterator<Car> i = this.position.getCar().iterator();
 //            while (i.hasNext()) {

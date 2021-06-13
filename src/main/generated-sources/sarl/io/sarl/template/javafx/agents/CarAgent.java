@@ -6,6 +6,7 @@ import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.ExternalContextAccess;
 import io.sarl.core.Initialize;
 import io.sarl.core.Logging;
+import io.sarl.core.Schedules;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
@@ -19,6 +20,7 @@ import io.sarl.template.javafx.Model.Car;
 import io.sarl.template.javafx.Model.Coordinate;
 import io.sarl.template.javafx.Model.Road;
 import io.sarl.template.javafx.event.Influence;
+import io.sarl.template.javafx.event.MoveCarPosition;
 import io.sarl.template.javafx.event.Perception;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -64,6 +66,11 @@ public class CarAgent extends Agent {
         i++;
       }
     }
+  }
+  
+  private void $behaviorUnit$MoveCarPosition$2(final MoveCarPosition occurrence) {
+    Car car = occurrence.car;
+    car.getRoadOn().moveCarPosition(car);
   }
   
   @Extension
@@ -122,6 +129,20 @@ public class CarAgent extends Agent {
     return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
   }
   
+  @Extension
+  @ImportedCapacityFeature(Schedules.class)
+  @SyntheticMember
+  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_SCHEDULES;
+  
+  @SyntheticMember
+  @Pure
+  private Schedules $CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER() {
+    if (this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES == null || this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES.get() == null) {
+      this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES = $getSkill(Schedules.class);
+    }
+    return $castSkill(Schedules.class, this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES);
+  }
+  
   @SyntheticMember
   @PerceptGuardEvaluator
   private void $guardEvaluator$Initialize(final Initialize occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
@@ -136,6 +157,14 @@ public class CarAgent extends Agent {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Perception$1(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$MoveCarPosition(final MoveCarPosition occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$MoveCarPosition$2(occurrence));
   }
   
   @Override

@@ -58,7 +58,7 @@ public class ViewGenerator {
                     if (i%40 == 0) {
                         Line line = new Line(roadCoords.get(i).getX(), roadCoords.get(i).getY(), roadCoords.get(i + 20).getX(), roadCoords.get(i + 20).getY());
                         line.setStrokeWidth(road.getWidth() - 13); // markings
-                        line.setStroke(Color.RED);
+                        line.setStroke(Color.WHITE);
                         mainPane.getChildren().add(line);
                     }
                 }
@@ -176,14 +176,15 @@ public class ViewGenerator {
                 carView.setRotate(rotateValue);
 
                 // to be delete, but for the moment, it helps to know if the car's thread is alive
-                carView.setFill(Color.color(Math.random(), Math.random(), Math.random()));
+                // carView.setFill(Color.color(Math.random(), Math.random(), Math.random()));
+                carView.setFill(Color.color(0.9, 0.1, 0.2));
             }
         }
 
     }
 
     public void updateView(ArrayList<Car> cars) {
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), ev -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.01), ev -> {
             //what you want to do
             for(Car c : cars) {
                 updateCarPositionDraw(c);

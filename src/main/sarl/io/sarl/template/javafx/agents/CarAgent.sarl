@@ -11,6 +11,7 @@ import io.sarl.core.DefaultContextInteractions
 import io.sarl.template.javafx.^event.Influence
 import io.sarl.template.javafx.^event.MoveCarPosition
 import io.sarl.core.Schedules
+import io.sarl.template.javafx.Model.Car
 
 /*
  * The main agent able to communicate with the GUI
@@ -21,6 +22,7 @@ agent CarAgent {
 
 
 	var road : Road
+	var car : Car
 	
 	on Initialize {
 		info("je suis vivant")
@@ -33,7 +35,7 @@ agent CarAgent {
 			for (car : coord.carList) { // on vérifie si jamais y'a deux voitures sur la même coord, que ce soit la bonne
 					if (car.UUID == this.ID) {
 					// on renvoie l'indice
-						var numberOfFreeCoord = road.perceptionFree(car, 50)
+						var numberOfFreeCoord = road.perceptionFree(car, 100)
 						// println(numberOfFreeCoord)
 						var influence = new Influence(i, this.ID, numberOfFreeCoord)
 						emit(influence)
@@ -44,7 +46,7 @@ agent CarAgent {
 	}
 	
 	on MoveCarPosition {
-		var car = occurrence.car
+		car = occurrence.car
 		car.getRoadOn.moveCarPosition(car)
 		
 	}	

@@ -91,38 +91,71 @@ public class Environment extends Agent {
   }
   
   private void $behaviorUnit$Influence$2(final Influence occurrence) {
-    ArrayList<Car> cars = this.controller.getConfiguration().getCars();
-    boolean move = true;
-    boolean allMoved = false;
-    CopyOnWriteArrayList<Integer> movingRange = new CopyOnWriteArrayList<Integer>();
-    CopyOnWriteArrayList<Car> carOccurence = new CopyOnWriteArrayList<Car>();
-    int maxValue = 0;
-    this.listInfluences.add(occurrence);
-    int _size = cars.size();
-    int _size_1 = this.listInfluences.size();
-    if ((_size == _size_1)) {
-      for (final Influence occurence : this.listInfluences) {
-        for (final Car car : cars) {
-          UUID _uUID = car.getUUID();
-          boolean _equals = Objects.equal(_uUID, occurence.id);
-          if (_equals) {
-            carOccurence.add(car);
-            movingRange.add(Integer.valueOf(occurence.numberOfFreeCoord));
+    try {
+      ArrayList<Car> cars = this.controller.getConfiguration().getCars();
+      boolean move = true;
+      boolean allMoved = false;
+      CopyOnWriteArrayList<Integer> movingRange = new CopyOnWriteArrayList<Integer>();
+      CopyOnWriteArrayList<Car> carOccurence = new CopyOnWriteArrayList<Car>();
+      int maxValue = 0;
+      CopyOnWriteArrayList<Integer> initialStepCar = new CopyOnWriteArrayList<Integer>();
+      CopyOnWriteArrayList<Integer> stepCar = new CopyOnWriteArrayList<Integer>();
+      this.listInfluences.add(occurrence);
+      int _size = cars.size();
+      int _size_1 = this.listInfluences.size();
+      if ((_size == _size_1)) {
+        for (final Influence occurence : this.listInfluences) {
+          for (final Car car : cars) {
+            UUID _uUID = car.getUUID();
+            boolean _equals = Objects.equal(_uUID, occurence.id);
+            if (_equals) {
+              carOccurence.add(car);
+              movingRange.add(Integer.valueOf(occurence.numberOfFreeCoord));
+            }
           }
         }
-      }
-      maxValue = ((Collections.<Integer>max(movingRange, null)) == null ? 0 : (Collections.<Integer>max(movingRange, null)).intValue());
-      for (int j = 0; (j < maxValue); j++) {
+        maxValue = ((Collections.<Integer>max(movingRange, null)) == null ? 0 : (Collections.<Integer>max(movingRange, null)).intValue());
         for (int i = 0; (i < movingRange.size()); i++) {
           Integer _get = movingRange.get(i);
-          if ((_get.intValue() > 0)) {
-            carOccurence.get(i).getRoadOn().moveCarPosition(carOccurence.get(i));
+          if ((_get != null && (_get.intValue() == 0))) {
+            stepCar.add(Integer.valueOf((-1)));
+          } else {
             Integer _get_1 = movingRange.get(i);
-            movingRange.set(i, Integer.valueOf((((_get_1) == null ? 0 : (_get_1).intValue()) - 1)));
+            stepCar.add(Integer.valueOf((maxValue / ((_get_1) == null ? 0 : (_get_1).intValue()))));
           }
         }
+        for (final Integer ele : stepCar) {
+          {
+            Integer temp = ele;
+            initialStepCar.add(temp);
+          }
+        }
+        for (int j = 0; (j < maxValue); j++) {
+          {
+            for (int i = 0; (i < movingRange.size()); i++) {
+              Integer _get = movingRange.get(i);
+              if ((_get.intValue() > 0)) {
+                Integer _get_1 = stepCar.get(i);
+                if ((_get_1 != null && (_get_1.intValue() == 1))) {
+                  carOccurence.get(i).getRoadOn().moveCarPosition(carOccurence.get(i));
+                  Integer _get_2 = movingRange.get(i);
+                  movingRange.set(i, Integer.valueOf((((_get_2) == null ? 0 : (_get_2).intValue()) - 1)));
+                }
+                Integer _get_3 = stepCar.get(i);
+                stepCar.set(i, Integer.valueOf((((_get_3) == null ? 0 : (_get_3).intValue()) - 1)));
+                Integer _get_4 = stepCar.get(i);
+                if ((_get_4 != null && (_get_4.intValue() == 0))) {
+                  stepCar.set(i, initialStepCar.get(i));
+                }
+              }
+            }
+            Thread.sleep(5);
+          }
+        }
+        this.endSimulationStep();
       }
-      this.endSimulationStep();
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
     }
   }
   

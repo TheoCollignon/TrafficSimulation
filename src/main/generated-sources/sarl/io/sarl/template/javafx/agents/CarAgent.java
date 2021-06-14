@@ -39,6 +39,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public class CarAgent extends Agent {
   private Road road;
   
+  private Car car;
+  
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("je suis vivant");
@@ -56,7 +58,7 @@ public class CarAgent extends Agent {
           UUID _iD = this.getID();
           boolean _equals = Objects.equal(_uUID, _iD);
           if (_equals) {
-            int numberOfFreeCoord = this.road.perceptionFree(car, 50);
+            int numberOfFreeCoord = this.road.perceptionFree(car, 100);
             UUID _iD_1 = this.getID();
             Influence influence = new Influence(i, _iD_1, numberOfFreeCoord);
             DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
@@ -69,8 +71,8 @@ public class CarAgent extends Agent {
   }
   
   private void $behaviorUnit$MoveCarPosition$2(final MoveCarPosition occurrence) {
-    Car car = occurrence.car;
-    car.getRoadOn().moveCarPosition(car);
+    this.car = occurrence.car;
+    this.car.getRoadOn().moveCarPosition(this.car);
   }
   
   @Extension

@@ -84,12 +84,13 @@ public class Car {
             // this.energy -= 0.0001 * this.speed;
             this.energy -= 0.1;
            
-            try {
-				Thread.sleep(5);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//            try {
+//				Thread.sleep(5);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+            
             this.position.removeCar(this);
     
             // System.out.println("HELLO LES MAIIIIIIIIIIIIIIII");

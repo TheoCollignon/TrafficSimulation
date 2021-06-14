@@ -203,19 +203,34 @@ public class Environment extends Agent {
   }
   
   protected synchronized void endSimulationStep() {
-    ArrayList<Car> cars = this.controller.getConfiguration().getCars();
-    for (final Car car : cars) {
-      int _size = car.getToBeDelete().size();
-      if ((_size != 0)) {
-        car.getToBeDelete().get(0).removeCar(car);
+    try {
+      ArrayList<Car> cars = this.controller.getConfiguration().getCars();
+      for (final Car car : cars) {
+        int _size = car.getToBeDelete().size();
+        if ((_size != 0)) {
+          car.getToBeDelete().get(0).removeCar(car);
+        }
       }
+      int n = this.count.incrementAndGet();
+      if (((n % 10) == 3)) {
+        InputOutput.<String>println("cc");
+        InputOutput.<String>println("before");
+        InputOutput.<ArrayList<Car>>println(cars);
+        cars = this.controller.getConfiguration().addCar();
+        InputOutput.<String>println("after");
+        InputOutput.<ArrayList<Car>>println(cars);
+        Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
+        int _size_1 = cars.size();
+        DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+        int _size_2 = cars.size();
+        _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContextWithID(CarAgent.class, cars.get((_size_1 - 1)).getUUID(), _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultContext(), cars.get((_size_2 - 1)).getRoadOn());
+        Thread.sleep(50);
+      }
+      this.listInfluences.clear();
+      this.startSimulationStep();
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
     }
-    int n = this.count.incrementAndGet();
-    if ((n == 10)) {
-      InputOutput.<String>print("cc");
-    }
-    this.listInfluences.clear();
-    this.startSimulationStep();
   }
   
   @Extension

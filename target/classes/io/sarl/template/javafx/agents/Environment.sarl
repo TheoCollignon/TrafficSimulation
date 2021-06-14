@@ -56,10 +56,7 @@ agent Environment {
 			}
 		]
 		
-		
-		
-		
-		
+
 //		while (controller.startAgent == false) {
 //			Thread::sleep(50)
 //			// Can be better imo
@@ -217,9 +214,17 @@ agent Environment {
 		}
 
 		var n = this.count.incrementAndGet
-		if (n === 10) {
-			print("cc")
-			// configuration.addCar()
+		if (n%10 === 3) {
+			println("cc")
+			println("before")
+			println(cars)
+			cars = controller.configuration.addCar()
+			println("after")
+			println(cars)
+			spawnInContextWithID(typeof(CarAgent), cars.get(cars.size()-1).UUID, defaultContext, cars.get(cars.size()-1).roadOn)
+			Thread::sleep(50)
+			
+			
 		}
 		
 		listInfluences.clear()

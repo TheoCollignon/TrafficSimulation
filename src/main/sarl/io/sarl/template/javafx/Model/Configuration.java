@@ -182,10 +182,10 @@ public class Configuration {
 				// create the car
 				Car car = new Car(this, energy*2, viewGenerator, startCity, id);
 				// drawing the car
-				System.out.println(viewGenerator);
 				// viewGenerator.drawNewCar(car);
 				// put it in the list
 				cars.add(car);
+				return cars;
 			}
 			
 		}

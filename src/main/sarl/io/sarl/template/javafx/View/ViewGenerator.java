@@ -101,9 +101,20 @@ public class ViewGenerator {
         }
     }
 
+//    public void drawNewCar(Car car) {
+//		 Rectangle rectangleCar = new Rectangle(car.getPosition().getX(),car.getPosition().getY(), 10,5);
+//	     // Circle car = new Circle(cars.getPosition().getX(), cars.getPosition().getY(), 5);
+//		 rectangleCar.setId(String.valueOf(car.getId()));
+//		 rectangleCar.setFill(Color.PURPLE);
+//	     mainPane.getChildren().add(rectangleCar);
+//    }
+    
     public void updateCarPositionDraw(Car car) {
+    	// System.out.println("size:" + car);
+    	boolean isFind = false;
         for (Node node: mainPane.getChildren()) {
             if (String.valueOf(car.getId()).equals(node.getId())) {
+            	isFind = true;
                 // Circle circle = (Circle) node;
                 Rectangle carView = (Rectangle) node;
                 // trying to put the car on the right side of the road for better display
@@ -178,14 +189,28 @@ public class ViewGenerator {
                 // to be delete, but for the moment, it helps to know if the car's thread is alive
                 // carView.setFill(Color.color(Math.random(), Math.random(), Math.random()));
                 carView.setFill(Color.color(0.9, 0.1, 0.2));
+                // to be delete
+                if(car.getId() >4) {
+                	carView.setFill(Color.GREEN);
+                } 
+                // end to be delete
             }
         }
+        if(!isFind) {
+	   		 Rectangle rectangleCar = new Rectangle(car.getPosition().getX(),car.getPosition().getY(), 10,5);
+		     // Circle car = new Circle(cars.getPosition().getX(), cars.getPosition().getY(), 5);
+			 rectangleCar.setId(String.valueOf(car.getId()));
+			 rectangleCar.setFill(Color.PURPLE);
+		     mainPane.getChildren().add(rectangleCar);
+        }
+        
 
     }
 
-    public void updateView(ArrayList<Car> cars) {
+    public void updateView(Configuration configuration) {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.01), ev -> {
             //what you want to do
+        	ArrayList<Car> cars = configuration.getCars();
             for(Car c : cars) {
                 updateCarPositionDraw(c);
             }

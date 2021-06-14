@@ -17,6 +17,7 @@ import io.sarl.template.javafx.^event.SetupApplication
 import java.util.concurrent.CopyOnWriteArrayList
 import io.sarl.template.javafx.^event.MoveCarPosition
 import io.sarl.template.javafx.Model.Car
+import java.util.concurrent.atomic.AtomicInteger
 
 /** 
  * @author Luka Lambalot
@@ -28,6 +29,8 @@ agent Environment {
 	var controller : Controller
 	var configuration : Configuration
 	var listInfluences = new CopyOnWriteArrayList<Influence>
+	var count = new AtomicInteger
+	
 	
 	// TOBEDONE : var influences = Collections.synchronizedList(events)
 	
@@ -46,6 +49,7 @@ agent Environment {
 				// controller.configuration.setupCars(5)
 				var roads = controller.configuration.roads
 				var cars = controller.configuration.cars
+				cars = controller.configuration.addCar()		
 				var setupApplication = new SetupApplication()
 				emit(setupApplication) // have to emit, to be sure at 100% that every agent are instanciate
 				task.cancel
@@ -212,6 +216,11 @@ agent Environment {
 			}
 		}
 
+		var n = this.count.incrementAndGet
+		if (n === 10) {
+			print("cc")
+			// configuration.addCar()
+		}
 		
 		listInfluences.clear()
 		startSimulationStep 	// end of the loop

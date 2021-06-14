@@ -34,9 +34,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -53,6 +55,8 @@ public class Environment extends Agent {
   
   private CopyOnWriteArrayList<Influence> listInfluences = new CopyOnWriteArrayList<Influence>();
   
+  private AtomicInteger count = new AtomicInteger();
+  
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("The agent was started.");
@@ -65,6 +69,7 @@ public class Environment extends Agent {
       if ((_startAgent == true)) {
         ArrayList<Road> roads = this.controller.getConfiguration().getRoads();
         ArrayList<Car> cars = this.controller.getConfiguration().getCars();
+        cars = this.controller.getConfiguration().addCar();
         SetupApplication setupApplication = new SetupApplication();
         DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
         _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(setupApplication);
@@ -204,6 +209,10 @@ public class Environment extends Agent {
       if ((_size != 0)) {
         car.getToBeDelete().get(0).removeCar(car);
       }
+    }
+    int n = this.count.incrementAndGet();
+    if ((n == 10)) {
+      InputOutput.<String>print("cc");
     }
     this.listInfluences.clear();
     this.startSimulationStep();

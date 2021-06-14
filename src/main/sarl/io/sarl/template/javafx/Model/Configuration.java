@@ -170,6 +170,27 @@ public class Configuration {
 		}
 		return cars;
 	}
+	
+	public ArrayList<Car> addCar() {
+		int energy = 10000000;
+		int id = cars.size()+1;
+		// init the cars
+		for (int j = 0; j < cities.size(); j++) {
+			if(cities.get(j).getPosition().getCarList().size() == 0) {
+				// find a random connected city
+				City startCity = cities.get(j);
+				// create the car
+				Car car = new Car(this, energy*2, viewGenerator, startCity, id);
+				// drawing the car
+				System.out.println(viewGenerator);
+				// viewGenerator.drawNewCar(car);
+				// put it in the list
+				cars.add(car);
+			}
+			
+		}
+		return cars;
+	}
 
 	public void addCar(float energy, City cityFrom, City destination, int id, int speed) {
 		Car car = new Car(this, energy, viewGenerator, cityFrom, id);

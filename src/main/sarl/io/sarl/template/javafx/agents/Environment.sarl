@@ -105,12 +105,13 @@ agent Environment {
 				for (car : cars) {
 					if (car.UUID == occurence.id) {
 						carOccurence.add(car)
-						movingRange.add(occurrence.numberOfFreeCoord)
+						movingRange.add(occurence.numberOfFreeCoord)
+						// println(occurrence.numberOfFreeCoord)
 						
 					}
 				}
 			}
-			println(movingRange)
+			// println(carOccurence)
 			
 			maxValue = Collections.max(movingRange, null)
 			for (var j = 0; j < maxValue; j++) {
@@ -119,8 +120,10 @@ agent Environment {
 						carOccurence.get(i).getRoadOn.moveCarPosition(carOccurence.get(i))
 						movingRange.set(i, movingRange.get(i)-1)
 					}
+					// println(movingRange)
 				} 
 			}
+			// Thread::sleep(25)
 	
 			
 					

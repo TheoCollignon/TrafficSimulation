@@ -37,7 +37,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -108,11 +107,10 @@ public class Environment extends Agent {
           boolean _equals = Objects.equal(_uUID, occurence.id);
           if (_equals) {
             carOccurence.add(car);
-            movingRange.add(Integer.valueOf(occurrence.numberOfFreeCoord));
+            movingRange.add(Integer.valueOf(occurence.numberOfFreeCoord));
           }
         }
       }
-      InputOutput.<CopyOnWriteArrayList<Integer>>println(movingRange);
       maxValue = ((Collections.<Integer>max(movingRange, null)) == null ? 0 : (Collections.<Integer>max(movingRange, null)).intValue());
       for (int j = 0; (j < maxValue); j++) {
         for (int i = 0; (i < movingRange.size()); i++) {

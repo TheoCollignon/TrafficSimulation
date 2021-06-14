@@ -33,7 +33,8 @@ agent CarAgent {
 			for (car : coord.carList) { // on vérifie si jamais y'a deux voitures sur la même coord, que ce soit la bonne
 					if (car.UUID == this.ID) {
 					// on renvoie l'indice
-						var numberOfFreeCoord = road.perceptionFree(car, 10)
+						var numberOfFreeCoord = road.perceptionFree(car, 50)
+						// println(numberOfFreeCoord)
 						var influence = new Influence(i, this.ID, numberOfFreeCoord)
 						emit(influence)
 					}

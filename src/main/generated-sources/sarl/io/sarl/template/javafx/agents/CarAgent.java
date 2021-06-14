@@ -56,7 +56,7 @@ public class CarAgent extends Agent {
           UUID _iD = this.getID();
           boolean _equals = Objects.equal(_uUID, _iD);
           if (_equals) {
-            int numberOfFreeCoord = this.road.perceptionFree(car, 10);
+            int numberOfFreeCoord = this.road.perceptionFree(car, 50);
             UUID _iD_1 = this.getID();
             Influence influence = new Influence(i, _iD_1, numberOfFreeCoord);
             DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();

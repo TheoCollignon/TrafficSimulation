@@ -65,8 +65,8 @@ public class Road {
         Coordinate pointB = this.getCoordsList().get(getCoordsList().size()-1);
         double distance = Math.sqrt(Math.pow(pointB.getX() - pointA.getX(),2) + Math.pow(pointB.getY() - pointA.getY(),2));
         this.roadLength += distance;
-//        this.pointNum = (int)(distance/10);
-        this.pointNum = 21;
+        this.pointNum = (int)(distance);
+        // this.pointNum = 201;
         // we clear once
         coordsList.clear();
         // we had the first city
@@ -171,7 +171,7 @@ public class Road {
         return false;
     }
 
-    // for testing purpose : 
+    // Tells us if there is something or not in front of us 
     public int perceptionFree(Car car, int range) {
     	 int indexOfCoord = -1;
     	 int freeSpace = 0; // freeSpace is equals to the number of free coordinate in front of us
@@ -181,6 +181,7 @@ public class Road {
 				 indexOfCoord = coordsList.indexOf(coord); 
 			 }
     	 }
+    	 
     	 if(indexOfCoord == 0 || indexOfCoord == coordsList.size()) return 1;
     	 
     	 
@@ -190,12 +191,23 @@ public class Road {
         		 if(indexOfCoord+i < coordsList.size()) {
     	    		 if(coordsList.get(indexOfCoord+i).getCarList().size() == 0) { // We verify that there is no car on the next coordinate
     	        		 freeSpace++;
-    	        		 if (coordsList.get(indexOfCoord+i).isCity()){
+    	        		 // if (coordsList.get(indexOfCoord+i).isCity()){
+    	        		 if(indexOfCoord+i == coordsList.size()-1) {
+        	        		 freeSpace = (int)freeSpace/2;
         	        		 freeSpace++;
         	        		 return freeSpace;
         	        	 }
     	        	 } else {
-    	        		 return freeSpace;
+    	        		 for(Car c : coordsList.get(indexOfCoord+i).getCarList()) {
+    	        			 if (!car.equals(c)) {
+    	        				 if(car.getDirection() != c.getDirection()) {
+    	        					 freeSpace++;
+    	        				 }else {
+    	        	        		 return freeSpace;
+
+    	        				 }
+    	        			 }
+    	        		 }
     	        	 }
         		 } 
         	 }
@@ -208,12 +220,23 @@ public class Road {
         		 if(indexOfCoord-i >= 0){
         			 if(coordsList.get(indexOfCoord-i).getCarList().size() == 0) { // We verify that there is no car on the next coordinate
         	    		 freeSpace++;
-        	    		 if (coordsList.get(indexOfCoord-i).isCity()){
-            	    		 freeSpace++;
+        	    		 // if (coordsList.get(indexOfCoord-i).isCity()){
+        	    		 if(indexOfCoord-i == 0) {
+        	    			 freeSpace = ((int)freeSpace/2);
+        	    			 freeSpace++;
             	    		 return freeSpace; 
             	    	 }
         	    	 } else {
-        	    		 return freeSpace;
+        	    		 for(Car c : coordsList.get(indexOfCoord-i).getCarList()) {
+    	        			 if (!car.equals(c)) {
+    	        				 if(car.getDirection() != c.getDirection()) {
+    	        					 freeSpace++;
+    	        				 }else {
+    	        	        		 return freeSpace;
+
+    	        				 }
+    	        			 }
+    	        		 }
         	    	 }
         		 }
         	 }
@@ -223,7 +246,7 @@ public class Road {
     	 
     	 
     	 
-    	 
+    	 if(freeSpace ==0) freeSpace++;
     	 return freeSpace;
     	 
     	 

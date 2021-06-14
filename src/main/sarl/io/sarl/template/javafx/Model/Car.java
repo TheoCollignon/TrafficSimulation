@@ -85,7 +85,7 @@ public class Car {
             this.energy -= 0.1;
            
             try {
-				Thread.sleep(5);
+				Thread.sleep(25);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

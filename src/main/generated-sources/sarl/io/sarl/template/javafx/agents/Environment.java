@@ -37,6 +37,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -92,24 +93,34 @@ public class Environment extends Agent {
   
   private void $behaviorUnit$Influence$2(final Influence occurrence) {
     ArrayList<Car> cars = this.controller.getConfiguration().getCars();
+    boolean move = true;
+    boolean allMoved = false;
+    CopyOnWriteArrayList<Integer> movingRange = new CopyOnWriteArrayList<Integer>();
+    CopyOnWriteArrayList<Car> carOccurence = new CopyOnWriteArrayList<Car>();
+    int maxValue = 0;
     this.listInfluences.add(occurrence);
     int _size = cars.size();
     int _size_1 = this.listInfluences.size();
     if ((_size == _size_1)) {
-      boolean move = true;
       for (final Influence occurence : this.listInfluences) {
-        {
-          if ((occurrence.numberOfFreeCoord == 0)) {
-            move = false;
+        for (final Car car : cars) {
+          UUID _uUID = car.getUUID();
+          boolean _equals = Objects.equal(_uUID, occurence.id);
+          if (_equals) {
+            carOccurence.add(car);
+            movingRange.add(Integer.valueOf(occurrence.numberOfFreeCoord));
           }
-          if (move) {
-            for (final Car car : cars) {
-              UUID _uUID = car.getUUID();
-              boolean _equals = Objects.equal(_uUID, occurence.id);
-              if (_equals) {
-                car.getRoadOn().moveCarPosition(car);
-              }
-            }
+        }
+      }
+      InputOutput.<CopyOnWriteArrayList<Integer>>println(movingRange);
+      maxValue = ((Collections.<Integer>max(movingRange, null)) == null ? 0 : (Collections.<Integer>max(movingRange, null)).intValue());
+      for (int j = 0; (j < maxValue); j++) {
+        for (int i = 0; (i < movingRange.size()); i++) {
+          Integer _get = movingRange.get(i);
+          if ((_get.intValue() > 0)) {
+            carOccurence.get(i).getRoadOn().moveCarPosition(carOccurence.get(i));
+            Integer _get_1 = movingRange.get(i);
+            movingRange.set(i, Integer.valueOf((((_get_1) == null ? 0 : (_get_1).intValue()) - 1)));
           }
         }
       }

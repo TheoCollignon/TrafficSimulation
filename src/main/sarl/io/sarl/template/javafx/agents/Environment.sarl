@@ -16,6 +16,7 @@ import io.sarl.template.javafx.^event.Influence
 import io.sarl.template.javafx.^event.SetupApplication
 import java.util.concurrent.CopyOnWriteArrayList
 import io.sarl.template.javafx.^event.MoveCarPosition
+import io.sarl.template.javafx.Model.Car
 
 /** 
  * @author Luka Lambalot
@@ -87,36 +88,60 @@ agent Environment {
 //		info("id : " + occurrence.id)
 		// info("next coordinate available ?  : " + occurrence.numberOfFreeCoord)
 		var cars = controller.configuration.cars
+		var move = true
+		var allMoved = false
+		var movingRange = new CopyOnWriteArrayList	
+		var carOccurence = new CopyOnWriteArrayList<Car>
+		var maxValue = 0
 	
 		// when we receive an influence we need to know if everyone has done his job yet
 		// tobedone
 		listInfluences.add(occurrence)
 		
 		if (cars.size() == listInfluences.size()) {
-		
-			
-
 			// use listInfluences to update the model and the view
-			// we need to know if we can move to the next coordinate
-			var move = true
+		// we need to know if we can move to the next coordinate
 			for (occurence : listInfluences) {
-				// println(occurence.id)
-				
-				if (occurrence.numberOfFreeCoord == 0) {
-					move = false;
+				for (car : cars) {
+					if (car.UUID == occurence.id) {
+						carOccurence.add(car)
+						movingRange.add(occurrence.numberOfFreeCoord)
+						
+					}
 				}
-				// insert code here
-				if (move) {
-					for (car : cars) {
-						if (car.UUID == occurence.id) {
-//							var moveCar = new MoveCarPosition(car)
-//							emit(moveCar)[it.UUID == car.UUID]
-							car.getRoadOn.moveCarPosition(car)
-						}	
-					}		
-				}
-					
 			}
+			println(movingRange)
+			
+			maxValue = Collections.max(movingRange, null)
+			for (var j = 0; j < maxValue; j++) {
+				for (var i = 0; i < movingRange.size(); i++) {
+					if (movingRange.get(i) > 0) {
+						carOccurence.get(i).getRoadOn.moveCarPosition(carOccurence.get(i))
+						movingRange.set(i, movingRange.get(i)-1)
+					}
+				} 
+			}
+	
+			
+					
+//			for (occurence : listInfluences) {
+//				// println(occurence.id)
+//				
+//				if (occurrence.numberOfFreeCoord == 0) {
+//					move = false;
+//				}
+//				// insert code here
+//				if (move) {
+//					for (car : cars) {
+//						if (car.UUID == occurence.id) {
+////							var moveCar = new MoveCarPosition(car)
+////							emit(moveCar)[it.UUID == car.UUID]
+//							car.getRoadOn.moveCarPosition(car)
+//						}	
+//					}		
+//				}
+//					
+//			}
 			// Thread::sleep(100)
 			
 			// then we end the current step

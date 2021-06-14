@@ -13,12 +13,14 @@ public class Coordinate {
         this.x = x;
         this.y = y;
         this.carList = new CopyOnWriteArrayList<>();
+        this.city = null;
     }
 
     public Coordinate(float x, float y, CopyOnWriteArrayList<Car> carList) {
         this.x = x;
         this.y = y;
         this.carList = carList;
+        this.city = null;
     }
 
     public Coordinate(float x, float y, CopyOnWriteArrayList<Car> carList, City city) {
@@ -31,6 +33,10 @@ public class Coordinate {
     public void setCity(City city) {
         this.city = city;
     }
+    
+    public City getCity() {
+    	return this.city;
+    }
 
     public void addCar(Car car) {
         this.carList.add(car);
@@ -38,6 +44,11 @@ public class Coordinate {
     
     public CopyOnWriteArrayList<Car> getCarList(){
     	return this.carList;
+    }
+    
+    public boolean isCity() {
+    	if(this.city == (null)) return false;
+    	else return true;
     }
 
     public void removeCar(Car car) {

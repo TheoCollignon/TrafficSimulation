@@ -24,6 +24,7 @@ agent CarAgent {
 	var road : Road
 	var car : Car
 	
+	
 	on Initialize {
 		info("je suis vivant")
 	}
@@ -48,7 +49,6 @@ agent CarAgent {
 	on MoveCarPosition {
 		car = occurrence.car
 		car.getRoadOn.moveCarPosition(car)
-		
 	}	
 }
 	

@@ -149,7 +149,7 @@ public class Environment extends Agent {
                 }
               }
             }
-            Thread.sleep(5);
+            Thread.sleep(10);
           }
         }
         this.endSimulationStep();

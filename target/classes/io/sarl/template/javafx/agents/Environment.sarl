@@ -142,7 +142,7 @@ agent Environment {
 							//testing
 //							var moveCar = new MoveCarPosition(carOccurence.get(i))
 //							emit(moveCar)	
-							carOccurence.get(i).getRoadOn.moveCarPosition(carOccurence.get(i))
+  							carOccurence.get(i).getRoadOn.moveCarPosition(carOccurence.get(i))
 							
 							movingRange.set(i, movingRange.get(i) - 1)
 							
@@ -159,7 +159,7 @@ agent Environment {
 					}
 					
 				}
-				Thread::sleep(5)
+				Thread::sleep(10)
 			}
 			
 			

@@ -54,9 +54,9 @@ public class ViewGenerator {
                 }
             }
             for (int i = 0; i < roadCoords.size() - 1; i++) {
-                if (i + 1 < (roadCoords.size() - 20) ) {
-                    if (i%40 == 0) {
-                        Line line = new Line(roadCoords.get(i).getX(), roadCoords.get(i).getY(), roadCoords.get(i + 20).getX(), roadCoords.get(i + 20).getY());
+                if (i + 1 < (roadCoords.size() - 10) ) {
+                    if (i%20 == 0) {
+                        Line line = new Line(roadCoords.get(i).getX(), roadCoords.get(i).getY(), roadCoords.get(i + 10).getX(), roadCoords.get(i +10).getY());
                         line.setStrokeWidth(road.getWidth() - 13); // markings
                         line.setStroke(Color.WHITE);
                         mainPane.getChildren().add(line);

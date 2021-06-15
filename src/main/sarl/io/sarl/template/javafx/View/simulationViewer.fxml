@@ -16,6 +16,8 @@
          <children>
             <Button fx:id="saveConfig" layoutX="200.0" layoutY="24.0" mnemonicParsing="false" onAction="#saveConfig" text="Save Config" />
             <TextField fx:id="jsonfileName" layoutX="75.0" layoutY="24.0" prefHeight="25.0" prefWidth="106.0" text="test" />
+            <Button fx:id="pause" layoutX="350.0" layoutY="24.0" mnemonicParsing="false" onAction="#pause" text="Pause" />
+            <Button fx:id="stopSimulation" layoutX="500.0" layoutY="24.0" mnemonicParsing="false" onAction="#stopSimulation" text="Stop Simulation" />
          </children></AnchorPane>
   </items>
 </SplitPane>

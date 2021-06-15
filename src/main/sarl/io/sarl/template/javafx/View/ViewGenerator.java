@@ -34,6 +34,10 @@ public class ViewGenerator {
     @FXML
     private Button saveConfig;
     @FXML
+    private Button pause;
+    @FXML
+    private Button stopSimulation;
+    @FXML
     private TextField jsonfileName;
     Controller controller = Controller.getInstance();
     
@@ -41,6 +45,16 @@ public class ViewGenerator {
     public void saveConfig(ActionEvent event) {
     	String JSONFile = jsonfileName.getText().toString();
     	controller.getJSONManager().saveJSONFile(controller.getConfiguration(), JSONFile);
+    }
+    
+    @FXML
+    public void pause(ActionEvent event) {
+    	System.out.println("PAUSE");
+    }
+    
+    @FXML
+    public void stopSimulation(ActionEvent event) {
+    	System.out.println("STOP SIMULATION");
     }
 
     public void drawConfiguration(Configuration configuration) {

@@ -208,6 +208,7 @@ agent Environment {
 	synchronized def endSimulationStep {
 		// we clear the list after using it
 		var cars = controller.configuration.cars
+		var deletedCars = controller.configuration.deletedCars 
 		for (car : cars) {
 			if (car.toBeDelete.size() != 0) {
 				car.toBeDelete.get(0).removeCar(car)
@@ -216,18 +217,20 @@ agent Environment {
 
 		var addCarCounter = this.count.incrementAndGet
 		var removeCarCounter = this.deadCount.incrementAndGet
-		if (addCarCounter % 10 == 3) {
+		if (addCarCounter % 5 == 3) {
 			println("A new car has been created")
 			cars = controller.configuration.addCar()	
-			spawnInContextWithID(typeof(CarAgent), cars.get(cars.size()-1).UUID, defaultContext, cars.get(cars.size()-1).roadOn)
+			spawnInContextWithID(typeof(CarAgent), cars.get(cars.size() - 1).UUID, defaultContext,
+				cars.get(cars.size() - 1).roadOn)
+			Thread::sleep(25)
 		}
 		
 		// killing a car 
-		if (removeCarCounter % 20 == 3) {
+		if (removeCarCounter % 5 == 3) {
 			var killCar = new Kill(cars.get(0))
 			emit(killCar) // emit the kill, so it can kill itself
-			cars = controller.configuration.removeCar(cars.get(0))
-			Thread::sleep(50)
+			cars = controller.configuration.removeCar(cars.get(0), false) // false if we dont want to let the hitbox of the car on the way
+			Thread::sleep(25)
 		}
 		
 		listInfluences.clear()

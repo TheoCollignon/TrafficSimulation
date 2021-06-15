@@ -197,24 +197,40 @@ public class ViewGenerator {
             }
         }
         if(!isFind) {
-        	System.out.println("SALUT");
 	   		 Rectangle rectangleCar = new Rectangle(car.getPosition().getX(),car.getPosition().getY(), 10,5);
 		     // Circle car = new Circle(cars.getPosition().getX(), cars.getPosition().getY(), 5);
 			 rectangleCar.setId(String.valueOf(car.getId()));
 			 rectangleCar.setFill(Color.PURPLE);
 		     mainPane.getChildren().add(rectangleCar);
         }
-        
-
     }
+    
+    
+    public void deleteCarPositionDraw(Car car, Configuration configuration) {
+        for (Node node: mainPane.getChildren()) {
+            if (String.valueOf(car.getId()).equals(node.getId())) {
+            	configuration.getDeletedCars().remove(car);
+            	mainPane.getChildren().remove(node);
+            }
+        }
+           
+    }
+    
 
     public void updateView(Configuration configuration) {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.01), ev -> {
             //what you want to do
         	ArrayList<Car> cars = configuration.getCars();
+        	ArrayList<Car> deletedCars = configuration.getDeletedCars();
             for(Car c : cars) {
                 updateCarPositionDraw(c);
-            }
+            }             
+        	 for(Car c : deletedCars) {
+             	// System.out.println("del:" + deletedCars.size());
+             	deleteCarPositionDraw(c, configuration);
+             }
+   
+            
         }));
         timeline.setCycleCount(1);//do it x times
         timeline.setCycleCount(Animation.INDEFINITE);//or indefinitely

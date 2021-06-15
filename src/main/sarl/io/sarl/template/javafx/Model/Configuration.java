@@ -14,6 +14,7 @@ public class Configuration {
 	private ArrayList<City> cities;
 	private ArrayList<Road> roads;
 	private ArrayList<Car> cars;
+	private ArrayList<Car> deletedCars;
 	private ArrayList<TrafficLight> trafficLights;
 	private ViewGenerator viewGenerator;
 	private Random random;
@@ -27,6 +28,7 @@ public class Configuration {
 		cities = new ArrayList<>();
 		roads = new ArrayList<>();
 		cars = new ArrayList<>();
+		deletedCars = new ArrayList<>();
 		trafficLights = new ArrayList<>();
 	}
 
@@ -174,6 +176,13 @@ public class Configuration {
 		return cars;
 	}
 	
+	
+	
+	public ArrayList<Car> getDeletedCars(){
+		return deletedCars;
+	}
+	
+	
 	public ArrayList<Car> addCar() {
 		int energy = 10000000;
 		int id = this.idCount.incrementAndGet();
@@ -196,19 +205,23 @@ public class Configuration {
 	}
 	
 	public ArrayList<Car> removeCar(Car car, boolean hitbox){
+		deletedCars.add(car);
 		if(!hitbox) {
 			car.getPosition().getCarList().remove(car);
 		}
 		cars.remove(car);
-		System.out.println("removing a car");
+		System.out.println("removing a car - Java side not agent");
 		return cars;
 	}
 
+	
 	public void addCar(float energy, City cityFrom, City destination, int id, int speed) {
 		Car car = new Car(this, energy, viewGenerator, cityFrom, id);
 		car.setSpeed(speed);
 		cars.add(car);
 	}
+	
+	
 
 	public Road findRoad(City A, City B) {
 		for (Road road : roads) {

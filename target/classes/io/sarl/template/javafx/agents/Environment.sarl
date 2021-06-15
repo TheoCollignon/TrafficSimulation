@@ -223,12 +223,12 @@ agent Environment {
 		}
 		
 		// killing a car 
-//		if (removeCarCounter % 10 == 3) {
-//			var killCar = new Kill(cars.get(0))
-//			emit(killCar) // emit the kill, so it can kill itself
-//			cars = controller.configuration.removeCar(cars.get(0))
-//			Thread::sleep(50)
-//		}
+		if (removeCarCounter % 20 == 3) {
+			var killCar = new Kill(cars.get(0))
+			emit(killCar) // emit the kill, so it can kill itself
+			cars = controller.configuration.removeCar(cars.get(0))
+			Thread::sleep(50)
+		}
 		
 		listInfluences.clear()
 		startSimulationStep 	// end of the loop

@@ -195,7 +195,10 @@ public class Configuration {
 		return cars;
 	}
 	
-	public ArrayList<Car> removeCar(Car car){
+	public ArrayList<Car> removeCar(Car car, boolean hitbox){
+		if(!hitbox) {
+			car.getPosition().getCarList().remove(car);
+		}
 		cars.remove(car);
 		System.out.println("removing a car");
 		return cars;

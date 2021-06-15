@@ -236,7 +236,17 @@ public class Environment extends Agent {
         Thread.sleep(50);
       }
       this.listInfluences.clear();
-      this.startSimulationStep();
+      if (((!this.controller.getConfiguration().getPause()) && (!this.controller.getConfiguration().getStopSimulation()))) {
+        this.startSimulationStep();
+      } else {
+        while ((this.controller.getConfiguration().getPause() && (!this.controller.getConfiguration().getStopSimulation()))) {
+          Thread.sleep(10);
+        }
+        boolean _stopSimulation = this.controller.getConfiguration().getStopSimulation();
+        if ((!_stopSimulation)) {
+          this.startSimulationStep();
+        }
+      }
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

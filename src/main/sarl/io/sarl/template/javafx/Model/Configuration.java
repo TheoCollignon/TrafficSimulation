@@ -18,11 +18,15 @@ public class Configuration {
 	private ArrayList<TrafficLight> trafficLights;
 	private ViewGenerator viewGenerator;
 	private Random random;
+	private boolean pause;
+	private boolean stopSimulation;
 	boolean isHippodamien;
 	AtomicInteger idCount = new AtomicInteger();
 	MapLayout mapLayout;
 
 	public Configuration(ViewGenerator viewGenerator) {
+		this.pause = false;
+		this.stopSimulation = false;
 		random = new Random();
 		this.viewGenerator = viewGenerator;
 		cities = new ArrayList<>();
@@ -255,5 +259,22 @@ public class Configuration {
 	public ArrayList<Car> getCars() {
 		return cars;
 	}
+
+	
+	public boolean getPause() {
+		return pause;
+	}
+	public boolean getStopSimulation(){
+		return this.stopSimulation;
+	}
+	
+	public void setPause(boolean pause) {
+		this.pause = pause;
+	}
+	
+	public void setStopSimulation(boolean stop) {
+		this.stopSimulation = stop;
+	}
+
 
 }

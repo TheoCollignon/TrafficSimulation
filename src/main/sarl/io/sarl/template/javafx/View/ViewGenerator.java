@@ -49,12 +49,16 @@ public class ViewGenerator {
     
     @FXML
     public void pause(ActionEvent event) {
-    	System.out.println("PAUSE");
+    	controller.getConfiguration().setPause(!controller.getConfiguration().getPause());
+        System.out.println("PAUSE" + controller.getConfiguration().getPause());
+    	
     }
     
     @FXML
     public void stopSimulation(ActionEvent event) {
-    	System.out.println("STOP SIMULATION");
+    	controller.getConfiguration().setStopSimulation(!controller.getConfiguration().getStopSimulation());
+        System.out.println("stop " + controller.getConfiguration().getStopSimulation());
+    	
     }
 
     public void drawConfiguration(Configuration configuration) {

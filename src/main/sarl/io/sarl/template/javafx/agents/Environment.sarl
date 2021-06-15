@@ -233,6 +233,17 @@ agent Environment {
 		}
 		
 		listInfluences.clear()
-		startSimulationStep 	// end of the loop	
+		if (!controller.configuration.getPause() && !controller.configuration.getStopSimulation()) {
+			startSimulationStep 
+		} else {
+			while (controller.configuration.getPause() && !controller.configuration.getStopSimulation()) {
+				Thread::sleep(10)
+			}
+			if (!controller.configuration.getStopSimulation()) {
+				startSimulationStep
+			}
+			 
+		}		
+			// end of the loop	
 	}
 }

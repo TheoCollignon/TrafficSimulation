@@ -168,7 +168,7 @@ public class Configuration {
 			// find a random connected city
 			City startCity = cities.get(j);
 			// create the car
-			id++;
+			id = this.idCount.incrementAndGet();
 			Car car = new Car(this, energy, viewGenerator, startCity, id);
 			// put it in the list
 			cars.add(car);
@@ -238,6 +238,10 @@ public class Configuration {
 
 	public ArrayList<City> getCities() {
 		return cities;
+	}
+	
+	public ViewGenerator getViewGenerator() {
+		return viewGenerator;
 	}
 
 	public ArrayList<Road> getRoads() {

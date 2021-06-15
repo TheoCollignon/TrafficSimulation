@@ -217,24 +217,23 @@ public class Environment extends Agent {
       }
       int addCarCounter = this.count.incrementAndGet();
       int removeCarCounter = this.deadCount.incrementAndGet();
-      if (((addCarCounter % 5) == 3)) {
+      if (((addCarCounter % 10) == 3)) {
         InputOutput.<String>println("A new car has been created");
         cars = this.controller.getConfiguration().addCar();
         Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
         int _size_1 = cars.size();
         DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
         int _size_2 = cars.size();
-        _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContextWithID(CarAgent.class, cars.get((_size_1 - 1)).getUUID(), _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultContext(), 
-          cars.get((_size_2 - 1)).getRoadOn());
-        Thread.sleep(25);
+        _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContextWithID(CarAgent.class, cars.get((_size_1 - 1)).getUUID(), _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultContext(), cars.get((_size_2 - 1)).getRoadOn());
+        Thread.sleep(50);
       }
-      if (((removeCarCounter % 5) == 3)) {
+      if (((removeCarCounter % 10) == 3)) {
         Car _get = cars.get(0);
         Kill killCar = new Kill(_get);
         DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
         _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1.emit(killCar);
         cars = this.controller.getConfiguration().removeCar(cars.get(0), false);
-        Thread.sleep(25);
+        Thread.sleep(50);
       }
       this.listInfluences.clear();
       this.startSimulationStep();

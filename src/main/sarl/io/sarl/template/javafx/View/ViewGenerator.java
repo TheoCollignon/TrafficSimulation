@@ -6,6 +6,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -25,6 +26,7 @@ import javafx.scene.control.TextField;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("restriction")
 public class ViewGenerator {
     private Stage stage;
     @FXML
@@ -207,10 +209,11 @@ public class ViewGenerator {
     
     
     public void deleteCarPositionDraw(Car car, Configuration configuration) {
-        for (Node node: mainPane.getChildren()) {
+    	// ObservableList<Node> test =  configuration.getViewGenerator().mainPane.getChildren();
+        for (Node node:  configuration.getViewGenerator().getMainPane().getChildren()) {
             if (String.valueOf(car.getId()).equals(node.getId())) {
             	configuration.getDeletedCars().remove(car);
-            	mainPane.getChildren().remove(node);
+            	configuration.getViewGenerator().getMainPane().getChildren().remove(node);
             }
         }
            
@@ -226,13 +229,12 @@ public class ViewGenerator {
                 updateCarPositionDraw(c);
             }             
         	 for(Car c : deletedCars) {
-             	// System.out.println("del:" + deletedCars.size());
              	deleteCarPositionDraw(c, configuration);
              }
    
             
         }));
-        timeline.setCycleCount(1);//do it x times
+        // timeline.setCycleCount(1);//do it x times
         timeline.setCycleCount(Animation.INDEFINITE);//or indefinitely
 
         //play:
@@ -241,5 +243,9 @@ public class ViewGenerator {
 
     public void setMainPane(Pane mainPane) {
         this.mainPane = mainPane;
+    }
+    
+    public Pane getMainPane() {
+    	return mainPane;
     }
 }

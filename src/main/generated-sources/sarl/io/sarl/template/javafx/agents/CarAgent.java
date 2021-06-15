@@ -83,7 +83,7 @@ public class CarAgent extends Agent {
     UUID _iD = this.getID();
     boolean _equals = Objects.equal(_uUID, _iD);
     if (_equals) {
-      System.out.println("I cant eat peperoni anymore :((( ");
+      System.out.println("I cant eat peperoni anymore parce que je suis mort :((( ");
       Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
       _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.killMe();
     }

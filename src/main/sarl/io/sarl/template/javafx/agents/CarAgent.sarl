@@ -57,7 +57,7 @@ agent CarAgent {
 	on Kill {
 		car = occurrence.car
 		if (car.UUID == this.ID) {
-			System.out.println("I cant eat peperoni anymore :((( ")
+			System.out.println("I cant eat peperoni anymore parce que je suis mort :((( ")
 			killMe
 		}
 	}

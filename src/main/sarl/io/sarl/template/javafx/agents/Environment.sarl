@@ -217,34 +217,22 @@ agent Environment {
 
 		var addCarCounter = this.count.incrementAndGet
 		var removeCarCounter = this.deadCount.incrementAndGet
-		if (addCarCounter % 5 == 3) {
+		if (addCarCounter % 10 == 3) {
 			println("A new car has been created")
 			cars = controller.configuration.addCar()	
-			spawnInContextWithID(typeof(CarAgent), cars.get(cars.size() - 1).UUID, defaultContext,
-				cars.get(cars.size() - 1).roadOn)
-			Thread::sleep(25)
+			spawnInContextWithID(typeof(CarAgent), cars.get(cars.size() - 1).UUID, defaultContext, cars.get(cars.size() - 1).roadOn)
+			Thread::sleep(50)
 		}
 		
 		// killing a car 
-		if (removeCarCounter % 5 == 3) {
+		if (removeCarCounter % 10 == 3) {
 			var killCar = new Kill(cars.get(0))
 			emit(killCar) // emit the kill, so it can kill itself
 			cars = controller.configuration.removeCar(cars.get(0), false) // false if we dont want to let the hitbox of the car on the way
-			Thread::sleep(25)
+			Thread::sleep(50)
 		}
 		
 		listInfluences.clear()
-		startSimulationStep 	// end of the loop
-		
-		
-		
+		startSimulationStep 	// end of the loop	
 	}
-	
-
-	
-	
-	
-	
-
-	
 }

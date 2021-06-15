@@ -9,17 +9,23 @@ import io.sarl.template.javafx.^event.Perception
 import io.sarl.core.Logging
 import io.sarl.core.DefaultContextInteractions
 import io.sarl.template.javafx.^event.Influence
-
+import io.sarl.template.javafx.^event.MoveCarPosition
+import io.sarl.core.Schedules
+import io.sarl.template.javafx.Model.Car
+import io.sarl.template.javafx.^event.Kill
+import io.sarl.core.Lifecycle
 
 /*
  * The main agent able to communicate with the GUI
  */
 agent CarAgent {
 
-	uses Behaviors, ExternalContextAccess, Logging, DefaultContextInteractions
+	uses Behaviors, ExternalContextAccess, Logging, DefaultContextInteractions, Schedules, Lifecycle
 
 
 	var road : Road
+	var car : Car
+	
 	
 	on Initialize {
 		info("je suis vivant")
@@ -28,19 +34,33 @@ agent CarAgent {
 	on Perception {
 		road = occurrence.road // route sur laquel la voiture est
 		var i = 0
-		System.out.println("11")
 		for (coord : road.coordsList) { // parcours de ma route pour trouvé la voiture
-				for (car : coord.carList) { // on vérifie si jamais y'a deux voitures sur la même coord, que ce soit la bonne
+			for (car : coord.carList) { // on vérifie si jamais y'a deux voitures sur la même coord, que ce soit la bonne
 					if (car.UUID == this.ID) {
 					// on renvoie l'indice
-						var numberOfFreeCoord = road.perceptionFree(car, 5)
+						var numberOfFreeCoord = road.perceptionFree(car, 100)
+						// println(numberOfFreeCoord)
 						var influence = new Influence(i, this.ID, numberOfFreeCoord)
 						emit(influence)
 					}
 				}
 				i++
 		}
+	}
+	
+	on MoveCarPosition {
+		car = occurrence.car
+		car.getRoadOn.moveCarPosition(car)
 	}	
+	
+	
+	on Kill {
+		car = occurrence.car
+		if (car.UUID == this.ID) {
+			System.out.println("I cant eat peperoni anymore parce que je suis mort :((( ")
+			killMe
+		}
+	}
 }
 	
 	

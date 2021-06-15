@@ -65,7 +65,8 @@ public class Road {
         Coordinate pointB = this.getCoordsList().get(getCoordsList().size()-1);
         double distance = Math.sqrt(Math.pow(pointB.getX() - pointA.getX(),2) + Math.pow(pointB.getY() - pointA.getY(),2));
         this.roadLength += distance;
-        this.pointNum = (int)(distance / 10);
+        this.pointNum = (int)(distance/2);
+        // this.pointNum = 201;
         // we clear once
         coordsList.clear();
         // we had the first city
@@ -170,34 +171,139 @@ public class Road {
         return false;
     }
 
-    // for testing purpose : 
+    // Tells us if there is something or not in front of us 
     public int perceptionFree(Car car, int range) {
-    	 int freeSpace = range; // freeSpace is equals to the number of free coordinate in front of us
+    	 int indexOfCoord = -1;
+    	 int freeSpace = 0; // freeSpace is equals to the number of free coordinate in front of us
     	 for(Coordinate coord : coordsList) {
-    		 if (coord.getCar().contains(car)) {
-    			// verify if there is a next coordinate
-    			 int indexOfCoord = coordsList.indexOf(coord);
-    			 if(car.getDirection() == 1 ) {
-    				 for(int i= indexOfCoord+1; i < range + indexOfCoord;i++) {
-    					 if ( i < coordsList.size()) {
-        					 if(coordsList.get(i).getCarList().size() != 0) {
-        						 return freeSpace;
-        					 }
-    					 }
-    				 }
-    			 } else {
-    				 for(int i= indexOfCoord-1; i > indexOfCoord - range;i--) {
-    					 if ( i >= 0){
-        					 if(coordsList.get(i).getCarList().size() != 0) {
-        						 freeSpace = indexOfCoord - (i + 1);
-        						 return freeSpace;
-        					 }
-    					 }
-    				 }
-    			 }
-    		 }
+			 if (coord.getCar().contains(car)) { // on verifie que la voiture sur la coordonnée est celle en argument
+				// verify if there is a next coordinate
+				 indexOfCoord = coordsList.indexOf(coord); 
+			 }
     	 }
-    	return freeSpace;
+    	 
+    	 if(indexOfCoord == 0 || indexOfCoord == coordsList.size()) return 1;
+    	 
+    	 
+    	 // when direction is 1 
+    	 if(car.getDirection() == 1) {
+    		 for(int i = 1; i<= range; i++) {
+        		 if(indexOfCoord+i < coordsList.size()) {
+    	    		 if(coordsList.get(indexOfCoord+i).getCarList().size() == 0) { // We verify that there is no car on the next coordinate
+    	        		 freeSpace++;
+    	        		 // if (coordsList.get(indexOfCoord+i).isCity()){
+    	        		 if(indexOfCoord+i == coordsList.size()-1) {
+        	        		 freeSpace = (int)freeSpace/2;
+        	        		 freeSpace++;
+        	        		 return freeSpace;
+        	        	 }
+    	        	 } else {
+    	        		 for(Car c : coordsList.get(indexOfCoord+i).getCarList()) {
+    	        			 if (!car.equals(c)) {
+    	        				 if(car.getDirection() != c.getDirection()) {
+    	        					 freeSpace++;
+    	        				 }else {
+    	        	        		 return freeSpace;
+
+    	        				 }
+    	        			 }
+    	        		 }
+    	        	 }
+        		 } 
+        	 }
+    	 }
+	 
+    	 
+    	 // when direction is -1 
+    	 else {
+    		 for(int i=1; i<= range; i++) {
+        		 if(indexOfCoord-i >= 0){
+        			 if(coordsList.get(indexOfCoord-i).getCarList().size() == 0) { // We verify that there is no car on the next coordinate
+        	    		 freeSpace++;
+        	    		 // if (coordsList.get(indexOfCoord-i).isCity()){
+        	    		 if(indexOfCoord-i == 0) {
+        	    			 freeSpace = ((int)freeSpace/2);
+        	    			 freeSpace++;
+            	    		 return freeSpace; 
+            	    	 }
+        	    	 } else {
+        	    		 for(Car c : coordsList.get(indexOfCoord-i).getCarList()) {
+    	        			 if (!car.equals(c)) {
+    	        				 if(car.getDirection() != c.getDirection()) {
+    	        					 freeSpace++;
+    	        				 }else {
+    	        	        		 return freeSpace;
+
+    	        				 }
+    	        			 }
+    	        		 }
+        	    	 }
+        		 }
+        	 }
+    	 }
+    	 
+    	 
+    	 
+    	 
+    	 
+    	 if(freeSpace ==0) freeSpace++;
+    	 return freeSpace;
+    	 
+    	 
+    	 
+    	 
+    	 
+    	 
+    	 
+    	 
+    	 
+    	 
+    	 
+//    	 for(Coordinate coord : coordsList) {
+//    		 if (coord.getCar().contains(car)) { // on verifie que la voiture sur la coordonnée est celle en argument
+//    			// verify if there is a next coordinate
+//    			 int indexOfCoord = coordsList.indexOf(coord);
+//    			 if(car.getDirection() == 1 ) { 
+//    				 for(int i= indexOfCoord+1; i < range + indexOfCoord;i++) {
+//    					 if ( i < coordsList.size()) {
+//        					 if(coordsList.get(i).getCarList().size() == 0) {
+//        						 freeSpace++; 
+//        					 } else {
+//        						 return freeSpace;
+//        					 }
+//    					 }
+//    					 else {
+//    						 System.out.println(coordsList.get(i-2));
+//    						 System.out.println(coordsList.get(i-2).getCity());
+//    						
+//
+//    						 if (coordsList.get(i-2).isCity()) {
+//    				    		 freeSpace++;
+//    				    	 }
+//    					 }
+//    				 }
+//    			 } else {
+//    				 for(int i= indexOfCoord-1; i > indexOfCoord - range;i--) {
+//    					 if ( i >= 0){
+//        					 if(coordsList.get(i).getCarList().size() == 0) {
+//        						 freeSpace++; 
+//        					 } else {
+//        						 return freeSpace;
+//        					 }
+//    					 }
+//    					 else {
+//    						 if (coordsList.get(i+2).isCity()) {
+//    				    		 freeSpace++;
+//    				    	 }
+//    					 }
+//    				 }
+//    			 }
+//    		 }
+//    	 }
+    	 // faire en sorte que si sur une ville 0 -> 1 
+    	
+    	 
+//    	return freeSpace;
     }
     // end testing
     public ArrayList<Coordinate> getCoordsList() {

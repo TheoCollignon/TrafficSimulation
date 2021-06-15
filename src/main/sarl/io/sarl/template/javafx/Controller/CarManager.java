@@ -12,7 +12,7 @@ public class CarManager extends Thread{
     public CarManager(ArrayList<Car> carList) {
         this.carList = carList;
         random = new Random();
-        this.start();
+        // this.start();
     }
 
     public void run() {

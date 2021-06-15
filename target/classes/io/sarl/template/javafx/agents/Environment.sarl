@@ -14,7 +14,11 @@ import java.util.Collections
 import io.sarl.template.javafx.Model.Configuration
 import io.sarl.template.javafx.^event.Influence
 import io.sarl.template.javafx.^event.SetupApplication
-import java.util.ArrayList
+import java.util.concurrent.CopyOnWriteArrayList
+import io.sarl.template.javafx.^event.MoveCarPosition
+import io.sarl.template.javafx.Model.Car
+import java.util.concurrent.atomic.AtomicInteger
+import io.sarl.template.javafx.^event.Kill
 
 /** 
  * @author Luka Lambalot
@@ -25,7 +29,10 @@ agent Environment {
 
 	var controller : Controller
 	var configuration : Configuration
-	var listInfluences = Collections.synchronizedList(new ArrayList<Influence>)
+	var listInfluences = new CopyOnWriteArrayList<Influence>
+	var count = new AtomicInteger
+	var deadCount = new AtomicInteger
+	
 	
 	// TOBEDONE : var influences = Collections.synchronizedList(events)
 	
@@ -35,19 +42,34 @@ agent Environment {
 		// Event trigger before the agent begin to live or to be used.
 		// You should put all the initialization statements in this block of code.
 		info("The agent was started.")
-		
 		controller = Controller.getInstance
-		while (controller.startAgent == false) {
-			Thread::sleep(50)
-			// Can be better imo
-		}
-		Thread::sleep(50)
-		// controller.createRandomConfiguration // for testing purpose
-		// controller.configuration.setupCars(5)
-		var roads = controller.configuration.roads
-		var cars = controller.configuration.cars
-		var setupApplication = new SetupApplication()
-		emit(setupApplication) // have to emit, to be sure at 100% that every agent are instanciate
+
+		val task = task("begin")
+		task.every(100) [
+			if (controller.startAgent == true) {
+				// controller.createRandomConfiguration // for testing purpose
+				// controller.configuration.setupCars(5)
+				var roads = controller.configuration.roads
+				var cars = controller.configuration.cars
+				cars = controller.configuration.addCar()		
+				var setupApplication = new SetupApplication()
+				emit(setupApplication) // have to emit, to be sure at 100% that every agent are instanciate
+				task.cancel
+			}
+		]
+		
+
+//		while (controller.startAgent == false) {
+//			Thread::sleep(50)
+//			// Can be better imo
+//		}
+//		Thread::sleep(50)
+//		// controller.createRandomConfiguration // for testing purpose
+//		// controller.configuration.setupCars(5)
+//		var roads = controller.configuration.roads
+//		var cars = controller.configuration.cars
+//		var setupApplication = new SetupApplication()
+//		emit(setupApplication) // have to emit, to be sure at 100% that every agent are instanciate
 		
 	}
 	
@@ -56,7 +78,8 @@ agent Environment {
 		for (car : cars) {
 			spawnInContextWithID(typeof(CarAgent), car.UUID, defaultContext, car.roadOn)
 		}
-
+		Thread::sleep(50)
+		
 		startSimulationStep
 		// every(500)[startSimulationStep]
 	}
@@ -64,25 +87,107 @@ agent Environment {
 	
 	
 	on Influence {
-		info("i : " + occurrence.i)
-		info("id : " + occurrence.id)
-		info("next coordinate available ?  : " + occurrence.numberOfFreeCoord)
-		// we need to know if we can move to the next coordinate
-		var move = true
-		if(occurrence.numberOfFreeCoord == 0) {
-			move = false;
-		}
-		
-		
+//		info("i : " + occurrence.i)
+//		info("id : " + occurrence.id)
+		// info("next coordinate available ?  : " + occurrence.numberOfFreeCoord)
 		var cars = controller.configuration.cars
-		listInfluences.add(occurrence)
+		var move = true
+		var allMoved = false
+		var movingRange = new CopyOnWriteArrayList	
+		var carOccurence = new CopyOnWriteArrayList<Car>
+		var maxValue = 0
+		var initialStepCar : CopyOnWriteArrayList<Integer> = new CopyOnWriteArrayList	
+		var stepCar = new CopyOnWriteArrayList
+	
 		// when we receive an influence we need to know if everyone has done his job yet
 		// tobedone
+		listInfluences.add(occurrence)
 		if (cars.size() == listInfluences.size()) {
-
 			// use listInfluences to update the model and the view
-			// insert code here 
-		
+		// we need to know if we can move to the next coordinate
+			for (occurence : listInfluences) {
+				for (car : cars) {
+					if (car.UUID == occurence.id) {
+						carOccurence.add(car)
+						movingRange.add(occurence.numberOfFreeCoord)
+						// println(occurrence.numberOfFreeCoord)
+						
+					}
+				}
+			}
+			// println(carOccurence)
+			
+			maxValue = Collections.max(movingRange, null)
+
+			// x/a x/b ..
+			
+			for(var i=0; i < movingRange.size(); i++){
+				if (movingRange.get(i) == 0) {
+					stepCar.add(-1)
+				} else {
+					stepCar.add(maxValue / movingRange.get(i) as int) // 50 = percption value
+				}
+			}
+			
+			// 
+//			println(stepCar)
+//			initialStepCar = stepCar
+			for (ele : stepCar) {
+				var temp = ele
+				initialStepCar.add(temp)
+			}
+			for (var j = 0; j < maxValue; j++) {
+				for (var i = 0; i < movingRange.size(); i++) {
+					if (movingRange.get(i) > 0) {
+						// println("stepcar : " +stepCar.get(i))
+						if (stepCar.get(i) == 1) {
+							//testing
+//							var moveCar = new MoveCarPosition(carOccurence.get(i))
+//							emit(moveCar)	
+  							carOccurence.get(i).getRoadOn.moveCarPosition(carOccurence.get(i))
+							
+							movingRange.set(i, movingRange.get(i) - 1)
+							
+							// println(movingRange)
+						}
+						
+						stepCar.set(i, (stepCar.get(i) - 1))
+						
+
+						if (stepCar.get(i) == 0) {
+							stepCar.set(i, initialStepCar.get(i))
+						}
+						
+					}
+					
+				}
+				Thread::sleep(10)
+			}
+			
+			
+	
+			
+					
+//			for (occurence : listInfluences) {
+//				// println(occurence.id)
+//				
+//				if (occurrence.numberOfFreeCoord == 0) {
+//					move = false;
+//				}
+//				// insert code here
+//				if (move) {
+//					for (car : cars) {
+//						if (car.UUID == occurence.id) {
+////							var moveCar = new MoveCarPosition(car)
+////							emit(moveCar)[it.UUID == car.UUID]
+//							car.getRoadOn.moveCarPosition(car)
+//						}	
+//					}		
+//				}
+//					
+//			}
+			// Thread::sleep(100)
+			
 			// then we end the current step
 			endSimulationStep
 		}
@@ -91,8 +196,7 @@ agent Environment {
 	}
 	
 	
-	def startSimulationStep {
-		
+	synchronized def startSimulationStep  {
 		var roads = Collections.synchronizedList(controller.configuration.roads)
 		var cars = controller.configuration.cars
 		for (car : cars) {
@@ -100,18 +204,35 @@ agent Environment {
 			emit(perception)[it.UUID == car.UUID]
 		}
 	}
-	
-	def endSimulationStep {
+
+	synchronized def endSimulationStep {
 		// we clear the list after using it
+		var cars = controller.configuration.cars
+		var deletedCars = controller.configuration.deletedCars 
+		for (car : cars) {
+			if (car.toBeDelete.size() != 0) {
+				car.toBeDelete.get(0).removeCar(car)
+			}
+		}
+
+		var addCarCounter = this.count.incrementAndGet
+		var removeCarCounter = this.deadCount.incrementAndGet
+		if (addCarCounter % 10 == 3) {
+			println("A new car has been created")
+			cars = controller.configuration.addCar()	
+			spawnInContextWithID(typeof(CarAgent), cars.get(cars.size() - 1).UUID, defaultContext, cars.get(cars.size() - 1).roadOn)
+			Thread::sleep(50)
+		}
+		
+		// killing a car 
+		if (removeCarCounter % 10 == 3) {
+			var killCar = new Kill(cars.get(0))
+			emit(killCar) // emit the kill, so it can kill itself
+			cars = controller.configuration.removeCar(cars.get(0), false) // false if we dont want to let the hitbox of the car on the way
+			Thread::sleep(50)
+		}
+		
 		listInfluences.clear()
-		startSimulationStep // end of the loop 
+		startSimulationStep 	// end of the loop	
 	}
-	
-
-	
-	
-	
-	
-
-	
 }

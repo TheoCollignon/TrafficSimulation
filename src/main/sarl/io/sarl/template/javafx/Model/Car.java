@@ -3,7 +3,10 @@ package io.sarl.template.javafx.Model;
 import io.sarl.template.javafx.View.ViewGenerator;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -21,6 +24,7 @@ public class Car {
     private int speed;
     private int id;
     private UUID uuid;
+    private ArrayList<Coordinate> toBeDelete;
     
     //the list of roads the car has to drive on to get to its destination
     private List<Road> roadPlan;
@@ -29,6 +33,7 @@ public class Car {
     public Car(Configuration config, float energy, ViewGenerator viewGenerator, City cityFrom, int id) {
     	this.uuid = UUID.randomUUID();
         this.position = cityFrom.getPosition();
+        this.toBeDelete = new ArrayList<>();
         this.config = config;
         this.roadPlan = new ArrayList<>();
         this.energy = energy;
@@ -71,15 +76,44 @@ public class Car {
         }
     }
 
-    public void changeCoordinate(Coordinate position) {
+    public synchronized void changeCoordinate(Coordinate position) {
         // if there is enough energy, we move the car
-        if (this.energy >= 0 && !isInTownEvent()) {
+        // if (this.energy >= 0 && !isInTownEvent()) {
+        if (this.energy >= 0) {
             adaptCarSpeed(this.position);
-            this.energy -= 0.01 * this.speed;
+            // this.energy -= 0.0001 * this.speed;
+            this.energy -= 0.1;
+           
+//            try {
+//				Thread.sleep(5);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+            
             this.position.removeCar(this);
+    
+            // System.out.println("HELLO LES MAIIIIIIIIIIIIIIII");
+//            Iterator<Car> i = this.position.getCar().iterator();
+//            while (i.hasNext()) {
+//               Car car = (Car) i.next();
+//               if (car.equals(this)) {
+//            	  try {
+//            		  i.remove();
+//            	  } catch (ConcurrentModificationException e) {
+//      				// TODO Auto-generated catch block
+//      				e.printStackTrace();
+//      			}
+//                  // System.out.println("\n the car is removed");
+//                  break;
+//               }
+//            } 
+            
+//            this.toBeDelete.add(this.position);
+//            System.out.println("JAJOUTE UN TRUC A DELETE FDP");
             this.position = position;
             this.position.addCar(this);
-            if(this.energy < 0){
+            if(this.energy <= 0){
                 System.out.println("All out of gas !");
             }
         }
@@ -237,6 +271,11 @@ public class Car {
     public void setRoadOn(Road roadOn) {
         this.roadOn = roadOn;
     }
+    
+    public ArrayList<Coordinate> getToBeDelete() {
+    	return this.toBeDelete;
+    }
+    
 
     public City getDestination() {
         return destination;

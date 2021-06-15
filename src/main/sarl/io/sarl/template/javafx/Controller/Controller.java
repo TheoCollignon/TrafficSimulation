@@ -21,7 +21,7 @@ public class Controller {
         return instance;
     }
 
-    public Configuration initializeConfig(){
+    public Configuration initializeConfig(ViewGenerator viewGenerator){
         configuration = new Configuration(viewGenerator);
         return configuration;
     }
@@ -29,16 +29,16 @@ public class Controller {
     public void initializeSimulation(ViewGenerator viewGenerator, int originalEnergy){
         this.viewGenerator = viewGenerator;
         jsonManager = new JSONManager();
-        ArrayList<Car> cars = configuration.setupCars(configuration.getCities().size(), originalEnergy);
-        CarManager cm = new CarManager(cars);
+        ArrayList<Car> cars = configuration.setupCars(configuration.getCities().size()-1, originalEnergy);
+        // CarManager cm = new CarManager(cars);
         startAgent = true;
         System.out.println(this.startAgent);
-        viewGenerator.updateView(cars);
+        viewGenerator.updateView(configuration);
         viewGenerator.drawConfiguration(configuration);
         
     }
-    public void createRandomConfiguration(boolean isHippo) {
-        initializeConfig();
+    public void createRandomConfiguration(boolean isHippo, ViewGenerator viewGenerator) {
+        initializeConfig(viewGenerator);
         configuration.addRandomElements(5,isHippo);
         startAgent = true;
     }
@@ -47,9 +47,9 @@ public class Controller {
         this.viewGenerator = viewGenerator;
         jsonManager = new JSONManager();
         configuration = jsonManager.readJSONFile(viewGenerator,fileName);
-        CarManager cm = new CarManager(configuration.getCars());
+        // CarManager cm = new CarManager(configuration.getCars());
         startAgent = true;
-        viewGenerator.updateView(configuration.getCars());
+        viewGenerator.updateView(configuration);
         viewGenerator.drawConfiguration(configuration);
         
     }
@@ -65,5 +65,7 @@ public class Controller {
     public JSONManager getJSONManager() {
     	return this.jsonManager;
     }
+    
+  
 	
 }

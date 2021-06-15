@@ -5,6 +5,7 @@ package io.sarl.template.javafx.^event
 
 import io.sarl.template.javafx.Model.Road
 import java.util.UUID
+import io.sarl.template.javafx.Model.Car
 
 /** 
  * @author Luka Lambalot
@@ -21,7 +22,6 @@ event Perception{
 
 
 event Influence{
-	var move : boolean
 	var i : int
 	var id : UUID
 	var numberOfFreeCoord : int
@@ -39,3 +39,22 @@ event SetupApplication {
 		
 	}
 }
+
+
+event MoveCarPosition{
+	var car : Car
+	
+	new (car : Car){
+		this.car = car
+	}
+}
+
+event Kill {
+	var car : Car
+
+	new (car : Car) {
+		this.car = car
+	}
+}
+
+

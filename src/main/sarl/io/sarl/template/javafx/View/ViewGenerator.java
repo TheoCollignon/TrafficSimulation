@@ -6,6 +6,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -25,6 +26,7 @@ import javafx.scene.control.TextField;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("restriction")
 public class ViewGenerator {
     private Stage stage;
     @FXML
@@ -54,11 +56,11 @@ public class ViewGenerator {
                 }
             }
             for (int i = 0; i < roadCoords.size() - 1; i++) {
-                if (i + 1 < (roadCoords.size() - 1) ) {
-                    if (i%2 != 1) {
-                        Line line = new Line(roadCoords.get(i).getX(), roadCoords.get(i).getY(), roadCoords.get(i + 1).getX(), roadCoords.get(i + 1).getY());
+                if (i + 1 < (roadCoords.size() - 10) ) {
+                    if (i%20 == 0) {
+                        Line line = new Line(roadCoords.get(i).getX(), roadCoords.get(i).getY(), roadCoords.get(i + 10).getX(), roadCoords.get(i +10).getY());
                         line.setStrokeWidth(road.getWidth() - 13); // markings
-                        line.setStroke(Color.RED);
+                        line.setStroke(Color.WHITE);
                         mainPane.getChildren().add(line);
                     }
                 }
@@ -101,9 +103,20 @@ public class ViewGenerator {
         }
     }
 
+//    public void drawNewCar(Car car) {
+//		 Rectangle rectangleCar = new Rectangle(car.getPosition().getX(),car.getPosition().getY(), 10,5);
+//	     // Circle car = new Circle(cars.getPosition().getX(), cars.getPosition().getY(), 5);
+//		 rectangleCar.setId(String.valueOf(car.getId()));
+//		 rectangleCar.setFill(Color.PURPLE);
+//	     mainPane.getChildren().add(rectangleCar);
+//    }
+    
     public void updateCarPositionDraw(Car car) {
+    	// System.out.println("size:" + car);
+    	boolean isFind = false;
         for (Node node: mainPane.getChildren()) {
             if (String.valueOf(car.getId()).equals(node.getId())) {
+            	isFind = true;
                 // Circle circle = (Circle) node;
                 Rectangle carView = (Rectangle) node;
                 // trying to put the car on the right side of the road for better display
@@ -176,20 +189,52 @@ public class ViewGenerator {
                 carView.setRotate(rotateValue);
 
                 // to be delete, but for the moment, it helps to know if the car's thread is alive
-                carView.setFill(Color.color(Math.random(), Math.random(), Math.random()));
+                // carView.setFill(Color.color(Math.random(), Math.random(), Math.random()));
+                carView.setFill(Color.color(0.9, 0.1, 0.2));
+                // to be delete
+                if(car.getId() >4) {
+                	carView.setFill(Color.GREEN);
+                } 
+                // end to be delete
             }
         }
-
+        if(!isFind) {
+	   		 Rectangle rectangleCar = new Rectangle(car.getPosition().getX(),car.getPosition().getY(), 10,5);
+		     // Circle car = new Circle(cars.getPosition().getX(), cars.getPosition().getY(), 5);
+			 rectangleCar.setId(String.valueOf(car.getId()));
+			 rectangleCar.setFill(Color.PURPLE);
+		     mainPane.getChildren().add(rectangleCar);
+        }
     }
+    
+    
+    public void deleteCarPositionDraw(Car car, Configuration configuration) {
+    	// ObservableList<Node> test =  configuration.getViewGenerator().mainPane.getChildren();
+        for (Node node:  configuration.getViewGenerator().getMainPane().getChildren()) {
+            if (String.valueOf(car.getId()).equals(node.getId())) {
+            	configuration.getDeletedCars().remove(car);
+            	configuration.getViewGenerator().getMainPane().getChildren().remove(node);
+            }
+        }
+           
+    }
+    
 
-    public void updateView(ArrayList<Car> cars) {
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), ev -> {
+    public void updateView(Configuration configuration) {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.01), ev -> {
             //what you want to do
+        	ArrayList<Car> cars = configuration.getCars();
+        	ArrayList<Car> deletedCars = configuration.getDeletedCars();
             for(Car c : cars) {
                 updateCarPositionDraw(c);
-            }
+            }             
+        	 for(Car c : deletedCars) {
+             	deleteCarPositionDraw(c, configuration);
+             }
+   
+            
         }));
-        timeline.setCycleCount(1);//do it x times
+        // timeline.setCycleCount(1);//do it x times
         timeline.setCycleCount(Animation.INDEFINITE);//or indefinitely
 
         //play:
@@ -198,5 +243,9 @@ public class ViewGenerator {
 
     public void setMainPane(Pane mainPane) {
         this.mainPane = mainPane;
+    }
+    
+    public Pane getMainPane() {
+    	return mainPane;
     }
 }

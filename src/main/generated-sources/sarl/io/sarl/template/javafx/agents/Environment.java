@@ -1,6 +1,7 @@
 package io.sarl.template.javafx.agents;
 
 import com.google.common.base.Objects;
+import io.sarl.core.AgentTask;
 import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.Initialize;
 import io.sarl.core.Lifecycle;
@@ -24,6 +25,7 @@ import io.sarl.template.javafx.Model.Configuration;
 import io.sarl.template.javafx.Model.Road;
 import io.sarl.template.javafx.agents.CarAgent;
 import io.sarl.template.javafx.event.Influence;
+import io.sarl.template.javafx.event.Kill;
 import io.sarl.template.javafx.event.Perception;
 import io.sarl.template.javafx.event.SetupApplication;
 import java.io.ObjectStreamException;
@@ -32,9 +34,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.inject.Inject;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.InputOutput;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -48,58 +54,120 @@ public class Environment extends Agent {
   
   private Configuration configuration;
   
-  private List<Influence> listInfluences = Collections.<Influence>synchronizedList(new ArrayList<Influence>());
+  private CopyOnWriteArrayList<Influence> listInfluences = new CopyOnWriteArrayList<Influence>();
+  
+  private AtomicInteger count = new AtomicInteger();
+  
+  private AtomicInteger deadCount = new AtomicInteger();
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("The agent was started.");
+    this.controller = Controller.getInstance();
+    Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
+    final AgentTask task = _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER.task("begin");
+    Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
+    final Procedure1<Agent> _function = (Agent it) -> {
+      boolean _startAgent = this.controller.getStartAgent();
+      if ((_startAgent == true)) {
+        ArrayList<Road> roads = this.controller.getConfiguration().getRoads();
+        ArrayList<Car> cars = this.controller.getConfiguration().getCars();
+        cars = this.controller.getConfiguration().addCar();
+        SetupApplication setupApplication = new SetupApplication();
+        DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+        _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(setupApplication);
+        Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
+        _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_2.cancel(task);
+      }
+    };
+    _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_1.every(task, 100, _function);
+  }
+  
+  private void $behaviorUnit$SetupApplication$1(final SetupApplication occurrence) {
     try {
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("The agent was started.");
-      this.controller = Controller.getInstance();
-      while ((this.controller.getStartAgent() == false)) {
-        Thread.sleep(50);
+      ArrayList<Car> cars = this.controller.getConfiguration().getCars();
+      for (final Car car : cars) {
+        Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
+        DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+        _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContextWithID(CarAgent.class, car.getUUID(), _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultContext(), car.getRoadOn());
       }
       Thread.sleep(50);
-      ArrayList<Road> roads = this.controller.getConfiguration().getRoads();
-      ArrayList<Car> cars = this.controller.getConfiguration().getCars();
-      SetupApplication setupApplication = new SetupApplication();
-      DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(setupApplication);
+      this.startSimulationStep();
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
   }
   
-  private void $behaviorUnit$SetupApplication$1(final SetupApplication occurrence) {
-    ArrayList<Car> cars = this.controller.getConfiguration().getCars();
-    for (final Car car : cars) {
-      Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
-      DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContextWithID(CarAgent.class, car.getUUID(), _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultContext(), car.getRoadOn());
-    }
-    this.startSimulationStep();
-  }
-  
   private void $behaviorUnit$Influence$2(final Influence occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("i : " + Integer.valueOf(occurrence.i)));
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(("id : " + occurrence.id));
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(("next coordinate available ?  : " + Integer.valueOf(occurrence.numberOfFreeCoord)));
-    boolean move = true;
-    if ((occurrence.numberOfFreeCoord == 0)) {
-      move = false;
-    }
-    ArrayList<Car> cars = this.controller.getConfiguration().getCars();
-    this.listInfluences.add(occurrence);
-    int _size = cars.size();
-    int _size_1 = this.listInfluences.size();
-    if ((_size == _size_1)) {
-      this.endSimulationStep();
+    try {
+      ArrayList<Car> cars = this.controller.getConfiguration().getCars();
+      boolean move = true;
+      boolean allMoved = false;
+      CopyOnWriteArrayList<Integer> movingRange = new CopyOnWriteArrayList<Integer>();
+      CopyOnWriteArrayList<Car> carOccurence = new CopyOnWriteArrayList<Car>();
+      int maxValue = 0;
+      CopyOnWriteArrayList<Integer> initialStepCar = new CopyOnWriteArrayList<Integer>();
+      CopyOnWriteArrayList<Integer> stepCar = new CopyOnWriteArrayList<Integer>();
+      this.listInfluences.add(occurrence);
+      int _size = cars.size();
+      int _size_1 = this.listInfluences.size();
+      if ((_size == _size_1)) {
+        for (final Influence occurence : this.listInfluences) {
+          for (final Car car : cars) {
+            UUID _uUID = car.getUUID();
+            boolean _equals = Objects.equal(_uUID, occurence.id);
+            if (_equals) {
+              carOccurence.add(car);
+              movingRange.add(Integer.valueOf(occurence.numberOfFreeCoord));
+            }
+          }
+        }
+        maxValue = ((Collections.<Integer>max(movingRange, null)) == null ? 0 : (Collections.<Integer>max(movingRange, null)).intValue());
+        for (int i = 0; (i < movingRange.size()); i++) {
+          Integer _get = movingRange.get(i);
+          if ((_get != null && (_get.intValue() == 0))) {
+            stepCar.add(Integer.valueOf((-1)));
+          } else {
+            Integer _get_1 = movingRange.get(i);
+            stepCar.add(Integer.valueOf((maxValue / ((_get_1) == null ? 0 : (_get_1).intValue()))));
+          }
+        }
+        for (final Integer ele : stepCar) {
+          {
+            Integer temp = ele;
+            initialStepCar.add(temp);
+          }
+        }
+        for (int j = 0; (j < maxValue); j++) {
+          {
+            for (int i = 0; (i < movingRange.size()); i++) {
+              Integer _get = movingRange.get(i);
+              if ((_get.intValue() > 0)) {
+                Integer _get_1 = stepCar.get(i);
+                if ((_get_1 != null && (_get_1.intValue() == 1))) {
+                  carOccurence.get(i).getRoadOn().moveCarPosition(carOccurence.get(i));
+                  Integer _get_2 = movingRange.get(i);
+                  movingRange.set(i, Integer.valueOf((((_get_2) == null ? 0 : (_get_2).intValue()) - 1)));
+                }
+                Integer _get_3 = stepCar.get(i);
+                stepCar.set(i, Integer.valueOf((((_get_3) == null ? 0 : (_get_3).intValue()) - 1)));
+                Integer _get_4 = stepCar.get(i);
+                if ((_get_4 != null && (_get_4.intValue() == 0))) {
+                  stepCar.set(i, initialStepCar.get(i));
+                }
+              }
+            }
+            Thread.sleep(10);
+          }
+        }
+        this.endSimulationStep();
+      }
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
     }
   }
   
-  protected void startSimulationStep() {
+  protected synchronized void startSimulationStep() {
     List<Road> roads = Collections.<Road>synchronizedList(this.controller.getConfiguration().getRoads());
     ArrayList<Car> cars = this.controller.getConfiguration().getCars();
     for (final Car car : cars) {
@@ -137,9 +205,41 @@ public class Environment extends Agent {
     }
   }
   
-  protected void endSimulationStep() {
-    this.listInfluences.clear();
-    this.startSimulationStep();
+  protected synchronized void endSimulationStep() {
+    try {
+      ArrayList<Car> cars = this.controller.getConfiguration().getCars();
+      ArrayList<Car> deletedCars = this.controller.getConfiguration().getDeletedCars();
+      for (final Car car : cars) {
+        int _size = car.getToBeDelete().size();
+        if ((_size != 0)) {
+          car.getToBeDelete().get(0).removeCar(car);
+        }
+      }
+      int addCarCounter = this.count.incrementAndGet();
+      int removeCarCounter = this.deadCount.incrementAndGet();
+      if (((addCarCounter % 10) == 3)) {
+        InputOutput.<String>println("A new car has been created");
+        cars = this.controller.getConfiguration().addCar();
+        Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
+        int _size_1 = cars.size();
+        DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+        int _size_2 = cars.size();
+        _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContextWithID(CarAgent.class, cars.get((_size_1 - 1)).getUUID(), _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultContext(), cars.get((_size_2 - 1)).getRoadOn());
+        Thread.sleep(50);
+      }
+      if (((removeCarCounter % 10) == 3)) {
+        Car _get = cars.get(0);
+        Kill killCar = new Kill(_get);
+        DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+        _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1.emit(killCar);
+        cars = this.controller.getConfiguration().removeCar(cars.get(0), false);
+        Thread.sleep(50);
+      }
+      this.listInfluences.clear();
+      this.startSimulationStep();
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
   }
   
   @Extension

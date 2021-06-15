@@ -108,7 +108,7 @@ public class ConfigCreation {
         if (!placeRoads) { // PLACE CITIES
         	ArrayList<String> errors = new ArrayList<>();
             if (config == null) {
-                config = controller.initializeConfig();
+                config = controller.initializeConfig(viewGenerator);
             }
             String nameOfTheCity = cityName.getText().toString();
             int size = sizeSpinner.getValue();

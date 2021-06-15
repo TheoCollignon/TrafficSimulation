@@ -23,6 +23,7 @@ public class Configuration {
 	boolean isHippodamien;
 	AtomicInteger idCount = new AtomicInteger();
 	MapLayout mapLayout;
+	private int nbTotalCarsSpawned = 0;
 
 	public Configuration(ViewGenerator viewGenerator) {
 		this.pause = false;
@@ -174,6 +175,7 @@ public class Configuration {
 			// create the car
 			id = this.idCount.incrementAndGet();
 			Car car = new Car(this, energy, viewGenerator, startCity, id);
+			nbTotalCarsSpawned++;
 			// put it in the list
 			cars.add(car);
 		}
@@ -201,6 +203,7 @@ public class Configuration {
 				// viewGenerator.drawNewCar(car);
 				// put it in the list
 				cars.add(car);
+				nbTotalCarsSpawned++;
 				return cars;
 			}
 			
@@ -274,6 +277,10 @@ public class Configuration {
 	
 	public void setStopSimulation(boolean stop) {
 		this.stopSimulation = stop;
+	}
+	
+	public int getNbTotalCarsSpawned() {
+		return nbTotalCarsSpawned;
 	}
 
 

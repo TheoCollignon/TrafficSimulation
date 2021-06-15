@@ -24,6 +24,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 @SuppressWarnings("restriction")
@@ -37,6 +38,8 @@ public class ViewGenerator {
     private Button pause;
     @FXML
     private Button stopSimulation;
+    @FXML
+    private Button openDisplayData;
     @FXML
     private TextField jsonfileName;
     Controller controller = Controller.getInstance();
@@ -57,8 +60,27 @@ public class ViewGenerator {
     @FXML
     public void stopSimulation(ActionEvent event) {
     	controller.getConfiguration().setStopSimulation(!controller.getConfiguration().getStopSimulation());
+    	stopSimulation.setDisable(true);
+    	stopSimulation.setVisible(false);
+    	openDisplayData.setDisable(false);
+    	openDisplayData.setVisible(true);
         System.out.println("stop " + controller.getConfiguration().getStopSimulation());
     	
+    }
+    
+    @FXML
+    public void openDisplayData(ActionEvent event) {
+    	try {
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("displayData.fxml"));
+            Parent root = loader.load();
+            stage.setScene(new Scene(root, 600, 600));
+            stage.setTitle("Simulation Datas");
+            stage.show();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     public void drawConfiguration(Configuration configuration) {

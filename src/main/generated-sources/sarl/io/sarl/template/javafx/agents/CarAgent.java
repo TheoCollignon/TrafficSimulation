@@ -5,6 +5,7 @@ import io.sarl.core.Behaviors;
 import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.ExternalContextAccess;
 import io.sarl.core.Initialize;
+import io.sarl.core.Lifecycle;
 import io.sarl.core.Logging;
 import io.sarl.core.Schedules;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
@@ -20,6 +21,7 @@ import io.sarl.template.javafx.Model.Car;
 import io.sarl.template.javafx.Model.Coordinate;
 import io.sarl.template.javafx.Model.Road;
 import io.sarl.template.javafx.event.Influence;
+import io.sarl.template.javafx.event.Kill;
 import io.sarl.template.javafx.event.MoveCarPosition;
 import io.sarl.template.javafx.event.Perception;
 import java.util.ArrayList;
@@ -73,6 +75,18 @@ public class CarAgent extends Agent {
   private void $behaviorUnit$MoveCarPosition$2(final MoveCarPosition occurrence) {
     this.car = occurrence.car;
     this.car.getRoadOn().moveCarPosition(this.car);
+  }
+  
+  private void $behaviorUnit$Kill$3(final Kill occurrence) {
+    this.car = occurrence.car;
+    UUID _uUID = this.car.getUUID();
+    UUID _iD = this.getID();
+    boolean _equals = Objects.equal(_uUID, _iD);
+    if (_equals) {
+      System.out.println("I cant eat peperoni anymore :((( ");
+      Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.killMe();
+    }
   }
   
   @Extension
@@ -145,6 +159,20 @@ public class CarAgent extends Agent {
     return $castSkill(Schedules.class, this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES);
   }
   
+  @Extension
+  @ImportedCapacityFeature(Lifecycle.class)
+  @SyntheticMember
+  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_LIFECYCLE;
+  
+  @SyntheticMember
+  @Pure
+  private Lifecycle $CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER() {
+    if (this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE == null || this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE.get() == null) {
+      this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE = $getSkill(Lifecycle.class);
+    }
+    return $castSkill(Lifecycle.class, this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE);
+  }
+  
   @SyntheticMember
   @PerceptGuardEvaluator
   private void $guardEvaluator$Initialize(final Initialize occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
@@ -167,6 +195,14 @@ public class CarAgent extends Agent {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$MoveCarPosition$2(occurrence));
+  }
+  
+  @SyntheticMember
+  @PerceptGuardEvaluator
+  private void $guardEvaluator$Kill(final Kill occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+    assert occurrence != null;
+    assert ___SARLlocal_runnableCollection != null;
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Kill$3(occurrence));
   }
   
   @Override

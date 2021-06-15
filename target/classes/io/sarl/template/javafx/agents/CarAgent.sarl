@@ -12,13 +12,15 @@ import io.sarl.template.javafx.^event.Influence
 import io.sarl.template.javafx.^event.MoveCarPosition
 import io.sarl.core.Schedules
 import io.sarl.template.javafx.Model.Car
+import io.sarl.template.javafx.^event.Kill
+import io.sarl.core.Lifecycle
 
 /*
  * The main agent able to communicate with the GUI
  */
 agent CarAgent {
 
-	uses Behaviors, ExternalContextAccess, Logging, DefaultContextInteractions, Schedules
+	uses Behaviors, ExternalContextAccess, Logging, DefaultContextInteractions, Schedules, Lifecycle
 
 
 	var road : Road
@@ -50,6 +52,15 @@ agent CarAgent {
 		car = occurrence.car
 		car.getRoadOn.moveCarPosition(car)
 	}	
+	
+	
+	on Kill {
+		car = occurrence.car
+		if (car.UUID == this.ID) {
+			System.out.println("I cant eat peperoni anymore :((( ")
+			killMe
+		}
+	}
 }
 	
 	

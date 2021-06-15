@@ -197,6 +197,7 @@ public class ViewGenerator {
             }
         }
         if(!isFind) {
+        	System.out.println("SALUT");
 	   		 Rectangle rectangleCar = new Rectangle(car.getPosition().getX(),car.getPosition().getY(), 10,5);
 		     // Circle car = new Circle(cars.getPosition().getX(), cars.getPosition().getY(), 5);
 			 rectangleCar.setId(String.valueOf(car.getId()));

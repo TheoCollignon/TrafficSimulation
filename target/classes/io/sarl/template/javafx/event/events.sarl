@@ -49,4 +49,12 @@ event MoveCarPosition{
 	}
 }
 
+event Kill {
+	var car : Car
+
+	new (car : Car) {
+		this.car = car
+	}
+}
+
 

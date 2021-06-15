@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
+
 
 public class Configuration {
 
@@ -16,6 +18,7 @@ public class Configuration {
 	private ViewGenerator viewGenerator;
 	private Random random;
 	boolean isHippodamien;
+	AtomicInteger idCount = new AtomicInteger();
 	MapLayout mapLayout;
 
 	public Configuration(ViewGenerator viewGenerator) {
@@ -157,7 +160,7 @@ public class Configuration {
 	}
 
 	public ArrayList<Car> setupCars(int numberCars, int energy) {
-		int id = 0;
+		int id = this.idCount.incrementAndGet();
 		// init the cars
 		for (int j = 0; j < numberCars; j++) {
 			// find a random connected city
@@ -173,7 +176,7 @@ public class Configuration {
 	
 	public ArrayList<Car> addCar() {
 		int energy = 10000000;
-		int id = cars.size()+1;
+		int id = this.idCount.incrementAndGet();
 		// init the cars
 		for (int j = 0; j < cities.size(); j++) {
 			if(cities.get(j).getPosition().getCarList().size() == 0) {
@@ -189,6 +192,12 @@ public class Configuration {
 			}
 			
 		}
+		return cars;
+	}
+	
+	public ArrayList<Car> removeCar(Car car){
+		cars.remove(car);
+		System.out.println("removing a car");
 		return cars;
 	}
 

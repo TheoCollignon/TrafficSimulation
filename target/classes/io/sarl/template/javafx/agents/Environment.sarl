@@ -18,6 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 import io.sarl.template.javafx.^event.MoveCarPosition
 import io.sarl.template.javafx.Model.Car
 import java.util.concurrent.atomic.AtomicInteger
+import io.sarl.template.javafx.^event.Kill
 
 /** 
  * @author Luka Lambalot
@@ -30,6 +31,7 @@ agent Environment {
 	var configuration : Configuration
 	var listInfluences = new CopyOnWriteArrayList<Influence>
 	var count = new AtomicInteger
+	var deadCount = new AtomicInteger
 	
 	
 	// TOBEDONE : var influences = Collections.synchronizedList(events)
@@ -100,7 +102,6 @@ agent Environment {
 		// when we receive an influence we need to know if everyone has done his job yet
 		// tobedone
 		listInfluences.add(occurrence)
-		
 		if (cars.size() == listInfluences.size()) {
 			// use listInfluences to update the model and the view
 		// we need to know if we can move to the next coordinate
@@ -213,19 +214,21 @@ agent Environment {
 			}
 		}
 
-		var n = this.count.incrementAndGet
-		if (n%10 === 3) {
-			println("cc")
-			println("before")
-			println(cars)
-			cars = controller.configuration.addCar()
-			println("after")
-			println(cars)
+		var addCarCounter = this.count.incrementAndGet
+		var removeCarCounter = this.deadCount.incrementAndGet
+		if (addCarCounter % 10 == 3) {
+			println("A new car has been created")
+			cars = controller.configuration.addCar()	
 			spawnInContextWithID(typeof(CarAgent), cars.get(cars.size()-1).UUID, defaultContext, cars.get(cars.size()-1).roadOn)
-			Thread::sleep(50)
-			
-			
 		}
+		
+		// killing a car 
+//		if (removeCarCounter % 10 == 3) {
+//			var killCar = new Kill(cars.get(0))
+//			emit(killCar) // emit the kill, so it can kill itself
+//			cars = controller.configuration.removeCar(cars.get(0))
+//			Thread::sleep(50)
+//		}
 		
 		listInfluences.clear()
 		startSimulationStep 	// end of the loop

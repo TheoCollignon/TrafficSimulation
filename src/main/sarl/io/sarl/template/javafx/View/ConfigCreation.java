@@ -19,6 +19,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.Label;
@@ -69,7 +71,7 @@ public class ConfigCreation {
             Parent root = loader.load();
             viewGenerator.setMainPane((Pane) loader.getNamespace().get("mainPane"));
             config.addElements(isHippo);
-            controller.initializeSimulation(viewGenerator, chosenEnergy);
+            controller.initializeSimulation(viewGenerator, chosenEnergy*10);
             stage.setScene(new Scene(root, 600, 650));
             stage.setTitle("Simulation Viewer");
             stage.show();
@@ -95,6 +97,9 @@ public class ConfigCreation {
             stage.getScene().setRoot(root);
             //stage.setScene(new Scene(root, 600, 600));
             stage.setTitle("Simulation Datas");
+            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+            stage.setX(screenBounds.getWidth()/2 + 300);
+            stage.setY(screenBounds.getHeight()/2 - 400);
             stage.show();
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -321,8 +326,9 @@ public class ConfigCreation {
             stage.getScene().setRoot(root);
             //stage.setScene(new Scene(root, 600, 600));
             stage.setTitle("Simulation Datas");
-            stage.setX(1235);
-            stage.setY(125);
+            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+            stage.setX(screenBounds.getWidth()/2 + 300);
+            stage.setY(screenBounds.getHeight()/2 - 400);
             stage.show();
         } catch (IOException e) {
             // TODO Auto-generated catch block

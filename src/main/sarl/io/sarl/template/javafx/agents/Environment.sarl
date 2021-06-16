@@ -19,6 +19,7 @@ import io.sarl.template.javafx.^event.MoveCarPosition
 import io.sarl.template.javafx.Model.Car
 import java.util.concurrent.atomic.AtomicInteger
 import io.sarl.template.javafx.^event.Kill
+import java.util.ArrayList
 
 /** 
  * @author Luka Lambalot
@@ -217,7 +218,7 @@ agent Environment {
 
 		var addCarCounter = this.count.incrementAndGet
 		var removeCarCounter = this.deadCount.incrementAndGet
-		if (addCarCounter % 10 == 3) {
+		if (addCarCounter % 10 == 1) {
 			println("A new car has been created")
 			cars = controller.configuration.addCar()	
 			spawnInContextWithID(typeof(CarAgent), cars.get(cars.size() - 1).UUID, defaultContext, cars.get(cars.size() - 1).roadOn)
@@ -225,12 +226,23 @@ agent Environment {
 		}
 		
 		// killing a car 
-//		if (removeCarCounter % 10 == 3) {
-//			var killCar = new Kill(cars.get(0))
-//			emit(killCar) // emit the kill, so it can kill itself
-//			cars = controller.configuration.removeCar(cars.get(0), false) // false if we dont want to let the hitbox of the car on the way
-//			Thread::sleep(50)
-//		}
+		var newCarsList = new ArrayList<Car>
+		for (car : cars) {
+			println(car)
+			if (car.getEnergy() <=0) {
+				var killCar = new Kill(cars.get(0))
+				emit(killCar) // emit the kill, so it can kill itself
+				newCarsList.add(car);  // false if we dont want to let the hitbox of the car on the way
+				Thread::sleep(50)
+			}
+		}
+		if(newCarsList.size() !=0){
+			for (c : newCarsList) {
+				cars = controller.configuration.removeCar(c, false)
+				
+			}
+		}
+		
 		
 		listInfluences.clear()
 		if (!controller.configuration.getPause() && !controller.configuration.getStopSimulation()) {

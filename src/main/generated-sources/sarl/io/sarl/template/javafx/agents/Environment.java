@@ -25,6 +25,7 @@ import io.sarl.template.javafx.Model.Configuration;
 import io.sarl.template.javafx.Model.Road;
 import io.sarl.template.javafx.agents.CarAgent;
 import io.sarl.template.javafx.event.Influence;
+import io.sarl.template.javafx.event.Kill;
 import io.sarl.template.javafx.event.Perception;
 import io.sarl.template.javafx.event.SetupApplication;
 import java.io.ObjectStreamException;
@@ -216,7 +217,7 @@ public class Environment extends Agent {
       }
       int addCarCounter = this.count.incrementAndGet();
       int removeCarCounter = this.deadCount.incrementAndGet();
-      if (((addCarCounter % 10) == 3)) {
+      if (((addCarCounter % 10) == 1)) {
         InputOutput.<String>println("A new car has been created");
         cars = this.controller.getConfiguration().addCar();
         Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
@@ -225,6 +226,27 @@ public class Environment extends Agent {
         int _size_2 = cars.size();
         _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContextWithID(CarAgent.class, cars.get((_size_1 - 1)).getUUID(), _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultContext(), cars.get((_size_2 - 1)).getRoadOn());
         Thread.sleep(50);
+      }
+      ArrayList<Car> newCarsList = new ArrayList<Car>();
+      for (final Car car_1 : cars) {
+        {
+          InputOutput.<Car>println(car_1);
+          float _energy = car_1.getEnergy();
+          if ((_energy <= 0)) {
+            Car _get = cars.get(0);
+            Kill killCar = new Kill(_get);
+            DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+            _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1.emit(killCar);
+            newCarsList.add(car_1);
+            Thread.sleep(50);
+          }
+        }
+      }
+      int _size_3 = newCarsList.size();
+      if ((_size_3 != 0)) {
+        for (final Car c : newCarsList) {
+          cars = this.controller.getConfiguration().removeCar(c, false);
+        }
       }
       this.listInfluences.clear();
       if (((!this.controller.getConfiguration().getPause()) && (!this.controller.getConfiguration().getStopSimulation()))) {

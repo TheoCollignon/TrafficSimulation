@@ -10,7 +10,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+
+import javafx.geometry.Rectangle2D;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
@@ -51,8 +54,9 @@ public class ViewMenu extends Application {
             
             //stage.setScene(new Scene(root, 600, 600));
             stage.setTitle("Simulation Datas");
-            stage.setX(1235);
-            stage.setY(125);
+            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+            stage.setX(screenBounds.getWidth()/2 + 300);
+            stage.setY(screenBounds.getHeight()/2 - 400);
       
             stage.show();
         } catch (IOException e) {
@@ -80,8 +84,9 @@ public class ViewMenu extends Application {
             stage.getScene().setRoot(root);
             //stage.setScene(new Scene(root, 600, 600));
             stage.setTitle("Simulation Datas");
-            stage.setX(1235);
-            stage.setY(125);
+            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+            stage.setX(screenBounds.getWidth()/2 + 300);
+            stage.setY(screenBounds.getHeight()/2 - 400);
             stage.show();
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -184,8 +189,9 @@ public class ViewMenu extends Application {
             oldstage.getScene().setRoot(root);
             //stage.setScene(new Scene(root, 600, 600));
             oldstage.setTitle("Simulation Datas");
-            oldstage.setX(1235);
-            oldstage.setY(125);
+            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+            oldstage.setX(screenBounds.getWidth()/2 + 300);
+            oldstage.setY(screenBounds.getHeight()/2 - 400);
             oldstage.show();
         } catch (IOException e) {
             // TODO Auto-generated catch block

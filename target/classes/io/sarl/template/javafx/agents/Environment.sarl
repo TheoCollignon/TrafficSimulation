@@ -238,7 +238,6 @@ agent Environment {
 		if(newCarsList.size() !=0){
 			for (c : newCarsList) {
 				cars = controller.configuration.removeCar(c, false)
-				
 			}
 		}
 		

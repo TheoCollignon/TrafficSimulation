@@ -39,6 +39,7 @@ agent CarAgent {
 					if (car.UUID == this.ID) {
 					// on renvoie l'indice
 						var numberOfFreeCoord = road.perceptionFree(car, 100)
+						car.addSpeed(numberOfFreeCoord)
 						// println(numberOfFreeCoord)
 						var influence = new Influence(i, this.ID, numberOfFreeCoord)
 						emit(influence)

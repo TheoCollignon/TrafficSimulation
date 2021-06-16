@@ -213,6 +213,7 @@ public class Configuration {
 	
 	public ArrayList<Car> removeCar(Car car, boolean hitbox){
 		deletedCars.add(car);
+		System.out.println(deletedCars.size());
 		if(!hitbox) {
 			car.getPosition().getCarList().remove(car);
 		}

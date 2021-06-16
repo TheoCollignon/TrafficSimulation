@@ -25,6 +25,7 @@ public class Car {
     private int id;
     private UUID uuid;
     private ArrayList<Coordinate> toBeDelete;
+    private ArrayList<Integer> speeds = new ArrayList<Integer>();
     
     //the list of roads the car has to drive on to get to its destination
     private List<Road> roadPlan;
@@ -299,5 +300,17 @@ public class Car {
 
     public List<Road> getRoadPlan() {
         return roadPlan;
+    }
+    
+    public void addSpeed(int i) {
+    	speeds.add(i);
+    }
+    
+    public float getSpeedMoy() {
+    	int total = 0;
+    	for (Integer a: speeds) {
+    		total += a;
+    	}
+    	return total/speeds.size();
     }
 }

@@ -48,8 +48,12 @@ public class ViewMenu extends Application {
             Parent root = loader.load();
             System.out.println("salut2"); 
             stage.getScene().setRoot(root);
+            
             //stage.setScene(new Scene(root, 600, 600));
             stage.setTitle("Simulation Datas");
+            stage.setX(900);
+            stage.setY(200);
+      
             stage.show();
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -146,7 +150,14 @@ public class ViewMenu extends Application {
         Button[] buttonsArray = new Button[filesNames.length];
         for (int i = 0; i < filesNames.length; i++) {
             buttonsArray[i] = new Button(filesNames[i]);
-            buttonsArray[i].setOnAction(this::loadJSONFile);
+            buttonsArray[i].setOnAction(arg0 -> {
+				try {
+					loadJSONFile(arg0);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
         }
         VBox vbox = new VBox(buttonsArray);
         Scene scene = new Scene(vbox, 600, 600);
@@ -155,10 +166,28 @@ public class ViewMenu extends Application {
         stage.show();
     }
 
-    private void loadJSONFile(ActionEvent value) {
+    private void loadJSONFile(ActionEvent value) throws InterruptedException {
         Button close = (Button) value.getSource();
         Stage oldstage = (Stage) close.getScene().getWindow();
-        oldstage.close();
+        // oldstage.close();
+        
+        try {
+            // Stage stage = new Stage();
+        	Thread.sleep(100);
+            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("displayData.fxml"));
+            System.out.println("salut3");
+            Parent root = loader.load();
+            System.out.println("salut2"); 
+            oldstage.getScene().setRoot(root);
+            //stage.setScene(new Scene(root, 600, 600));
+            oldstage.setTitle("Simulation Datas");
+            oldstage.show();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
         String fileName = ((Button)value.getSource()).getText();
         try {
             Stage stage = new Stage();

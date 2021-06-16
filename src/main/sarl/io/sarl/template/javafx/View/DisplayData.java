@@ -48,15 +48,15 @@ public class DisplayData implements Initializable {
 		int nbTotalCarsSpawned = configuration.getNbTotalCarsSpawned();
         datasArea.setText("Total number of cars that existed : " + nbTotalCarsSpawned);
         datasArea.appendText("\nNumber of cars on the map : " + configuration.getCars().size());
-        datasArea.appendText("\nNumber of cars destroyed : " + configuration.getDeletedCars().size());
+        datasArea.appendText("\nNumber of cars destroyed : " + configuration.getAllDestroyedCars().size());
         
-        datasArea.appendText("\n\nList of cars on the map");
+        datasArea.appendText("\n\nList of cars on the map :");
         for (Car car: configuration.getCars()) {
         	datasArea.appendText("\nCar "+car.getId()+" : on the road between "+car.getCityFrom().getName()+" and " +car.getDestination().getName()+ " with "+car.getEnergy()+" fuel left at "+car.getSpeedMoy()+" km/h on average.");
         }
         
-        datasArea.appendText("\n\nList of the destroyed cars");
-        for (Car car: configuration.getDeletedCars()) {
+        datasArea.appendText("\n\nList of the destroyed cars :");
+        for (Car car: configuration.getAllDestroyedCars()) {
         	datasArea.appendText("\nCar "+car.getId()+" was on the road between "+car.getCityFrom().getName()+" and " +car.getDestination().getName()+ " with "+car.getEnergy()+" fuel left at "+car.getSpeedMoy()+" km/h on average.");
         }
 	}

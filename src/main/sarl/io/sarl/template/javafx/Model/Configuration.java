@@ -15,6 +15,7 @@ public class Configuration {
 	private ArrayList<Road> roads;
 	private ArrayList<Car> cars;
 	private ArrayList<Car> deletedCars;
+	private ArrayList<Car> allDestroyedCars;
 	private ArrayList<TrafficLight> trafficLights;
 	private ViewGenerator viewGenerator;
 	private Random random;
@@ -34,6 +35,7 @@ public class Configuration {
 		roads = new ArrayList<>();
 		cars = new ArrayList<>();
 		deletedCars = new ArrayList<>();
+		allDestroyedCars = new ArrayList<>();
 		trafficLights = new ArrayList<>();
 	}
 
@@ -188,7 +190,6 @@ public class Configuration {
 		return deletedCars;
 	}
 	
-	
 	public ArrayList<Car> addCar() {
 		int energy = 10000000;
 		int id = this.idCount.incrementAndGet();
@@ -212,8 +213,8 @@ public class Configuration {
 	}
 	
 	public ArrayList<Car> removeCar(Car car, boolean hitbox){
+		allDestroyedCars.add(car);
 		deletedCars.add(car);
-		System.out.println(deletedCars.size());
 		if(!hitbox) {
 			car.getPosition().getCarList().remove(car);
 		}
@@ -284,5 +285,8 @@ public class Configuration {
 		return nbTotalCarsSpawned;
 	}
 
+	public ArrayList<Car> getAllDestroyedCars(){
+		return allDestroyedCars;
+	}
 
 }

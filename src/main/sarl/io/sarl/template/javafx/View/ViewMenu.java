@@ -51,8 +51,8 @@ public class ViewMenu extends Application {
             
             //stage.setScene(new Scene(root, 600, 600));
             stage.setTitle("Simulation Datas");
-            stage.setX(900);
-            stage.setY(200);
+            stage.setX(1235);
+            stage.setY(125);
       
             stage.show();
         } catch (IOException e) {
@@ -80,6 +80,8 @@ public class ViewMenu extends Application {
             stage.getScene().setRoot(root);
             //stage.setScene(new Scene(root, 600, 600));
             stage.setTitle("Simulation Datas");
+            stage.setX(1235);
+            stage.setY(125);
             stage.show();
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -182,6 +184,8 @@ public class ViewMenu extends Application {
             oldstage.getScene().setRoot(root);
             //stage.setScene(new Scene(root, 600, 600));
             oldstage.setTitle("Simulation Datas");
+            oldstage.setX(1235);
+            oldstage.setY(125);
             oldstage.show();
         } catch (IOException e) {
             // TODO Auto-generated catch block

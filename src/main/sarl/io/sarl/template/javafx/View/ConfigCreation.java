@@ -267,6 +267,7 @@ public class ConfigCreation {
         Circle cityCircle = new Circle(coords.getX(), coords.getY(), size);
         cityCircle.setId(nameOfTheCity);
         Text cityName = new Text(coords.getX() - 10, coords.getY() + 5, nameOfTheCity);
+        cityName.setFill(Color.DARKGREEN);
         cityName.setId("text"+nameOfTheCity);
         cityCircle.setFill(Color.LIGHTBLUE);
         cityPane.getChildren().add(cityCircle);
@@ -320,6 +321,8 @@ public class ConfigCreation {
             stage.getScene().setRoot(root);
             //stage.setScene(new Scene(root, 600, 600));
             stage.setTitle("Simulation Datas");
+            stage.setX(1235);
+            stage.setY(125);
             stage.show();
         } catch (IOException e) {
             // TODO Auto-generated catch block

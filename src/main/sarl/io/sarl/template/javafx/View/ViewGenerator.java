@@ -26,6 +26,7 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @SuppressWarnings("restriction")
 public class ViewGenerator {
@@ -44,6 +45,7 @@ public class ViewGenerator {
     private TextField jsonfileName;
     Controller controller = Controller.getInstance();
     
+    
     @FXML
     public void saveConfig(ActionEvent event) {
     	String JSONFile = jsonfileName.getText().toString();
@@ -61,19 +63,20 @@ public class ViewGenerator {
     public void stopSimulation(ActionEvent event) {
     	controller.getConfiguration().setStopSimulation(!controller.getConfiguration().getStopSimulation());
     	stopSimulation.setDisable(true);
-    	stopSimulation.setVisible(false);
-    	openDisplayData.setDisable(false);
-    	openDisplayData.setVisible(true);
-        System.out.println("stop " + controller.getConfiguration().getStopSimulation());
-    	
+//    	stopSimulation.setVisible(false);
+//    	openDisplayData.setDisable(false);
+//    	openDisplayData.setVisible(true);    	
     }
     
     @FXML
-    public void openDisplayData(ActionEvent event) {
+    public void openDisplayData() {
     	try {
             Stage stage = new Stage();
+            
             FXMLLoader loader = new FXMLLoader(getClass().getResource("displayData.fxml"));
+            System.out.println("salut3");
             Parent root = loader.load();
+            System.out.println("salut2");
             stage.setScene(new Scene(root, 600, 600));
             stage.setTitle("Simulation Datas");
             stage.show();
@@ -111,7 +114,8 @@ public class ViewGenerator {
         for (City city : configuration.getCities()) {
             Circle whole = new Circle(city.getPosition().getX(), city.getPosition().getY(), city.getSize());
             Text t = new Text(city.getPosition().getX() - 5, city.getPosition().getY() + 5, city.getName());
-            whole.setFill((Color.color(Math.random(), Math.random(), Math.random())));
+            t.setFill(Color.DARKGREEN);
+            whole.setFill((Color.LIGHTGREY));
             mainPane.getChildren().add(whole);
             mainPane.getChildren().add(t);
         }
@@ -272,7 +276,6 @@ public class ViewGenerator {
              	deleteCarPositionDraw(c, configuration);
              }
    
-            
         }));
         // timeline.setCycleCount(1);//do it x times
         timeline.setCycleCount(Animation.INDEFINITE);//or indefinitely

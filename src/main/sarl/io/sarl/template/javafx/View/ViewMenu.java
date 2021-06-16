@@ -34,18 +34,54 @@ public class ViewMenu extends Application {
     }
 
     @FXML
-    public void loadRandomHippo(ActionEvent event) {
+    public void loadRandomHippo(ActionEvent event) throws InterruptedException {
         Button close = (Button) event.getSource();
-        Stage oldstage = (Stage) close.getScene().getWindow();
-        oldstage.close();
+        Stage stage = (Stage) close.getScene().getWindow();
+        // oldstage.close();
+        
+        try {
+            // Stage stage = new Stage();
+        	Thread.sleep(100);
+            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("displayData.fxml"));
+            System.out.println("salut3");
+            Parent root = loader.load();
+            System.out.println("salut2"); 
+            stage.getScene().setRoot(root);
+            //stage.setScene(new Scene(root, 600, 600));
+            stage.setTitle("Simulation Datas");
+            stage.show();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
         loadRandomConfiguration(true);
     }
     
     @FXML
-    public void loadRandomNormal(ActionEvent event) {
+    public void loadRandomNormal(ActionEvent event) throws InterruptedException {
         Button close = (Button) event.getSource();
-        Stage oldstage = (Stage) close.getScene().getWindow();
-        oldstage.close();
+        Stage stage = (Stage) close.getScene().getWindow();
+        // oldstage.close();
+        
+        try {
+            // Stage stage = new Stage();
+        	Thread.sleep(100);
+            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("displayData.fxml"));
+            System.out.println("salut3");
+            Parent root = loader.load();
+            System.out.println("salut2"); 
+            stage.getScene().setRoot(root);
+            //stage.setScene(new Scene(root, 600, 600));
+            stage.setTitle("Simulation Datas");
+            stage.show();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+       
         loadRandomConfiguration(false);
     }
     

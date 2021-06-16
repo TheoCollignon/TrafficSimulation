@@ -1,5 +1,7 @@
 package io.sarl.template.javafx.Model;
 
+import io.sarl.template.javafx.Controller.Controller;
+import io.sarl.template.javafx.View.DisplayData;
 import io.sarl.template.javafx.View.ViewGenerator;
 
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ public class Configuration {
 	private ArrayList<Car> allDestroyedCars;
 	private ArrayList<TrafficLight> trafficLights;
 	private ViewGenerator viewGenerator;
+	private DisplayData displayData;
 	private Random random;
 	private boolean pause;
 	private boolean stopSimulation;

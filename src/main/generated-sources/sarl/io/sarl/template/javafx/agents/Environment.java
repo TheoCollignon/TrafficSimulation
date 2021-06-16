@@ -25,7 +25,6 @@ import io.sarl.template.javafx.Model.Configuration;
 import io.sarl.template.javafx.Model.Road;
 import io.sarl.template.javafx.agents.CarAgent;
 import io.sarl.template.javafx.event.Influence;
-import io.sarl.template.javafx.event.Kill;
 import io.sarl.template.javafx.event.Perception;
 import io.sarl.template.javafx.event.SetupApplication;
 import java.io.ObjectStreamException;
@@ -225,14 +224,6 @@ public class Environment extends Agent {
         DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
         int _size_2 = cars.size();
         _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawnInContextWithID(CarAgent.class, cars.get((_size_1 - 1)).getUUID(), _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.getDefaultContext(), cars.get((_size_2 - 1)).getRoadOn());
-        Thread.sleep(50);
-      }
-      if (((removeCarCounter % 10) == 3)) {
-        Car _get = cars.get(0);
-        Kill killCar = new Kill(_get);
-        DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-        _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1.emit(killCar);
-        cars = this.controller.getConfiguration().removeCar(cars.get(0), false);
         Thread.sleep(50);
       }
       this.listInfluences.clear();

@@ -225,12 +225,12 @@ agent Environment {
 		}
 		
 		// killing a car 
-		if (removeCarCounter % 10 == 3) {
-			var killCar = new Kill(cars.get(0))
-			emit(killCar) // emit the kill, so it can kill itself
-			cars = controller.configuration.removeCar(cars.get(0), false) // false if we dont want to let the hitbox of the car on the way
-			Thread::sleep(50)
-		}
+//		if (removeCarCounter % 10 == 3) {
+//			var killCar = new Kill(cars.get(0))
+//			emit(killCar) // emit the kill, so it can kill itself
+//			cars = controller.configuration.removeCar(cars.get(0), false) // false if we dont want to let the hitbox of the car on the way
+//			Thread::sleep(50)
+//		}
 		
 		listInfluences.clear()
 		if (!controller.configuration.getPause() && !controller.configuration.getStopSimulation()) {

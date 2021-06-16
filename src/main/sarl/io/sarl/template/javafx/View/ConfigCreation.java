@@ -79,10 +79,28 @@ public class ConfigCreation {
         }
     }
 
-    public void createHippodamianConfig(ActionEvent actionEvent) {
+    public void createHippodamianConfig(ActionEvent actionEvent) throws InterruptedException {
         Button close = (Button) actionEvent.getSource();
-        Stage oldstage = (Stage) close.getScene().getWindow();
-        oldstage.close();
+        Stage stage = (Stage) close.getScene().getWindow();
+        // oldstage.close();
+        
+        try {
+            // Stage stage = new Stage();
+        	Thread.sleep(100);
+            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("displayData.fxml"));
+            System.out.println("salut3");
+            Parent root = loader.load();
+            System.out.println("salut2"); 
+            stage.getScene().setRoot(root);
+            //stage.setScene(new Scene(root, 600, 600));
+            stage.setTitle("Simulation Datas");
+            stage.show();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
         createConfig(true);
     }
 
@@ -286,11 +304,28 @@ public class ConfigCreation {
 		errorLabel.setText(errorMessage);
 	}
 
-	public void validateConfig(ActionEvent event) {
+	public void validateConfig(ActionEvent event) throws InterruptedException {
 		chosenEnergy = carEnergySpinner.getValue();
         Button close = (Button) event.getSource();
-        Stage oldstage = (Stage) close.getScene().getWindow();
-        oldstage.close();
+        Stage stage = (Stage) close.getScene().getWindow();
+        
+        try {
+            // Stage stage = new Stage();
+        	Thread.sleep(100);
+            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("displayData.fxml"));
+            System.out.println("salut3");
+            Parent root = loader.load();
+            System.out.println("salut2"); 
+            stage.getScene().setRoot(root);
+            //stage.setScene(new Scene(root, 600, 600));
+            stage.setTitle("Simulation Datas");
+            stage.show();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        // oldstage.close();
         createConfig(false);
     }
 }

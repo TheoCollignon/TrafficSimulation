@@ -23,6 +23,7 @@ public class Car {
     private Configuration config;
     private int speed;
     private int id;
+    private int maxPerception;
     private UUID uuid;
     private ArrayList<Coordinate> toBeDelete;
     private ArrayList<Integer> speeds = new ArrayList<Integer>();
@@ -43,6 +44,7 @@ public class Car {
         random = new Random();
         this.speed = random.nextInt(100) + 20 ;
         this.id = id;
+        this.maxPerception = random.nextInt(100) + 50; 
         //generating a first road plan
         getNewRoadPlan(cityFrom);
         Road firstRoad = roadPlan.get(0);
@@ -267,6 +269,10 @@ public class Car {
 
     public Road getRoadOn() {
         return roadOn;
+    }
+    
+    public int getMaxPerception() {
+    	return this.maxPerception;
     }
 
     public void setRoadOn(Road roadOn) {

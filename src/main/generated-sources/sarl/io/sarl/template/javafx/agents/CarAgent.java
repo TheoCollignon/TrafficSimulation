@@ -60,7 +60,7 @@ public class CarAgent extends Agent {
           UUID _iD = this.getID();
           boolean _equals = Objects.equal(_uUID, _iD);
           if (_equals) {
-            int numberOfFreeCoord = this.road.perceptionFree(car, 100);
+            int numberOfFreeCoord = this.road.perceptionFree(car, car.getMaxPerception());
             car.addSpeed(numberOfFreeCoord);
             UUID _iD_1 = this.getID();
             Influence influence = new Influence(i, _iD_1, numberOfFreeCoord);

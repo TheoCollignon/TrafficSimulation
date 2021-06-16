@@ -229,17 +229,14 @@ public class Environment extends Agent {
       }
       ArrayList<Car> newCarsList = new ArrayList<Car>();
       for (final Car car_1 : cars) {
-        {
-          InputOutput.<Car>println(car_1);
-          float _energy = car_1.getEnergy();
-          if ((_energy <= 0)) {
-            Car _get = cars.get(0);
-            Kill killCar = new Kill(_get);
-            DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-            _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1.emit(killCar);
-            newCarsList.add(car_1);
-            Thread.sleep(50);
-          }
+        float _energy = car_1.getEnergy();
+        if ((_energy <= 0)) {
+          Car _get = cars.get(0);
+          Kill killCar = new Kill(_get);
+          DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+          _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER_1.emit(killCar);
+          newCarsList.add(car_1);
+          Thread.sleep(50);
         }
       }
       int _size_3 = newCarsList.size();

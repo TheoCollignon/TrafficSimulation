@@ -228,7 +228,6 @@ agent Environment {
 		// killing a car 
 		var newCarsList = new ArrayList<Car>
 		for (car : cars) {
-			println(car)
 			if (car.getEnergy() <=0) {
 				var killCar = new Kill(cars.get(0))
 				emit(killCar) // emit the kill, so it can kill itself
